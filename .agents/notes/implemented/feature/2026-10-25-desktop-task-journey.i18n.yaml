@@ -1,0 +1,22 @@
+# Bilingual-pair consistency record for 2026-10-25-desktop-task-journey.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-10-25-desktop-task-journey.md
+/agent-note-desktop-task-journey:
+  en: ba240f81d656f5bd
+  zh: ac0165610bff847b
+/agent-note-desktop-task-journey/problem:
+  en: cea3b2abf8bb59c2
+  zh: fc95b4303d0e7da2
+/agent-note-desktop-task-journey/decision:
+  en: 5ca5b44097f85933
+  zh: 8df6f4d0c19d0996
+/agent-note-desktop-task-journey/alternatives-considered:
+  en: 27932c229d442e35
+  zh: 5bb71392dd94ebf4
+/agent-note-desktop-task-journey/consequences:
+  en: 9faf3be9560be4e4
+  zh: 59702ee668993e0e
+/agent-note-desktop-task-journey/verification:
+  en: 1692c7b0bb88c511
+  zh: 2dde7015e7673f92

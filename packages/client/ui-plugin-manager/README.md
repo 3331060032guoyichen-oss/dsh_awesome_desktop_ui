@@ -7,6 +7,8 @@ kind: "package-reference"
 
 English | [中文](README.zh.md)
 
+The `pluginNavigation.installFrom` action transfers a version already confirmed in the Settings market into the manager's existing installation flow. The manager owns inspection, progress, cancellation, and errors for both entry points.
+
 Desktop product events use the optional [product analytics service](../product-analytics/README.md); ordinary Web interactions are excluded.
 
 ## Summary

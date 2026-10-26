@@ -1,0 +1,12 @@
+.root { position: absolute; inset: 0; z-index: 25; pointer-events: none; overflow: hidden; }
+.panel { overflow: hidden; pointer-events: none; contain: paint; }
+.cells { position: absolute; overflow: hidden; pointer-events: none; }
+.tint { fill: var(--dsw-alias-studio-blue); }
+.tint:nth-child(3n) { fill: color-mix(in srgb, var(--dsw-alias-studio-blue) 45%, var(--dsw-alias-studio-paper)); }
+.root[data-palette='1'] .tint:nth-child(2n) { fill: var(--dsw-alias-effort-violet-label); }
+.root[data-palette='2'] .tint:nth-child(2n) { fill: color-mix(in srgb, var(--dsw-alias-state-warn-primary) 65%, var(--dsw-alias-studio-paper)); }
+@media (prefers-reduced-motion: no-preference) {
+  :global([data-sidebar-surface][data-pixel-transition]) { visibility: hidden; }
+  :global([data-sidebar-surface][data-pixel-transition] [data-sidebar-toggle]) { visibility: visible; }
+}
+@media (prefers-reduced-motion: reduce) { .root { display: none; } }

@@ -14,6 +14,16 @@ const LEVEL: DirLevel = {
 }
 
 describe('createFilesStore', () => {
+  it('retains the selected path independently for each file-tree tab', () => {
+    const store = createFilesStore().create()
+    const other = 'tab-2' as TabId
+    store.actions.start(TAB, ROOT)
+    store.actions.start(other, ROOT)
+    store.actions.selected(TAB, `${ROOT}/README.md`)
+    store.actions.reset(TAB)
+    expect(store.getSnapshot().byTab[TAB]!.selectedPath).toBe(`${ROOT}/README.md`)
+    expect(store.getSnapshot().byTab[other]!.selectedPath).toBeUndefined()
+  })
   it('mints an independent instance per call', () => {
     const first = createFilesStore().create()
     const second = createFilesStore().create()

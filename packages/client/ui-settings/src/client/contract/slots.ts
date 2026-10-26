@@ -100,6 +100,10 @@ export interface SettingsGeneralItemOwnerProps {
 
 /** Owner share of a Plugins tab (the section supplies nothing). */
 export interface SettingsPluginsTabOwnerProps {
+  /** Shared market search; omitted by hosts that retain a tab's own search field. */
+  query?: string
+  /** Close the Settings surface when a tab navigates to installation or management. */
+  close?: () => void
   /** Marker field: tab owner props are intentionally empty. */
   children?: never
 }

@@ -106,6 +106,16 @@ const globalToggle = (): HTMLElement =>
   screen.getByRole('button', { name: (name: string) => name.startsWith(en.globalTitle) })
 const presetToggle = (): HTMLElement => screen.getByRole('button', { name: en.presetTitle })
 
+it('keeps Session and Global market views separate under the shared search', async () => {
+  const view = render(<PluginInventorySettingsTab {...props(async () => SNAPSHOT)} inventoryScope="preset" query="telemetry" />)
+  await screen.findByText(en.emptySearch)
+  expect(screen.queryByRole('searchbox')).toBeNull()
+  expect(view.container.querySelector('[data-plugin-scope="global"]')).toBeNull()
+  view.rerender(<PluginInventorySettingsTab {...props(async () => SNAPSHOT)} inventoryScope="global" query="telemetry" />)
+  await screen.findByRole('button', { name: /telemetry.*Failed/ })
+  expect(view.container.querySelector('[data-plugin-scope="preset"]')).toBeNull()
+})
+
 describe('PluginInventorySettingsTab', () => {
   it.each(['global', 'preset'])('shortens package and module name fallbacks in the %s inventory', async (scope) => {
     const names = [

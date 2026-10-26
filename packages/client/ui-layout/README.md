@@ -7,6 +7,12 @@ kind: "package-reference"
 
 English | [中文](README.zh.md)
 
+The Desktop studio entry fills the client area while retaining native window controls. Each launch or refresh starts with the sidebar collapsed; users can open it with the sidebar toggle after entering the letter.
+
+While the whale opening covers the application viewport, sidebar, rightbar, overlay, and leading-control seats remain mounted but hidden. After handoff, each seat resumes its ordinary visibility rules. The opening and homepage use the same full-width center track to preserve the camera destination.
+
+Desktop sidebar toggles assemble the entire panel from pixel cells and gather it back into the left edge in about 0.4 seconds, randomly using blue, blue-violet, or muted blue-gold accents. A temporary inert image preserves the outgoing content; the live panel keeps its state and returns after the transition. Initial mount and viewport resizing produce no mosaic. The decorative layer ignores pointer input, leaves the toggle operable, and cleans up on interruption, reduced motion, or unmount. Programmatic collapse without an outgoing image uses the ordinary layout transition.
+
 ## Summary
 
 This package provides the Web GUI's three-column AppFrame, edge-column widths, and `ctx.layout` presentation control. The right column concedes space before the center; its occupant renders fullscreen while the frame retains the wide-screen track underneath. The theme presenter owns color scheme, alias tokens, font sizes, font lists, and document metadata. Layout state resets on reload.

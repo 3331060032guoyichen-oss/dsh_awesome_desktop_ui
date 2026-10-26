@@ -2,6 +2,7 @@
 
 /** Simplified Chinese dictionary and key source of truth. */
 export const zh = {
+  thirdParty: '第三方插件',
   title: '发现',
   refresh: '刷新',
   loading: '正在读取索引',
@@ -96,6 +97,7 @@ export type PluginMarketLocaleKey = keyof typeof zh
 
 /** English dictionary. */
 export const en = {
+  thirdParty: 'Third-party plugins',
   title: 'Discover',
   refresh: 'Refresh',
   loading: 'Reading the index',
@@ -187,6 +189,7 @@ export const en = {
 
 /** Japanese copy, checked against the English keys. */
 export const ja = {
+  thirdParty: 'サードパーティプラグイン',
   'title': '見つける',
   'refresh': '更新',
   'loading': 'インデックスを読み込み中',
@@ -278,6 +281,7 @@ export const ja = {
 
 /** Spanish dictionary, checked against the English keys. */
 export const es = {
+  thirdParty: 'Complementos de terceros',
   title: 'Descubrir',
   refresh: 'Actualizar',
   loading: 'leyendo el índice',
@@ -369,6 +373,7 @@ export const es = {
 
 /** French dictionary, checked against the English keys. */
 export const fr = {
+  thirdParty: 'Plugins tiers',
   title: 'Découvrez',
   refresh: 'Actualiser',
   loading: "Lire l'index",
@@ -460,6 +465,7 @@ export const fr = {
 
 /** German dictionary, checked against the English keys. */
 export const de = {
+  thirdParty: 'Drittanbieter-Plugins',
   title: 'Entdecken',
   refresh: 'Aktualisieren',
   loading: 'Den Index lesen',
@@ -551,6 +557,7 @@ export const de = {
 
 /** Russian dictionary, checked against the English keys. */
 export const ru = {
+  thirdParty: 'Сторонние плагины',
   title: 'Откройте для себя',
   refresh: 'Обновить',
   loading: 'Чтение индекса',
@@ -642,6 +649,7 @@ export const ru = {
 
 /** Portuguese dictionary, checked against the English keys. */
 export const pt = {
+  thirdParty: 'Plug-ins de terceiros',
   title: 'Descubra',
   refresh: 'Atualizar',
   loading: 'Lendo o índice',

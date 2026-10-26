@@ -141,7 +141,6 @@
   font-weight: 500;
   text-align: left;
   text-overflow: ellipsis;
-  user-select: none;
   white-space: nowrap;
 }
 
@@ -420,7 +419,6 @@
   background: var(--dsw-alias-bg-module-platform);
   font: 8px/10px var(--ds-font-family-code);
   font-variant-numeric: tabular-nums;
-  user-select: none;
   white-space: nowrap;
 }
 
@@ -492,8 +490,14 @@
   line-height: 16px;
   font-weight: 650;
   letter-spacing: 0.035em;
-  user-select: none;
 }
+
+/* Keep the ledger's fixed row geometry for its virtualized history. */
+:global([data-studio-trajectory]) .table { font-family: Arial, 'Microsoft YaHei', sans-serif; }
+:global([data-studio-trajectory]) .table th { color: var(--dsw-alias-state-business-primary); border-bottom: 1px solid var(--dsw-alias-state-business-primary); font-weight: 700; letter-spacing: .04em; }
+:global([data-studio-trajectory]) .table .kindSlot .kindTag { border-radius: 0; border-color: var(--dsw-alias-border-l2); background: var(--dsw-alias-bg-module-platform); color: var(--dsw-alias-state-business-primary); }
+:global([data-studio-trajectory]) .turnLabel { border-radius: 0; color: var(--dsw-alias-bg-layer-1); background: var(--dsw-alias-state-business-primary); font-weight: 700; }
+:global([data-studio-trajectory]) .content { border-left: 0.5px solid var(--dsw-alias-border-l1); }
 
 .kindTagIcon {
   display: inline-flex;
@@ -657,7 +661,6 @@
   margin: 0 0 6px;
   color: var(--dsw-alias-label-secondary);
   font: var(--dsw-font-xs-strong-13);
-  user-select: none;
 }
 
 .promptDiff {
@@ -678,7 +681,6 @@
 .promptDiffLinemeta {
   color: var(--dsw-alias-label-caption);
   background: var(--dsw-alias-bg-module-platform);
-  user-select: none;
 }
 
 .promptDiffLinecontext {
@@ -785,7 +787,6 @@
   margin-right: 6px;
   color: var(--dsw-alias-label-tertiary);
   font-weight: 600;
-  user-select: none;
 }
 
 .collapsedTurnText {
@@ -1169,7 +1170,6 @@
   padding: 4px 14px 1px;
   color: var(--dsw-alias-label-secondary);
   font: var(--dsw-font-xs-strong-13);
-  user-select: none;
 }
 
 .usageGroup .overview {
@@ -1236,7 +1236,6 @@
   color: var(--dsw-alias-label-secondary);
   background: var(--dsw-alias-bg-layer-1);
   font: var(--dsw-font-xs-strong-13);
-  user-select: none;
 }
 
 .overviewTitle {
@@ -1651,7 +1650,6 @@
   padding: 4px 14px 2px;
   color: var(--dsw-alias-label-tertiary);
   font: 600 11px/16px var(--dsw-font-family);
-  user-select: none;
 }
 
 .schemaTree {
@@ -1693,7 +1691,6 @@
   width: max-content;
   margin-bottom: 3px;
   gap: 3px;
-  user-select: none;
 }
 
 .sourceBlockJumpTarget {

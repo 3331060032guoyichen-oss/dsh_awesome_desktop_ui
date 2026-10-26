@@ -11,9 +11,11 @@ import type {} from '@deepseek-ai/dsh-api-remotes/client'
 import type {} from '@deepseek-ai/dsh-plugin-manager/types'
 import type {} from '@deepseek-ai/dsh-plugin-market/types'
 import type {} from '@deepseek-ai/dsh-client-ui-plugin-manager/client'
+import type {} from '@deepseek-ai/dsh-client-ui-settings/client'
 import { DiscoverSection } from './DiscoverSection.tsx'
 import { en, ja, es, fr, de, ru, pt, zh, type PluginMarketLocaleKey } from './locales.ts'
 import { DiscoverController } from './market-store.ts'
+import { SettingsMarket } from './SettingsMarket.tsx'
 
 export type { DiscoverFace, DiscoverState } from './market-store.ts'
 export type { PluginMarketLocaleKey } from './locales.ts'
@@ -55,4 +57,10 @@ export function apply(ctx: ClientContext): void {
   ctx.slots.inject('plugins.tab', () => ctx.slots.register({
     name: 'plugins.tab', id: 'discover', label: () => t('title'), locale: NS, inject: () => face,
   }, DiscoverSection))
+  ctx.inject(['pluginNavigation'], (scope: ClientContext) => {
+    scope.slots.inject('settings.plugins.tab', () => scope.slots.register({
+      name: 'settings.plugins.tab', id: 'community', order: 0, label: () => t('thirdParty'), locale: NS,
+      inject: () => ({ ...face, requestInstall: scope.pluginNavigation.installFrom, openInstalled: scope.pluginNavigation.openBundle }),
+    }, SettingsMarket))
+  })
 }

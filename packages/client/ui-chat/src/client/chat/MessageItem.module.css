@@ -19,6 +19,10 @@
      conversation column, where the axis variable is absent. */
   max-width: min(calc(var(--dsh-chat-content-width, 748px) * 0.702), 82%);
 }
+
+:global([data-desktop-letter]) .userRow,
+:global([data-desktop-letter]) .userStack { align-items: stretch; }
+:global([data-desktop-letter]) .userStack { max-width: 100%; width: 100%; }
 .referenceSummary {
   color: var(--dsw-alias-label-tertiary);
   font-size: var(--dsh-content-font-size-secondary, 13px);

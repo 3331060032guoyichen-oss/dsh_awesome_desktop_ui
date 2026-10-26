@@ -7,6 +7,10 @@ kind: "package-reference"
 
 English | [中文](README.zh.md)
 
+When plugin management is available, this package also contributes **Third-party plugins** to Settings → Plugin market. It shares the section search and the same catalog controller as Discover. Confirmed installations and installed-bundle navigation close Settings and transfer to the existing manager; they never create a separate installation path.
+
+Cards ease between their existing hover surfaces and respond to a press with one pixel of displacement. Touch action buttons offer at least 44px targets; reduced motion removes the displacement and transitions.
+
 ## Summary
 
 Discover is the second tab of the **Plugins** page, after **Installed**. It lists the bundles that plugin indexes offer; users manage index sources, switch between indexes, search, filter by category and label, sort, open an entry's page, and install an entry after confirming it. Entry pages show each entry's long description as Markdown with images. The Host [`pluginMarket`](../../boot/plugin-market/README.md) service fetches and validates indexes; this package only presents them.

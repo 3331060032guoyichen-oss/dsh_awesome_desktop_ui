@@ -11,6 +11,27 @@ import { registerPlainText } from '@lexical/plain-text'
 import { registerComposerKeymap } from '../src/client/input/editor/keymap.ts'
 
 describe('keymap keydown routing', () => {
+  it('submits the desktop letter with Enter and reserves Shift+Enter for line breaks', () => {
+    const editor = createEditor({ namespace: 'letter-enter', onError: (error) => { throw error } })
+    const root = document.createElement('div')
+    root.contentEditable = 'true'
+    document.body.appendChild(root)
+    editor.setRootElement(root)
+    onTestFinished(() => { editor.setRootElement(null); root.remove() })
+    onTestFinished(registerPlainText(editor))
+    const submit = vi.fn()
+    onTestFinished(registerComposerKeymap(editor, {
+      arbitrate: () => 'pass', space: () => false, dismissPopup: () => {}, canSubmit: () => true,
+      submit, intakeFiles: () => {}, pasteText: () => {},
+    }))
+    fireEvent.keyDown(root, { key: 'Enter' })
+    expect(submit).toHaveBeenCalledWith(false)
+    submit.mockClear()
+    fireEvent.keyDown(root, { key: 'Enter', shiftKey: true })
+    expect(submit).not.toHaveBeenCalled()
+    fireEvent.keyDown(root, { key: 'Enter', ctrlKey: true })
+    expect(submit).toHaveBeenCalledWith(true)
+  })
   it('clears composition presentation on root swaps and unregisters pending callbacks', async () => {
     const editor = createEditor({ namespace: 'composition-root', onError: (e) => { throw e } })
     const first = document.createElement('div')

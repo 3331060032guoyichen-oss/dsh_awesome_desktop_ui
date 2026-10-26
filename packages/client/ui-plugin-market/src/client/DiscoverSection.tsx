@@ -16,6 +16,7 @@ import css from './DiscoverSection.module.css'
 
 /** Props of the Discover tab. */
 export type DiscoverSectionProps = PropsRuntime<'plugins.tab'> & PropsLocale<'pluginMarket'> & InjectFace<DiscoverFace>
+  & { marketQuery?: string | undefined }
 
 type Translate = DiscoverSectionProps['t']
 
@@ -394,7 +395,8 @@ function unfiltered(query: DiscoverQuery): boolean {
   return query.text.trim() === '' && query.category === null && query.labels.length === 0
 }
 
-function Browser({ state, listing, t, face, hooks, language, onInstall, openPackage }: {
+function Browser({ state, listing, t, face, hooks, language, onInstall, openPackage, marketQuery }: {
+  readonly marketQuery?: string | undefined
   readonly state: DiscoverState
   readonly listing: ListingState
   readonly t: Translate
@@ -405,7 +407,8 @@ function Browser({ state, listing, t, face, hooks, language, onInstall, openPack
   readonly openPackage: (name: string) => void
 }): ReactNode {
   const { query, value } = listing
-  const [text, setText] = useState(query.text)
+  const [localText, setText] = useState(query.text)
+  const text = marketQuery ?? localText
   const [menu, setMenu] = useState<OpenMenu>(null)
   const [opened, setOpened] = useState<MarketListingEntry | null>(null)
   useEffect(() => {
@@ -476,8 +479,8 @@ function Browser({ state, listing, t, face, hooks, language, onInstall, openPack
               <IconChevronDownOutlineRegular size={12} aria-hidden="true" />
             </Button>
           )} />
-        <Input className={css.search as string} type="search" icon={<IconSearchOutlineRegular size={14} />} value={text}
-          placeholder={t('search')} aria-label={t('search')} onChange={(event) => { setText(event.target.value) }} />
+        {marketQuery === undefined && <Input className={css.search as string} type="search" icon={<IconSearchOutlineRegular size={14} />} value={text}
+          placeholder={t('search')} aria-label={t('search')} onChange={(event) => { setText(event.target.value) }} />}
         {declarations.labels.length === 0 ? null : (
           <Menu open={menu === 'filter'} onClose={() => { setMenu(null) }} portal autoFocus align="end" selectedIds={query.labels}
             items={declarations.labels.map(item => ({ id: item.id, label: item.title }))}
@@ -590,6 +593,7 @@ export function DiscoverSection(props: DiscoverSectionProps): ReactNode {
   } else {
     body = (
       <Browser key={state.listing.url} state={state} listing={state.listing} t={t} face={face}
+        marketQuery={props.marketQuery}
         hooks={{ useDetails: props.useDetails, useLocale: props.useLocale }} language={language}
         onInstall={(choice) => { setConfirming(choice) }} openPackage={openPackage} />
     )

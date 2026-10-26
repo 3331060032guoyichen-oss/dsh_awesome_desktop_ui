@@ -55,6 +55,14 @@ it('shares settings card materials and control sizes in both palettes', async ()
   const browser = await chromium.launch()
   onTestFinished(() => browser.close())
   const page = await browser.newPage({ viewport: { width: 1440, height: 1000 }, locale: ZH_BROWSER_LOCALE })
+  await page.clock.setFixedTime(new Date('2026-10-26T12:00:00+09:00'))
+  await page.route('**/api/usage-stats/**', async (route) => {
+    const path = new URL(route.request().url()).pathname
+    const value = path.endsWith('/providers') ? { providers: [{ id: 'deepseek-account', displayName: 'DeepSeek' }] }
+      : path.endsWith('/account') ? { account: { status: 'ok', balance: { remaining: 140.5, currency: 'CNY' } } }
+        : { days: [], updatedAt: Date.parse('2026-10-26T12:00:00+09:00') }
+    await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ ok: true, ...value }) })
+  })
   await page.addInitScript(() => { Object.defineProperty(globalThis, 'dshDesktop', { value: { protocolVersion: 1 } }) })
   await page.goto(scaffold.authenticatedUrl, { waitUntil: 'load' })
   await openSettings(page, 'zh')
@@ -71,7 +79,7 @@ it('shares settings card materials and control sizes in both palettes', async ()
     await dialog.getByRole('button', { name: '账号与余额', exact: true }).click()
     const section = dialog.getByRole('region', { name: '账号与余额', exact: true })
     await expect.poll(() => section.innerText()).toContain('¥128.50')
-    const cards = section.locator(':scope > div')
+    const cards = section.locator(':scope > div:not([data-account-usage])')
     expect(await cards.count()).toBe(2)
     const profile = await appearance(cards.nth(0))
     const balance = await appearance(cards.nth(1))
@@ -83,10 +91,12 @@ it('shares settings card materials and control sizes in both palettes', async ()
     const topUp = await appearance(section.getByRole('link', { name: '充值', exact: true }))
     expect(usage).toMatchObject({ radius: '12px', height: 36 })
     expect(topUp).toMatchObject({ radius: '12px', height: 36 })
+    await section.locator('[data-account-usage]').getByRole('button', { name: '刷新', exact: true }).waitFor()
+    await expect.poll(() => section.locator('[data-account-usage]').getByText('0', { exact: true }).count()).toBe(3)
     await compareOrRefreshGolden(join(EXPECTED, 'account.expected.md'),
       await captureStableAria(page, 'section[aria-label="账号与余额"]', scaffold.workspaceCwd), webSnapshotMode())
 
-    await dialog.getByRole('button', { name: '内置插件', exact: true }).click()
+    await dialog.getByRole('button', { name: '内置插件', exact: true }).click({ noWaitAfter: true })
     await dialog.getByRole('button', { name: /^全局/ }).click()
     const plugin = dialog.locator('[data-plugin-scope="global"] [data-plugin-entry]').first()
     await plugin.waitFor()

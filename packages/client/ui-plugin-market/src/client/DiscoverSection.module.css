@@ -94,9 +94,9 @@
 }
 
 .cards {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+  gap: 12px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -107,10 +107,15 @@
   display: flex;
   align-items: center;
   gap: 14px;
-  margin: 0 -8px;
-  padding: 8px;
+  margin: 0;
+  padding: 14px;
+  border: 1px solid var(--dsw-alias-settings-card-stroke);
+  background: var(--dsw-alias-settings-card-fill);
   border-radius: var(--dsw-radius-xl);
+  transition: background-color 180ms ease, transform 160ms cubic-bezier(.2, .8, .2, 1);
 }
+
+.card:has(.cardOpen:active) { transform: translateY(1px); }
 
 @media (hover: hover) {
   .card:hover {
@@ -201,6 +206,14 @@
   flex: none;
   align-items: center;
   gap: 8px;
+}
+
+@media (pointer: coarse) {
+  .cardEnd button { min-width: 44px; min-height: 44px; touch-action: manipulation; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .card { transition: none; }
+  .card:has(.cardOpen:active) { transform: none; }
 }
 
 .blocked {

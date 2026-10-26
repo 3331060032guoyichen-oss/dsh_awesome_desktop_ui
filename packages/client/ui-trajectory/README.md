@@ -13,6 +13,8 @@ The Trajectory tab lets you inspect agent activity as a turn-aware ledger and in
 
 ## Table of Contents
 
+The Desktop studio uses a faint blue grid with paper-colored text and opens a human-readable Task journey in ivory and Klein blue: requests, actions, replies, recorded failures, and in-flight states form a vertical activity feed. Search retains the surrounding turn; full text expands inline, and Inspect record opens the original technical inspector. System/context records remain in Technical records, which preserves the timing overview and virtualized ledger. The journey initially shows six recent loaded turns and loads earlier activity on demand. The action count covers loaded records, not a completion percentage. The conversation shell owns the Swiss-style masthead and separate close row.
+
 - [Use this package](#use-this-package)
 - [Understand the implementation](#understand-the-implementation)
 - [Further Exploration](#further-exploration)
@@ -24,6 +26,8 @@ The Trajectory tab lets you inspect agent activity as a turn-aware ledger and in
 
 <a id="use-this-package"></a>
 ## Use this package
+
+Readonly record headings and text remain selectable. Selection suppression is limited to interactive controls and the draggable timeline rather than whole record contents.
 
 Open the Trajectory tab in the conversation's view ring to inspect agent activity as an event ledger and timeline. The ledger covers records with an explicit loading row until the initial tail is positioned; while an older prefix remains unloaded, a first-row control loads one earlier page on click and shows the shared ongoing loader while that page is pending.
 

@@ -150,6 +150,34 @@ describe('ModelSelect label slot', () => {
 })
 
 describe('ModelSelect reasoning effort', () => {
+  it('previews desktop effort gestures and saves the provider level once on release without closing the menu', async () => {
+    document.documentElement.dataset.desktopStudio = 'true'
+    onTestFinished(() => { delete document.documentElement.dataset.desktopStudio })
+    const directory = createSnapshotStore<ModelDirectoryState>(state())
+    const select = vi.fn(async (selection: ModelSelection) => {
+      directory.set(state({ current: selection }))
+      return { ok: true as const, value: undefined }
+    })
+    render(<ModelSelect renderSlot={renderLabel} locked={false} available directory={directory} load={vi.fn()} select={select} t={t} />)
+    fireEvent.click(screen.getByRole('button', { name: /选择模型，当前/ }))
+    const slider = screen.getByRole('slider', { name: '推理等级' })
+    expect(slider.getAttribute('aria-valuetext')).toBe('High')
+    fireEvent.change(slider, { target: { value: '2' } })
+    expect(slider.getAttribute('aria-valuetext')).toBe('Max')
+    expect(select).not.toHaveBeenCalled()
+    fireEvent.pointerUp(slider)
+    await waitFor(() => { expect(select).toHaveBeenCalledExactlyOnceWith({
+      provider: 'deepseek-official', model: 'deepseek-v4-flash', reasoningEffort: 'max',
+    }) })
+    expect(screen.getByRole('slider', { name: '推理等级' })).toBe(slider)
+    fireEvent.change(slider, { target: { value: '0' } })
+    fireEvent.keyUp(slider, { key: 'Home' })
+    await waitFor(() => { expect(select).toHaveBeenLastCalledWith({
+      provider: 'deepseek-official', model: 'deepseek-v4-flash', reasoningEffort: 'off',
+    }) })
+    expect(slider.getAttribute('aria-valuetext')).toBe('Off')
+  })
+
   it('renders effort names without descriptions and submits the effort as part of the session selection', async () => {
     const directory = createSnapshotStore<ModelDirectoryState>(state())
     const select = vi.fn(async (selection: ModelSelection) => {

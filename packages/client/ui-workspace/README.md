@@ -241,6 +241,8 @@ These limits cover search, navigation, archival, and folder selection.
 <a id="dev-note"></a>
 ### Dev Note
 
+Workspace groups use a dashed Hook rail from the owning Workspace row to its selected Session. Sessions have an extra indentation step; hover and keyboard focus preview the same parent-to-child connection. Flat and search lists without a Workspace header do not draw a root-level substitute. The decorative rails follow list scrolling and layout changes, ignore pointer events, and respect reduced motion. Their stacking context is confined to the workspace list, and fullscreen trajectory hides them until it closes.
+
 <details>
 <summary>Working context for maintainers — click to expand</summary>
 

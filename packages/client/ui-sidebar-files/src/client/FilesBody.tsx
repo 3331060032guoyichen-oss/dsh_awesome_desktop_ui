@@ -26,6 +26,7 @@ import type { FilesInjected } from './face.ts'
 import type {} from './locales.ts'
 import type { FilesTabState, createFilesStore } from './store.ts'
 import css from './FilesBody.module.css'
+import { FileHookRail } from './FileHookRail.tsx'
 
 /** The body's composed props: the tab it draws, its store, its face, and its copy. */
 export type FilesBodyProps =
@@ -84,7 +85,8 @@ function Entry({ parent, entry, tree }: { parent: string; entry: WorkspaceDirect
     const expanded = tree.state.expanded.includes(path)
     return (
       <li className={css.item} data-files-entry="directory" data-files-path={path}>
-        <button type="button" className={css.row} aria-expanded={expanded} onClick={() => { tree.onToggle(parent, path) }}>
+        <button type="button" className={css.row} aria-expanded={expanded} aria-current={tree.state.selectedPath === path ? 'true' : undefined}
+          data-files-selected={tree.state.selectedPath === path} onClick={() => { tree.onToggle(parent, path) }}>
           {expanded ? <IconFolderOpenRegular className={css.icon} /> : <IconFolderCloseRegular className={css.icon} />}
           <span className={css.name}>{entry.name}</span>
         </button>
@@ -95,7 +97,8 @@ function Entry({ parent, entry, tree }: { parent: string; entry: WorkspaceDirect
   if (entry.type === 'file') {
     return (
       <li className={css.item} data-files-entry="file" data-files-path={path}>
-        <button type="button" className={css.row} onClick={() => { tree.onOpen(path) }}>
+        <button type="button" className={css.row} aria-current={tree.state.selectedPath === path ? 'true' : undefined}
+          data-files-selected={tree.state.selectedPath === path} onClick={() => { tree.onOpen(path) }}>
           <FileTypeIcon kind={classifyFileType(entry.name)} size={16} className={css.fileIcon} />
           <span className={css.name}>{entry.name}</span>
         </button>
@@ -182,9 +185,9 @@ export function FilesBody({
   if (state === undefined) return null
   const tree: TreeContext = {
     state,
-    onToggle: (parent, path) => { toggle(tab.id, parent, path, state.expanded, signal) },
+    onToggle: (parent, path) => { actions.selected(tab.id, path); toggle(tab.id, parent, path, state.expanded, signal) },
     // Every row is under the tree's root, so its address is session-relative.
-    onOpen: (path) => { tabActions.openResource(fileAddressFor(sessionId, state.root, path)) },
+    onOpen: (path) => { actions.selected(tab.id, path); tabActions.openResource(fileAddressFor(sessionId, state.root, path)) },
     t,
   }
   const reload = (): void => {
@@ -224,7 +227,9 @@ export function FilesBody({
         data-files-body
         onScroll={(event) => { scrollTopRef.current = event.currentTarget.scrollTop }}
       >
-        <ul className={css.level}><Level path={state.root} tree={tree} /></ul>
+        <FileHookRail selectedPath={state.selectedPath} revision={state}>
+          <ul className={css.level}><Level path={state.root} tree={tree} /></ul>
+        </FileHookRail>
       </div>
     </div>
   )

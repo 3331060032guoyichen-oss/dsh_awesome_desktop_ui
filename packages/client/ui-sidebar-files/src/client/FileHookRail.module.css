@@ -1,0 +1,7 @@
+.canvas { position: relative; min-width: 0; isolation: isolate; padding: 4px 6px 12px 4px; }
+.rail { position: absolute; z-index: 1; top: 4px; left: 7px; pointer-events: none; color: var(--dsw-alias-state-business-primary); opacity: 0; transition: opacity 160ms ease; }
+.rail[data-visible='true'] { opacity: 1; }
+.rail[data-files-hook='preview'][data-visible='true'] { opacity: .3; }
+.stem { position: absolute; left: 0; top: 0; width: 1px; height: max(0px,calc(var(--files-hook-y) - 11px)); background: repeating-linear-gradient(to bottom,currentColor 0 2px,transparent 2px 5px); transition: height 280ms cubic-bezier(.2,.85,.25,1.05); }
+.corner { position: absolute; left: 0; top: calc(var(--files-hook-y) - 11px); height: 7px; width: max(10px,calc(var(--files-hook-x) - 8px)); border-left: 1px dashed currentColor; border-bottom: 1px dashed currentColor; border-bottom-left-radius: 7px; transition: top 280ms cubic-bezier(.2,.85,.25,1.05),width 280ms ease; }
+@media (prefers-reduced-motion:reduce) { .rail,.stem,.corner { transition: none; } }

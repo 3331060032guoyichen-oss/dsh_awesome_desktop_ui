@@ -30,11 +30,12 @@ export type PluginsSettingsSectionProps =
   & InjectFace<PluginsSettingsSectionInjected>
 
 /** Render one Plugins page whose contents arrive from feature-owned tabs; one contribution shows as the page itself. */
-export function PluginsSettingsSection({ t, renderSlot, useTabs }: PluginsSettingsSectionProps) {
+export function PluginsSettingsSection({ t, renderSlot, useTabs, close }: PluginsSettingsSectionProps) {
   const tabsId = useId()
   const tabRefs = useRef<Array<HTMLButtonElement | null>>([])
   const rows = useTabs(value => value)
   const [activeId, setActiveId] = useState<string>()
+  const [query, setQuery] = useState('')
   const [visitedIds, setVisitedIds] = useState<ReadonlySet<string>>(() => new Set())
   const active = rows.find(row => row.id === activeId)?.id ?? rows[0]?.id
   const single = rows.length === 1 ? rows[0] : undefined
@@ -54,11 +55,15 @@ export function PluginsSettingsSection({ t, renderSlot, useTabs }: PluginsSettin
     <div className={css.section}>
       <h2 className={css.heading}>{t('title')}</h2>
       <p className={css.intro}>{t('intro')}</p>
+      {rows.length > 0 && <label className={css.search}>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" /><path d="m16 16 5 5" /></svg>
+        <input type="search" value={query} onChange={(event) => { setQuery(event.currentTarget.value) }} aria-label={t('search')} placeholder={t('search')} />
+      </label>}
       {rows.length === 0 ? <p className={css.empty}>{t('empty')}</p> : single !== undefined ? (
-        <div className={css.panel}>{renderSlot('settings.plugins.tab', {}, { only: single.id })}</div>
+        <div className={css.panel}>{renderSlot('settings.plugins.tab', { query, close }, { only: single.id })}</div>
       ) : (
         <>
-          <div className={css.tabs} role="tablist" aria-label={t('tabs')}>
+          <div className={css.tabs} role="tablist" aria-label={t('tabs')} data-market-navigation>
             {rows.map((row, index) => {
               const selected = row.id === active
               return (
@@ -90,6 +95,7 @@ export function PluginsSettingsSection({ t, renderSlot, useTabs }: PluginsSettin
                     nextTab.focus()
                   }}
                 >
+                  <span key={active} className={css.tabBridge} aria-hidden="true"><svg viewBox="0 0 20 44" preserveAspectRatio="none"><path d="M0 0Q10 21 20 0V44Q10 23 0 44Z" /></svg></span>
                   {row.label}
                 </button>
               )
@@ -108,7 +114,7 @@ export function PluginsSettingsSection({ t, renderSlot, useTabs }: PluginsSettin
                   aria-labelledby={`${tabsId}-tab-${row.id}`}
                   hidden={!selected}
                 >
-                  {renderSlot('settings.plugins.tab', {}, { only: row.id })}
+                  {renderSlot('settings.plugins.tab', { query, close }, { only: row.id })}
                 </div>
               )
             })}

@@ -53,12 +53,12 @@ export function apply(ctx: ClientContext): void {
     retryClient: () => { void ctx.modules.entries.retry().catch((error: unknown) => { ctx.logger.error(error) }) },
   })
 
-  ctx.slots.inject('settings.plugins.tab', () => ctx.slots.register({
-    name: 'settings.plugins.tab',
-    id: 'all',
-    order: 10,
-    label: () => t('tab'),
-    locale: NS,
-    inject: injected,
-  }, PluginInventorySettingsTab))
+  ctx.slots.inject('settings.plugins.tab', function* () {
+    for (const [id, inventoryScope, key, order] of [
+      ['session', 'preset', 'presetTitle', 10], ['global', 'global', 'globalTitle', 20],
+    ] as const) yield ctx.slots.register({
+      name: 'settings.plugins.tab', id, order, label: () => t(key), locale: NS,
+      inject: () => ({ ...injected(), inventoryScope }),
+    }, PluginInventorySettingsTab)
+  })
 }

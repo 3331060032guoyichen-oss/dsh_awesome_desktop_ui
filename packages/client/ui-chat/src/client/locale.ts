@@ -5,6 +5,15 @@ export const NS = 'chat'
 
 /** Simplified Chinese dictionary and key-set source of truth. */
 export const zh = {
+  'aiStatus.thinking': '正在思考',
+  'aiStatus.researching': '正在查找资料',
+  'aiStatus.analyzing': '正在分析',
+  'aiStatus.writing': '正在撰写',
+  'aiStatus.executing': '正在执行',
+  'aiStatus.done': '本轮已完成',
+  'aiStatus.error': '本轮遇到问题',
+  'aiStatus.paused': '连接已暂停',
+  'aiStatus.stopped': '本轮已结束',
   'message.stepProcess.thinking': '正在分析请求',
   'message.stepProcess.read': '正在读取文件',
   'message.stepProcess.readImage': '正在读取图片',
@@ -207,6 +216,15 @@ export type ChatKey = keyof typeof zh
 
 /** English dictionary, checked against the Chinese key set. */
 export const en = {
+  'aiStatus.thinking': 'Thinking',
+  'aiStatus.researching': 'Researching',
+  'aiStatus.analyzing': 'Analyzing',
+  'aiStatus.writing': 'Writing',
+  'aiStatus.executing': 'Working',
+  'aiStatus.done': 'Turn completed',
+  'aiStatus.error': 'Turn failed',
+  'aiStatus.paused': 'Connection paused',
+  'aiStatus.stopped': 'Turn ended',
   'message.stepProcess.thinking': 'Analyzing the request',
   'message.stepProcess.read': 'Reading files',
   'message.stepProcess.readImage': 'Reading images',
@@ -406,6 +424,15 @@ export const en = {
 
 /** Japanese copy, checked against the English keys. */
 export const ja = {
+  'aiStatus.thinking': '思考中',
+  'aiStatus.researching': '調査中',
+  'aiStatus.analyzing': '分析中',
+  'aiStatus.writing': '作成中',
+  'aiStatus.executing': '実行中',
+  'aiStatus.done': 'ターン完了',
+  'aiStatus.error': 'ターン失敗',
+  'aiStatus.paused': '接続一時停止',
+  'aiStatus.stopped': 'ターン終了',
   'message.stepProcess.thinking': 'リクエストを分析中',
   'message.stepProcess.read': 'ファイルを読み取り中',
   'message.stepProcess.readImage': '画像を読み取り中',
@@ -605,6 +632,15 @@ export const ja = {
 
 /** Spanish dictionary, checked against the English keys. */
 export const es = {
+  'aiStatus.thinking': 'Pensando',
+  'aiStatus.researching': 'Investigando',
+  'aiStatus.analyzing': 'Analizando',
+  'aiStatus.writing': 'Redactando',
+  'aiStatus.executing': 'Trabajando',
+  'aiStatus.done': 'Turno completado',
+  'aiStatus.error': 'Turno fallido',
+  'aiStatus.paused': 'Conexión en pausa',
+  'aiStatus.stopped': 'Turno finalizado',
   'message.stepProcess.thinking': 'Analizando la solicitud',
   'message.stepProcess.read': 'Leyendo archivos',
   'message.stepProcess.readImage': 'Leyendo imágenes',
@@ -804,6 +840,15 @@ export const es = {
 
 /** French dictionary, checked against the English keys. */
 export const fr = {
+  'aiStatus.thinking': 'Réflexion',
+  'aiStatus.researching': 'Recherche',
+  'aiStatus.analyzing': 'Analyse',
+  'aiStatus.writing': 'Rédaction',
+  'aiStatus.executing': 'Exécution',
+  'aiStatus.done': 'Tour terminé',
+  'aiStatus.error': 'Échec du tour',
+  'aiStatus.paused': 'Connexion en pause',
+  'aiStatus.stopped': 'Tour arrêté',
   'message.stepProcess.thinking': 'Analyser la demande',
   'message.stepProcess.read': 'Lecture de fichiers',
   'message.stepProcess.readImage': 'Lire des images',
@@ -1003,6 +1048,15 @@ export const fr = {
 
 /** German dictionary, checked against the English keys. */
 export const de = {
+  'aiStatus.thinking': 'Denkt nach',
+  'aiStatus.researching': 'Recherchiert',
+  'aiStatus.analyzing': 'Analysiert',
+  'aiStatus.writing': 'Schreibt',
+  'aiStatus.executing': 'Arbeitet',
+  'aiStatus.done': 'Runde abgeschlossen',
+  'aiStatus.error': 'Runde fehlgeschlagen',
+  'aiStatus.paused': 'Verbindung pausiert',
+  'aiStatus.stopped': 'Runde beendet',
   'message.stepProcess.thinking': 'Analyse der Anfrage',
   'message.stepProcess.read': 'Dateien lesen',
   'message.stepProcess.readImage': 'Bilder lesen',
@@ -1202,6 +1256,15 @@ export const de = {
 
 /** Russian dictionary, checked against the English keys. */
 export const ru = {
+  'aiStatus.thinking': 'Размышление',
+  'aiStatus.researching': 'Поиск информации',
+  'aiStatus.analyzing': 'Анализ',
+  'aiStatus.writing': 'Написание',
+  'aiStatus.executing': 'Выполнение',
+  'aiStatus.done': 'Ход завершён',
+  'aiStatus.error': 'Ошибка в ходе',
+  'aiStatus.paused': 'Соединение приостановлено',
+  'aiStatus.stopped': 'Ход остановлен',
   'message.stepProcess.thinking': 'Анализ запроса',
   'message.stepProcess.read': 'Чтение файлов',
   'message.stepProcess.readImage': 'Чтение изображений',
@@ -1401,6 +1464,15 @@ export const ru = {
 
 /** Portuguese dictionary, checked against the English keys. */
 export const pt = {
+  'aiStatus.thinking': 'A pensar',
+  'aiStatus.researching': 'A pesquisar',
+  'aiStatus.analyzing': 'A analisar',
+  'aiStatus.writing': 'A escrever',
+  'aiStatus.executing': 'A executar',
+  'aiStatus.done': 'Turno concluído',
+  'aiStatus.error': 'Falha no turno',
+  'aiStatus.paused': 'Ligação em pausa',
+  'aiStatus.stopped': 'Turno terminado',
   'message.stepProcess.thinking': 'Analisando a solicitação',
   'message.stepProcess.read': 'Lendo arquivos',
   'message.stepProcess.readImage': 'Lendo imagens',

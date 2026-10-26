@@ -5,9 +5,10 @@ import { workspaceDisplayTitle } from '@deepseek-ai/dsh-api-workspace-controller
 import type { ConversationContentProps, ConversationViewsProps, InputZone } from '../contract/slots.ts'
 import { HeroShell, WorkspaceChip, workspaceLabel } from './EmptyHero.tsx'
 import css from './ConversationRoot.module.css'
+import { DesktopStudio } from './DesktopStudio.tsx'
 
-function ConversationSessionView({ renderSlot }: ConversationViewsProps) {
-  return renderSlot('conversation.session', {})
+function ConversationSessionView({ renderSlot, studioTrace }: ConversationViewsProps) {
+  return renderSlot('conversation.session', { ...(studioTrace === undefined ? {} : { studioTrace }) })
 }
 
 function NoConversationWidthControls() {
@@ -26,6 +27,9 @@ export function ConversationContent(props: ConversationContentProps) {
     selectWorkspace, t, useFactorySlot,
   } = props
   const session = useSession(snapshot => snapshot)
+  const desktopStudio = props.variant === 'main' && document.documentElement.dataset.desktopStudio === 'true'
+  const [traceFullscreen, setTraceFullscreen] = useState(false)
+  useEffect(() => { setTraceFullscreen(false) }, [sessionId])
   const Views = useFactorySlot('views', ConversationSessionView)
   const WidthControls = useFactorySlot('widthControls', NoConversationWidthControls)
   const [body, setBody] = useState<HTMLDivElement | null>(null)
@@ -53,7 +57,7 @@ export function ConversationContent(props: ConversationContentProps) {
   const seatResizeRef = useCallback((seat: HTMLDivElement | null): void => {
     seatObserver.current?.disconnect()
     seatObserver.current = null
-    const scroller = seat?.parentElement ?? null
+    const scroller = seat?.parentElement?.querySelector<HTMLElement>('[data-studio-scroll]') ?? seat?.parentElement ?? null
     if (seat === null || scroller === null) return
     seatObserver.current = new ResizeObserver(() => {
       scroller.style.setProperty('--dsh-composer-height', `${seat.offsetHeight}px`)
@@ -129,7 +133,7 @@ export function ConversationContent(props: ConversationContentProps) {
         },
         onClose: () => { setPickerOpen(false) },
       })}
-      {renderSlot('conversation.hero.agentPreset', {})}
+      {!desktopStudio && renderSlot('conversation.hero.agentPreset', {})}
       {sessionId === undefined ? null : <div className={css.heroOptions}>{renderSlot('conversation.hero.options', {})}</div>}
     </div>
   )
@@ -145,6 +149,9 @@ export function ConversationContent(props: ConversationContentProps) {
   // when both hold — picking a workspace is the earlier prerequisite.
   const blocked = !inert && composerBlock !== undefined
   const inputBar = renderSlot('conversation.composer.bar', {
+    ...(desktopStudio && sessionId !== undefined ? { studioTrace: {
+      fullscreen: traceFullscreen, label: t('studio.trace'), toggle: () => { setTraceFullscreen(value => !value) },
+    } } : {}),
     variant: hero ? 'hero' : 'composer',
     ...(inert
       ? {
@@ -163,7 +170,7 @@ export function ConversationContent(props: ConversationContentProps) {
 
   const composerBar = (
     <div className={clsx(css.composerStack, hero && css.composerHero)}>
-      {hero && <HeroShell t={t} renderSlot={renderSlot} />}
+      {hero && !desktopStudio && <HeroShell t={t} renderSlot={renderSlot} />}
       {hero && heroWorkspaceRow}
       {zone !== undefined && renderSlot('conversation.input.dock', zone)}
       {inputBar}
@@ -194,11 +201,17 @@ export function ConversationContent(props: ConversationContentProps) {
       data-conversation-session={sessionId}
       data-conversation-region="chat"
       data-content-phase={phase}
+      data-desktop-letter={desktopStudio || undefined}
     >
-      <div className={css.scrollBody} data-conversation-scroll="">
-        {sessionId === undefined ? null : <Views />}
-        {composerSeat}
+      {desktopStudio && <DesktopStudio t={t} hero={hero} studioVisit={props.studioVisit} />}
+      <div className={css.scrollBody} data-conversation-scroll={desktopStudio ? undefined : ''} data-studio-scroll={desktopStudio ? '' : undefined}>
+        {desktopStudio && hero && <div className={css.letterWelcome}><p>{t('studio.salutation')}</p><h1>{t('studio.invitation')}</h1></div>}
+        {sessionId === undefined ? null : <Views {...(desktopStudio ? { studioTrace: {
+          fullscreen: traceFullscreen, title: t('studio.trace'), closeLabel: t('studio.closeTrace'), close: () => { setTraceFullscreen(false) },
+        } } : {})} />}
+        {!desktopStudio && composerSeat}
       </div>
+      {desktopStudio && composerSeat}
       <WidthControls container={body} phase={phase} />
     </div>
   )

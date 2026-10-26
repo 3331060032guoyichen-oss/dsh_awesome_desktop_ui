@@ -67,6 +67,8 @@ None; directory listings travel over the Remote and assemble no model request.
 <a id="dev-note"></a>
 ### Dev Note
 
+The file tree uses a dashed navigation rail with a curved hook, inspired by Rare UI's Hook Sidebar. The brand-colored rail follows the chosen row; a lighter rail previews mouse hover and keyboard focus. Selection belongs to each tab's view store and survives revisiting the tree. The rails share the tree's scroll coordinates, resize with the pane and expanded directories, and disable transitions when reduced motion is requested. They are decorative, ignore pointer events and do not alter file-opening or directory-watch behavior.
+
 <details>
 <summary>Working context for maintainers — click to expand</summary>
 

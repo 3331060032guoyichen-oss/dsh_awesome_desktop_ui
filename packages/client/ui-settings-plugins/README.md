@@ -1,5 +1,5 @@
 ---
-description: "Built-in plugins settings section for the dsh web client: the Settings navigation entry and the tab chrome that feature-owned tabs register into."
+description: "Plugin market settings section for the dsh web client: the Settings navigation entry and the tab chrome that feature-owned tabs register into."
 kind: "package-reference"
 ---
 
@@ -9,7 +9,9 @@ English | [中文](README.zh.md)
 
 ## Summary
 
-Use the **Built-in plugins** settings section to inspect the plugins this deployment ships. The section is a shell: it owns the navigation entry and the tab row, and every tab in it is registered by another plugin — the read-only inventory ships one. Configuring a built-in plugin happens on the sidebar's Plugins page, where each official plugin's own companion package registers its page.
+**Plugin market** owns a shared search field above horizontal category navigation. Discover contributes third-party plugins, while inventory contributes separate Session and Global views. Switching categories preserves search and visited-page state, supports arrow keys, Home, and End, and briefly joins or separates the navigation surfaces; reduced motion keeps them static.
+
+Keyboard focus follows each tab's existing rounded silhouette, and a short one-pixel press response confirms activation without shifting the layout. Reduced motion removes the displacement.
 
 ## Table of Contents
 
@@ -25,7 +27,7 @@ Use the **Built-in plugins** settings section to inspect the plugins this deploy
 <a id="use-this-package"></a>
 ## Use this package
 
-Open **Built-in plugins** in Settings. [ui-settings-plugin-inventory](../ui-settings-plugin-inventory/README.md) contributes the inventory as the section's one tab, shown as the page itself; a second registered tab turns the row into tabs. A deployment whose composition contributes no tab shows the section's empty line.
+Open **Plugin market** in Settings. Its categories are third-party, Session, and Global plugins, in that order; third-party appears when the deployment enables plugin indexes and management. A lone contribution renders directly, and no contributions produce an empty state.
 
 To contribute a tab, register into `settings.plugins.tab` with an `id`, an `order`, and a localized `label`; the section renders the entries in order and mounts a tab on its first selection. Feature copy stays in the registering plugin's dictionary.
 

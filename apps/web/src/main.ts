@@ -9,6 +9,7 @@ interface DesktopBootGlobal {
   }
 }
 const desktop = (globalThis as DesktopBootGlobal).dshDesktopBoot
+if (desktop !== undefined) document.documentElement.dataset.desktopStudio = 'true'
 const reportFailure = (reason: unknown): void => {
   if (desktop === undefined) throw reason
   void desktop.failed(reason instanceof Error ? reason.message : String(reason)).catch(console.error)

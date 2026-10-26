@@ -7,6 +7,50 @@
   background: var(--dsw-alias-bg-base);
 }
 
+.body[data-desktop-letter] {
+  --dsh-chat-content-width: min(880px, calc(100% - 64px));
+  --dsh-composer-card-max-width: 1100px;
+}
+.body[data-desktop-letter] .scrollBody { justify-content: flex-start; }
+.body[data-desktop-letter][data-studio-mode='intro'] .scrollBody,
+.body[data-desktop-letter][data-studio-mode='scene'] .scrollBody,
+.body[data-desktop-letter][data-studio-mode='entering'] .scrollBody { visibility: hidden; }
+.body[data-desktop-letter] .composerSeat {
+  position: sticky;
+  bottom: 0;
+  z-index: 7;
+  margin-top: auto;
+  padding: 6px 12px max(8px, env(safe-area-inset-bottom));
+  background: transparent;
+}
+.body[data-desktop-letter] .composerHero { align-self: stretch; width: 100%; padding-bottom: 0; }
+.body[data-desktop-letter] .composerStack { width: 100%; }
+.body[data-desktop-letter] .heroWorkspaceRow { width: min(100%, 1100px); align-self: center; }
+.body[data-desktop-letter] .widthHandle[data-side] { display: none; }
+.letterWelcome { width: min(880px, calc(100% - 64px)); margin: 56px auto 64px; font-family: var(--dsw-studio-letter-font); }
+.letterWelcome p { font-size: 23px; line-height: 1.6; opacity: .75; }
+.letterWelcome h1 { margin-top: 22px; font-size: 38px; line-height: 1.5; font-weight: 400; letter-spacing: 3px; }
+.studioViews { position: relative; flex: 1 0 auto; min-height: 260px; }
+.studioChat { min-height: inherit; }
+.studioTrace { position: absolute; inset: 0; z-index: 4; overflow: auto; clip-path: circle(0 at var(--trace-x, 50%) var(--trace-y, 50%)); pointer-events: none; }
+.studioViews[data-revealing] .studioTrace { clip-path: circle(180px at var(--trace-x) var(--trace-y)); }
+.studioViews[data-fullscreen] { position: fixed; inset: var(--dsh-frame-chrome-top, 0px) 0 0; z-index: 20; display: flex; flex-direction: column; background: var(--dsw-alias-studio-paper); }
+.studioViews[data-fullscreen] .studioChat { display: none; }
+.body[data-desktop-letter]:has([data-studio-views][data-fullscreen]) > .composerSeat { display: none; }
+.studioViews[data-fullscreen] .studioTrace { position: relative; inset: auto; flex: 1; min-height: 0; clip-path: none; pointer-events: auto; }
+.traceMasthead { display: grid; grid-template-columns: 96px minmax(0, 1fr) auto; align-items: end; gap: 28px; flex: none; padding: 28px 32px 24px; border-bottom: 3px solid var(--dsw-alias-studio-ink); color: var(--dsw-alias-studio-ink); background: var(--dsw-alias-studio-paper); }
+.traceMark { align-self: stretch; display: grid; place-items: center; background: var(--dsw-alias-studio-ink); color: var(--dsw-alias-studio-paper); font: 76px/1 Arial, sans-serif; }
+.traceMasthead h1 { margin: 0; font: 700 clamp(42px, 5vw, 76px)/.95 Arial, 'Microsoft YaHei', sans-serif; letter-spacing: -.045em; }
+.traceClose { display: inline-flex; align-items: center; gap: 14px; min-height: 38px; border: 1px solid var(--dsw-alias-studio-ink); border-radius: 0; padding: 6px 14px; background: var(--dsw-alias-studio-paper); color: var(--dsw-alias-studio-ink); cursor: pointer; font: 500 13px/1.4 Arial, 'Microsoft YaHei', sans-serif; }
+.traceClose span { font-size: 24px; line-height: 1; }
+@media (hover: hover) { .traceClose:hover { background: var(--dsw-alias-studio-ink); color: var(--dsw-alias-studio-paper); } }
+@media (max-width: 700px) { .traceMasthead { grid-template-columns: 44px minmax(0, 1fr) auto; gap: 12px; padding: 18px 16px; } .traceMark { font-size: 36px; } .traceMasthead h1 { font-size: clamp(24px, 6vw, 42px); } .traceClose { gap: 6px; padding: 6px 8px; } }
+@media (max-width: 700px) {
+  .letterWelcome { width: calc(100% - 40px); margin-top: 36px; }
+  .letterWelcome h1 { font-size: 28px; line-height: 1.6; }
+  .body[data-desktop-letter] .composerSeat { padding: 8px 4px max(10px, env(safe-area-inset-bottom)); }
+}
+
 /* 76px with its rule: the height of the Sidebar's tab strip and header row
    (ui-dockkit `.tabStrip` 38px + the pane header's 38px), so the two rules
    meet at the column edge. The rows add up to it — 10px top inset, the 30px
@@ -37,6 +81,11 @@
 
 .headerBlank .headerCorner {
   margin-left: auto;
+}
+
+:global(html[data-desktop-studio='true']) .header {
+  background: var(--dsw-studio-frame-fill);
+  box-shadow: inset 0 -1px var(--dsw-studio-frame-edge);
 }
 
 /* Only the macOS titlebar needs reserved drag space before a Session exists. */
@@ -317,6 +366,7 @@
     calc((100% - var(--dsh-chat-content-width)) / 2 - 24px - 24px)
   );
   cursor: col-resize;
+  user-select: none;
 }
 
 .widthHandle[data-side='left'] {
@@ -517,7 +567,7 @@
 
 /* Views may opt into a composer overlay while ConversationRoot retains
    ownership of the seat geometry and its active-phase precedence. */
-.scrollBody:has([data-conversation-composer-overlay]) {
+.scrollBody:has([data-conversation-composer-overlay]):not(:has([data-studio-trajectory] [data-conversation-composer-overlay])) {
   position: relative;
   /* A clipping box nothing scrolls out of, stated as a scroll container on both
      axes rather than `overflow: hidden`: a single-axis scroller computes the
@@ -533,13 +583,13 @@
   scrollbar-gutter: auto;
 }
 
-.scrollBody:has([data-conversation-composer-overlay]) > :global([data-slot='conversation.session']) > .viewArea {
+.scrollBody:has([data-conversation-composer-overlay]):not(:has([data-studio-trajectory] [data-conversation-composer-overlay])) > :global([data-slot='conversation.session']) > .viewArea {
   flex: 1 1 0;
   min-height: 0;
   overflow: hidden;
 }
 
-.scrollBody:has([data-conversation-composer-overlay]) > .composerSeat {
+.scrollBody:has([data-conversation-composer-overlay]):not(:has([data-studio-trajectory] [data-conversation-composer-overlay])) > .composerSeat {
   position: absolute;
   /* Chat's seat rides this box's content box, which its own scrolling shortens
      by the bar's width; the overlay seat is against the padding box, so it
@@ -611,3 +661,35 @@
 .embeddedBody[data-content-phase='settling'] .composerSeat {
   visibility: hidden;
 }
+
+:global(html[data-desktop-studio='true']) .header { display: contents; }
+:global(html[data-desktop-studio='true']) .headerLeading,
+:global(html[data-desktop-studio='true']) .header .tabs,
+:global(html[data-desktop-studio='true']) .titleRow > :not(.headerCorner) { display: none; }
+:global(html[data-desktop-studio='true']) .header .titleRow { display: contents; }
+:global(html[data-desktop-studio='true']) .headerCorner {
+  position: absolute; top: 8px; right: 14px; z-index: 12; margin: 0;
+}
+:global(html[data-desktop-studio='true']) .root:has([data-studio-mode='intro']) .headerCorner,
+:global(html[data-desktop-studio='true']) .root:has([data-studio-mode='scene']) .headerCorner,
+:global(html[data-desktop-studio='true']) .root:has([data-studio-mode='entering']) .headerCorner { display: none; }
+.body[data-desktop-letter] .scrollBody { position: relative; z-index: 1; padding-top: 38px; }
+.body[data-desktop-letter] .studioChat { padding-bottom: 20px; }
+.body[data-desktop-letter] .heroOptions { display: none; }
+.body[data-desktop-letter] .heroWorkspaceRow > :global([data-slot='conversation.hero.agentPreset']) { display: none; }
+.body[data-desktop-letter] .composerSeat { background: transparent; }
+.body[data-desktop-letter] .traceMasthead { background: var(--dsw-alias-studio-blue); color: var(--dsw-alias-studio-paper); border-color: currentColor; }
+.body[data-desktop-letter] .traceClose { background: transparent; color: inherit; border-color: currentColor; }
+.body[data-desktop-letter] .traceMark { background: var(--dsw-alias-studio-paper); color: var(--dsw-alias-studio-blue); }
+
+.studioViews:not([data-fullscreen]) .studioTrace { top: 0; bottom: 0; height: auto; }
+
+/* Desktop uses an independent footer; transcript and trajectory cannot reposition the composer. */
+.body[data-desktop-letter] .scrollBody { overflow: hidden; }
+.body[data-desktop-letter] > .composerSeat { position: relative; bottom: auto; z-index: 7; margin-top: 0; }
+.body[data-desktop-letter] .studioViews { display: flex; flex-direction: column; flex: 1 1 0; min-height: 0; }
+.body[data-desktop-letter] .studioChat { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+.body[data-desktop-letter] .studioViews[data-fullscreen] .studioChat { display: none; }
+.body[data-desktop-letter][data-studio-mode='intro'] > .composerSeat,
+.body[data-desktop-letter][data-studio-mode='scene'] > .composerSeat,
+.body[data-desktop-letter][data-studio-mode='entering'] > .composerSeat { visibility: hidden; }

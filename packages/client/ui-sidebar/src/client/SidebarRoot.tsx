@@ -27,6 +27,7 @@ import type {
   SidebarPanelActionsOwnerProps, SidebarPanelMetadata, SidebarRootComponentProps, SidebarRootInjected, SidebarSectionOwnerProps,
 } from './contract/slots.ts'
 import { FIXED_PANEL_ID } from './panel-pins.ts'
+import { installPanelMotion } from './panel-motion.ts'
 import css from './SidebarRoot.module.css'
 
 /** Wide-content unmount delay; matches the 150ms wide-content fade-out. */
@@ -66,10 +67,19 @@ function officialEntry(id: string): 'plugin' | 'cron' | undefined {
 /** Each panel row subscribes only to its own selection state. */
 function PanelRow({ id, label, wide, usePanelInfo, selectPanel, trackEntryClick, renderSlot }: PanelRowProps) {
   const active = usePanelInfo(info => info.activePanelId === id)
+  const rowRef = useRef<HTMLButtonElement>(null)
+  const glyphRef = useRef<HTMLSpanElement>(null)
+  useEffect(() => {
+    if (document.documentElement.dataset.desktopStudio !== 'true') return
+    if ((id !== 'plugins' && id !== 'schedules') || rowRef.current === null || glyphRef.current === null) return
+    return installPanelMotion(rowRef.current, glyphRef.current, id === 'plugins' ? 240 : 90)
+  }, [id])
   return (
     <Tooltip label={label} delayMs={500} disabled={wide}>
       <button
         type="button"
+        ref={rowRef}
+        data-panel-id={id}
         className={clsx(css.panelRow, active && css.panelActive)}
         aria-label={label}
         aria-current={active ? 'page' : undefined}
@@ -79,7 +89,7 @@ function PanelRow({ id, label, wide, usePanelInfo, selectPanel, trackEntryClick,
           selectPanel(id)
         }}
       >
-        <span className={css.panelGlyph} aria-hidden="true">
+        <span ref={glyphRef} className={css.panelGlyph} aria-hidden="true">
           {renderSlot('sidebar.panellist', { size: wide ? 16 : 18, active }, { only: id })}
         </span>
         {wide && (
@@ -107,7 +117,7 @@ function PanelMoreMenu({ wide, label, entries, onOpen, onPinnedChange, trackEntr
     <Menu open={open} onClose={onDismiss} portal autoFocus className={css.moreAnchor} listClassName={css.moreMenu}
       anchor={(
         <Tooltip label={label} delayMs={500} disabled={wide}>
-          <button type="button" className={css.panelRow} aria-label={label} aria-haspopup="menu" aria-expanded={open}
+          <button type="button" className={css.panelRow} data-panel-id="more" aria-label={label} aria-haspopup="menu" aria-expanded={open}
             onClick={() => {
               trackEntryClick({ menu_name: 'more', position: 'sidebar' })
               setOpen(value => !value)
@@ -247,6 +257,7 @@ export function SidebarRoot({
       <button
         type="button"
         className={clsx(css.iconButton, css.toggle)}
+        data-sidebar-toggle
         aria-label={toggleLabel}
         aria-keyshortcuts={shortcut?.aria}
         onClick={() => { toggleSidebar() }}

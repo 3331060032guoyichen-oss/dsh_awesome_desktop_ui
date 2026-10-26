@@ -33,6 +33,8 @@ File-mention providers receive the viewed Session ID with the closing-turn owner
 <a id="reference-previews"></a>
 ## Reference previews
 
+Desktop studio shows independently implemented status indicators driven by actual Session activity.
+
 Image drag actions arrive through the image entry’s inject face from [ui-file-drag](../ui-file-drag/README.md).
 
 Sent generic-file attachments retain the draft's [file-card radius](../../../docs/ui-radius.md#radius-scale).

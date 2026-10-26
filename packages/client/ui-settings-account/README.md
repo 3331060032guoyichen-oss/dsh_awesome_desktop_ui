@@ -112,6 +112,8 @@ No model request prefix changes.
 <a id="dev-note"></a>
 ### Dev Note
 
+The account section includes a cream-and-blue usage dashboard backed by the optional [dsh-usage-stats](https://github.com/Ychris12138/dsh-usage-stats) profile bundle. Its read-only endpoints supply provider account amounts and local daily token totals. The dashboard shows today's, selected-month and all-time usage, prompt cache hit rate, a navigable monthly heatmap and selected-day totals. Local totals cover all providers on this Host, not account-wide billing. Missing provider amounts remain unavailable, and failed reads display a retryable notice instead of fabricated zeroes. Profile, recharge and Platform billing actions retain the account feature's existing ownership. The desktop integration uses a backend-only package variant, without the reference plugin's separate sidebar entry; Settings remains the single account-usage surface.
+
 The [desktop login decision](../../../.agents/notes/implemented/architecture/2026-09-14-deepseek-account-login.md) records cancellation and storage ownership.
 
 Usage and top-up show a centered 24px loading indicator without visible loading text until the native document loads; the return action remains available. The loading SVG is embedded locally from Figma node 2957:72553.

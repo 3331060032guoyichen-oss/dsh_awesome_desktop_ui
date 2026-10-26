@@ -40,6 +40,7 @@ import { ProjectRowItem, SearchResultItem, SessionNodeItem } from './Rows.tsx'
 import { FLAT_SESSION_ORDER_KEY, type SessionGroupBy } from '../stores.ts'
 import { WorkspacePickFlow } from '../WorkspacePicker.tsx'
 import css from './WorkspaceBrowser.module.css'
+import { WorkspaceHook } from './WorkspaceHook.tsx'
 
 /**
  * Column slide length (--ds-transition-duration-slow): rail-search focus waits it out —
@@ -521,6 +522,7 @@ function SessionTree({
     // (WorkspaceBrowser.module.css).
       <div
         key={group.key}
+        data-workspace-hook-group={group.key}
         style={{ '--dsh-workspace-indent': `${depth * 12}px` } as CSSProperties}
         className={clsx(
           css.groupSection,
@@ -1415,7 +1417,7 @@ export function WorkspaceBrowser({
 
       {/* Always-mounted seat keeps the region's flex slot while the list
           itself is wide-only. */}
-      <div className={css.listArea}>
+      <WorkspaceHook className={css.listArea}>
         {wide && (normalizedQuery !== ''
           ? (
             <SearchResults
@@ -1498,7 +1500,7 @@ export function WorkspaceBrowser({
                 }}
               />
             ))}
-      </div>
+      </WorkspaceHook>
 
       <Modal
         open={renameTarget !== null}

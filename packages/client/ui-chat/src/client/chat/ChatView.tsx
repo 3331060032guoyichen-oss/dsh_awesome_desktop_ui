@@ -212,7 +212,7 @@ export function ChatView({
         />
       )}
       <div className={css.root} data-chat-following-tail={scroll.followingTail ? '' : undefined}>
-        <div ref={scroll.listRef} className={css.scroll}>
+        <div ref={scroll.listRef} className={css.scroll} data-chat-scroll="">
           <div ref={scroll.columnRef} className={css.column} data-chat-flow=""
             data-chat-motion={deferCompletedTurns && scroll.initialized
               && (running || motionTail || pendingInputs.length > 0) ? '' : undefined}>

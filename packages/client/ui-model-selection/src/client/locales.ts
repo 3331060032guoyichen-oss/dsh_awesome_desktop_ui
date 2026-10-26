@@ -10,6 +10,7 @@
 
 /** Simplified Chinese dictionary (the key-set source of truth). */
 export const zh = {
+  'effort.usageHint': '更高推理等级可能消耗更多用量',
   'provider.account': 'DeepSeek 账号',
   'command.label': '模型',
   'command.description': '选择本会话使用的模型',
@@ -40,6 +41,7 @@ export type ModelKey = keyof typeof zh
 
 /** English dictionary, checked complete against the zh key set. */
 export const en = {
+  'effort.usageHint': 'Higher effort may consume more usage',
   'provider.account': 'DeepSeek Account',
   'command.label': 'Model',
   'command.description': 'Select the model for this conversation',
@@ -67,6 +69,7 @@ export const en = {
 
 /** Japanese copy, checked against the English keys. */
 export const ja = {
+  'effort.usageHint': '推論強度を上げると使用量が増える場合があります',
   'provider.account': 'DeepSeek アカウント',
   'command.label': 'モデル',
   'command.description': 'この会話で使用するモデルを選択',
@@ -94,6 +97,7 @@ export const ja = {
 
 /** Spanish dictionary, checked against the English keys. */
 export const es = {
+  'effort.usageHint': 'Un esfuerzo mayor puede consumir más uso',
   'provider.account': 'Cuenta DeepSeek',
   'command.label': 'modelo',
   'command.description': 'Selecciona el modelo para esta conversación',
@@ -121,6 +125,7 @@ export const es = {
 
 /** French dictionary, checked against the English keys. */
 export const fr = {
+  'effort.usageHint': 'Un effort supérieur peut augmenter la consommation',
   'provider.account': 'Compte DeepSeek',
   'command.label': 'Modèle',
   'command.description': 'Sélectionnez le modèle pour cette conversation',
@@ -148,6 +153,7 @@ export const fr = {
 
 /** German dictionary, checked against the English keys. */
 export const de = {
+  'effort.usageHint': 'Höherer Aufwand kann mehr Nutzung verbrauchen',
   'provider.account': 'DeepSeek-Konto',
   'command.label': 'Modell',
   'command.description': 'Wählen Sie das Modell für dieses Gespräch aus',
@@ -175,6 +181,7 @@ export const de = {
 
 /** Russian dictionary, checked against the English keys. */
 export const ru = {
+  'effort.usageHint': 'Более высокий уровень может увеличить расход',
   'provider.account': 'DeepSeek Аккаунт',
   'command.label': 'Модель',
   'command.description': 'Выберите модель для этого разговора',
@@ -202,6 +209,7 @@ export const ru = {
 
 /** Portuguese dictionary, checked against the English keys. */
 export const pt = {
+  'effort.usageHint': 'Um esforço maior pode consumir mais uso',
   'provider.account': 'DeepSeek Conta',
   'command.label': 'Modelo',
   'command.description': 'Selecione o modelo para esta conversa',

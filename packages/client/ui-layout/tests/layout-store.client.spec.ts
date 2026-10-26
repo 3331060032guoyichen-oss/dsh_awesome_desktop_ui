@@ -8,6 +8,20 @@ beforeEach(() => { vi.stubGlobal('innerWidth', 1920) })
 afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks() })
 
 describe('createLayoutStore', () => {
+  it('starts each Desktop visit collapsed and lets the user open the sidebar', () => {
+    document.documentElement.dataset.desktopStudio = 'true'
+    try {
+      const first = createLayoutStore().create()
+      expect(first.store.getSnapshot().layoutInfo.sidebar).toBe(0)
+      first.actions.toggleSidebar()
+      expect(first.store.getSnapshot().layoutInfo.sidebar).toBe(280)
+      const refreshed = createLayoutStore().create()
+      expect(refreshed.store.getSnapshot().layoutInfo.sidebar).toBe(0)
+    } finally {
+      delete document.documentElement.dataset.desktopStudio
+    }
+  })
+
   it('starts with the default sidebar and no right panel preference', () => {
     const { store } = createLayoutStore().create()
     expect(store.getSnapshot()).toEqual({

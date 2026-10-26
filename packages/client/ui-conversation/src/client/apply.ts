@@ -35,6 +35,7 @@ import { InputHub } from './input/hub.ts'
 import { ComposerSubmissionPolicy } from './input/submission-policy.ts'
 import { queueDockEntry } from './queue/QueueDock.tsx'
 import { EnterBehaviorRow } from './settings/EnterBehaviorRow.tsx'
+import { StudioTimeRow } from './settings/StudioTimeRow.tsx'
 import type { EnterBehaviorRowInjected } from './settings/EnterBehaviorRow.tsx'
 import { ConversationRoot } from './skeleton/ConversationRoot.tsx'
 import { ConversationContent } from './skeleton/ConversationContent.tsx'
@@ -204,6 +205,9 @@ export function apply(ctx: Context, config: Config = Config({})): void {
       setBusyEnter: (behavior) => { submissionPolicy.setBusyEnter(behavior) },
     }),
   }, EnterBehaviorRow))
+  ctx.slots.inject('settings.general.item', () => ctx.slots.register({
+    name: 'settings.general.item', id: 'desktop-studio-time', order: 21, locale: NS,
+  }, StudioTimeRow))
 
   const viewTabs = (): ViewTab[] => {
     const tabs: ViewTab[] = []
@@ -332,6 +336,23 @@ export function apply(ctx: Context, config: Config = Config({})): void {
     },
   })
 
+  let studioEntered = false
+  const openingEpoch = String(performance.timeOrigin)
+  let openingFinished = false
+  try { openingFinished = sessionStorage.getItem('dsh.studio.opening') === openingEpoch } catch { /* Storage may be disabled. */ }
+  let openingStart: number | undefined
+  const studioVisit = {
+    hasEntered: () => studioEntered, enter: () => { studioEntered = true },
+    opening: {
+      start: () => openingStart ??= performance.now(),
+      hasFinished: () => openingFinished,
+      finish: () => {
+        openingFinished = true
+        // The document epoch survives plugin replacement but changes on a real reload.
+        try { sessionStorage.setItem('dsh.studio.opening', openingEpoch) } catch { /* The in-memory visit still owns completion. */ }
+      },
+    },
+  }
   const registerConversationRoot = () => slots.register({
     name: 'main.conversation',
     children: {
@@ -358,6 +379,7 @@ export function apply(ctx: Context, config: Config = Config({})): void {
       widthControls: { scope: 'root' },
     },
     inject: (sessionId: SessionId | undefined): ConversationInjected => ({
+      studioVisit,
       hooks: {
         composerBlock: sessionId === undefined ? ABSENT_BLOCK : composerBlocks.storeFor(sessionId),
       },
@@ -570,24 +592,28 @@ export function apply(ctx: Context, config: Config = Config({})): void {
     },
   }, InputBar)
 
-  slots.inject('main', function* () {
-    yield slots.register({
-      name: 'main',
-      key: 'conversation',
-      children: { 'main.conversation': { kind: 'single', scope: 'session-maybe' } },
-    }, ConversationPanel)
-    yield registerConversationRoot()
-    yield registerConversationContent()
-    yield registerConversationSession()
-    yield registerHeader()
-    yield registerSessionHeader()
-    yield registerComposerBar()
-  })
-
   ctx.plugin(ConversationController, {
     input: inputHub,
     blocks: composerBlocks,
     maxConcurrentFileUploads,
+  })
+  // A live slot tree may render synchronously during a plugin replacement.
+  // Own the whole tree under the action service's availability so a composer
+  // cannot enter the renderer's error boundary before its service exists.
+  ctx.inject(['conversation'], (scope) => {
+    scope.slots.inject('main', function* () {
+      yield slots.register({
+        name: 'main',
+        key: 'conversation',
+        children: { 'main.conversation': { kind: 'single', scope: 'session-maybe' } },
+      }, ConversationPanel)
+      yield registerConversationRoot()
+      yield registerConversationContent()
+      yield registerConversationSession()
+      yield registerHeader()
+      yield registerSessionHeader()
+      yield registerComposerBar()
+    })
   })
   ctx.plugin(todoDockEntry)
   ctx.plugin(queueDockEntry)

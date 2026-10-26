@@ -8,3 +8,55 @@
     - /url: https://platform.deepseek.com/usage
   - link "充值":
     - /url: https://platform.deepseek.com/top_up
+  - heading "用量总览" [level=3]
+  - paragraph: Token 统计涵盖本机 Harness 的全部供应商，不代表账号全平台账单。
+  - button "刷新"
+  - text: 供应商账户
+  - button "DeepSeek"
+  - text: 今日
+  - strong: "0"
+  - text: Token 所选月份
+  - strong: "0"
+  - text: Token 累计
+  - strong: "0"
+  - text: Token 今日输入缓存命中率
+  - strong: —
+  - heading "每日 Token 用量" [level=3]
+  - button "上个月": ‹
+  - strong: 2026年10月
+  - button "下个月": ›
+  - text: 周一 周二 周三 周四 周五 周六 周日
+  - button "2026-10-01 · 0 Token": "1"
+  - button "2026-10-02 · 0 Token": "2"
+  - button "2026-10-03 · 0 Token": "3"
+  - button "2026-10-04 · 0 Token": "4"
+  - button "2026-10-05 · 0 Token": "5"
+  - button "2026-10-06 · 0 Token": "6"
+  - button "2026-10-07 · 0 Token": "7"
+  - button "2026-10-08 · 0 Token": "8"
+  - button "2026-10-09 · 0 Token": "9"
+  - button "2026-10-10 · 0 Token": "10"
+  - button "2026-10-11 · 0 Token": "11"
+  - button "2026-10-12 · 0 Token": "12"
+  - button "2026-10-13 · 0 Token": "13"
+  - button "2026-10-14 · 0 Token": "14"
+  - button "2026-10-15 · 0 Token": "15"
+  - button "2026-10-16 · 0 Token": "16"
+  - button "2026-10-17 · 0 Token": "17"
+  - button "2026-10-18 · 0 Token": "18"
+  - button "2026-10-19 · 0 Token": "19"
+  - button "2026-10-20 · 0 Token": "20"
+  - button "2026-10-21 · 0 Token": "21"
+  - button "2026-10-22 · 0 Token": "22"
+  - button "2026-10-23 · 0 Token": "23"
+  - button "2026-10-24 · 0 Token": "24"
+  - button "2026-10-25 · 0 Token": "25"
+  - button "2026-10-26 · 0 Token": "26"
+  - button "2026-10-27 · 0 Token" [disabled]: "27"
+  - button "2026-10-28 · 0 Token" [disabled]: "28"
+  - button "2026-10-29 · 0 Token" [disabled]: "29"
+  - button "2026-10-30 · 0 Token" [disabled]: "30"
+  - button "2026-10-31 · 0 Token" [disabled]: "31"
+  - text: 少 多
+  - paragraph: 点击日期，查看当天的 Token 用量。
+  - paragraph: 更新于 {{clock}}

@@ -1,0 +1,57 @@
+.host { position: absolute; inset: 0; z-index: 10; overflow: hidden; pointer-events: none; }
+.scene { position: absolute; inset: 0; overflow: hidden; pointer-events: auto; background: var(--dsw-alias-studio-paper); }
+.stage { position: absolute; width: 1672px; height: 941px; transform-origin: 0 0; transform: translate(var(--studio-center-x), var(--studio-center-y)) scale(var(--studio-opening-scene-scale, 1.08)) translate(calc(-1 * var(--studio-center-x)), calc(-1 * var(--studio-center-y))) var(--studio-camera-transform); }
+.parallax { position: absolute; inset: 0; }
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .parallax { transform: translate3d(var(--studio-depth-x, 0px), var(--studio-depth-y, 0px), 0) scale(var(--studio-depth-scale, 1)); }
+  .parallax > .light, .parallax > .stars { translate: calc(var(--studio-depth-x, 0px) * -.3) calc(var(--studio-depth-y, 0px) * -.3); }
+  .host[data-parallax-moving] .parallax { will-change: transform; }
+}
+.art, .dusk, .window, .light { position: absolute; inset: 0; pointer-events: none; }
+.dusk { background: url('/assets/desktop-studio-dusk.png') center / cover; opacity: var(--studio-dusk); transition: opacity 2.4s ease-in-out; }
+.art { background: url('/assets/desktop-studio-scene.png') center / cover; filter: brightness(var(--studio-brightness)) saturate(var(--studio-saturation)); transition: filter 1.8s ease; }
+.window { background: var(--dsw-alias-studio-night-window); opacity: var(--studio-window-opacity); mask-image: linear-gradient(90deg, currentColor, transparent 30%); transition: opacity 1.8s ease; }
+.light { background: var(--dsw-alias-studio-sunset); opacity: var(--studio-warmth); mix-blend-mode: soft-light; transition: opacity 1.8s ease; }
+.stars { position: absolute; left: 0; top: 0; width: 300px; height: 280px; pointer-events: none; opacity: var(--studio-stars); }
+.stars i { position: absolute; width: 2px; height: 2px; border-radius: 50%; corner-shape: round; background: var(--dsw-alias-studio-paper); }
+.stars i:nth-child(1) { left: 48px; top: 66px; } .stars i:nth-child(2) { left: 154px; top: 132px; } .stars i:nth-child(3) { left: 230px; top: 35px; } .stars i:nth-child(4) { left: 22px; top: 208px; } .stars i:nth-child(5) { left: 265px; top: 173px; }
+.paper { position: absolute; left: 0; top: 0; width: 1000px; height: 540px; padding: 0; border: 0; background: transparent; color: var(--dsw-alias-studio-ink); transform-origin: 0 0; transform: var(--studio-paper-transform); text-align: left; cursor: pointer; }
+
+.paper:focus-visible { outline: 2px dashed var(--dsw-focus-ring-color, var(--dsw-alias-state-business-primary)); outline-offset: -20px; }
+.greeting { position: absolute; left: 95px; top: 173px; font: 58px/1.4 var(--dsw-studio-letter-font); letter-spacing: 3px; }
+.invitation { position: absolute; left: 98px; right: 75px; top: 288px; font: 35px/1.65 var(--dsw-studio-letter-font); opacity: .75; }
+.back { border: 0; color: inherit; background: transparent; cursor: pointer; }
+.back { position: absolute; top: 10px; left: 24px; padding: 9px 12px; pointer-events: auto; color: var(--dsw-alias-studio-ink); font-size: 12px; line-height: 20px; }
+.host[data-mode='entering'] .paper { opacity: 0; transition: opacity .6s .3s; }
+
+@media (prefers-reduced-motion: reduce) { .host *, .host *::before { animation: none !important; transition: none !important; } }
+
+.host[data-mode='letter'] { z-index: 0; }
+.host[data-mode='letter'] .scene { pointer-events: none; }
+.host[data-mode='letter'] .paper { visibility: hidden; }
+.back { z-index: 8; top: 6px; left: 20px; color: var(--dsw-alias-label-primary); }
+
+.scene { opacity: var(--studio-scene-opacity, 1); }
+.host[data-mode='intro'], .host[data-mode='scene'], .host[data-mode='entering'] { position: fixed; inset: 0; }
+.host[data-mode='intro'] { z-index: 2000; background: var(--dsw-alias-studio-paper); }
+.host[data-mode='intro'] .scene { opacity: var(--studio-opening-scene-opacity, 0); pointer-events: none; }
+:global(html:has([data-studio-mode='scene']) [data-windows-menu]),
+:global(html:has([data-studio-mode='entering']) [data-windows-menu]) { visibility: hidden; }
+.overhead { position: absolute; inset: 0; pointer-events: none; opacity: var(--studio-overhead-opacity, 0); background: var(--dsw-alias-studio-paper); }
+.overhead::before { content: ''; position: absolute; inset: 0; background: var(--dsw-studio-overhead-paper); }
+.overhead::after { content: ''; position: absolute; inset: 0; background-image: var(--dsw-studio-paper-grid); background-size: 32px 32px; }
+.host[data-mode='letter'] .scene { visibility: hidden; }
+
+/* Keep motion masks inside the character, clear of the pen holder and skyline.
+   Hard scene geometry moves together in the single rigid parallax plane. */
+.idleBody, .idleHair, .idleLeaves { position: absolute; inset: 0; pointer-events: none; }
+.idleBody { transform-origin: 410px 900px; mask-image: radial-gradient(ellipse 145px 120px at 525px 350px, #000 70%, transparent 100%), radial-gradient(ellipse 240px 220px at 380px 780px, #000 70%, transparent 100%); }
+.idleHair { transform-origin: 540px 470px; mask-image: radial-gradient(ellipse 140px 110px at 525px 350px, #000 72%, transparent 100%); }
+.idleLeaves { transform-origin: 1650px 550px; mask-image: radial-gradient(ellipse 140px 155px at 1610px 220px, #000 75%, transparent 100%), radial-gradient(ellipse 210px 120px at 1580px 425px, #000 75%, transparent 100%); }
+.host[data-idle-active] .idleBody { animation: studioBreath 7.4s ease-in-out infinite; }
+.host[data-idle-hair] .idleHair { animation: studioHair 2.8s ease-in-out; }
+.host[data-idle-leaves] .idleLeaves { animation: studioLeaves 3.6s ease-in-out; }
+.host[data-idle-hair='left'] .idleHair, .host[data-idle-leaves='left'] .idleLeaves { --studio-idle-direction: -1; }
+@keyframes studioBreath { 0%, 100% { transform: none; } 43% { transform: translateY(-2.4px) scaleY(1.006); } 72% { transform: translateY(-.4px) scaleY(1.001); } }
+@keyframes studioHair { 0%, 100% { transform: none; } 38% { transform: translateX(calc(var(--studio-idle-direction, 1) * 2.8px)) rotate(calc(var(--studio-idle-direction, 1) * .35deg)); } 72% { transform: translateX(calc(var(--studio-idle-direction, 1) * -.65px)); } }
+@keyframes studioLeaves { 0%, 100% { transform: none; } 35% { transform: rotate(calc(var(--studio-idle-direction, 1) * 1deg)); } 68% { transform: rotate(calc(var(--studio-idle-direction, 1) * -.3deg)); } }

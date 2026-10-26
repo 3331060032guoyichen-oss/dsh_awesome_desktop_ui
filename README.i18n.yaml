@@ -2,33 +2,57 @@
 # section, a hash of its English and Chinese blocks outside code blocks and generated regions.
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write README.md
-/deepseek-harness:
-  en: f68c4f080ce55ff2
-  zh: 88a76d7f7f0b260e
-/deepseek-harness/developer-preview:
-  en: 4ef4d8a71ac143f0
-  zh: 1bfc3149ba8e5543
-/deepseek-harness/run:
-  en: 4e0248e4c6474fc6
-  zh: eb2fb8d78c7d6bc0
-/deepseek-harness/run/run-from-npm:
-  en: e22005cd42e6cbad
-  zh: 0f536f4208df1d60
-/deepseek-harness/run/run-from-source:
-  en: 819e3f7c144d0d64
-  zh: de815f040975dba7
-/deepseek-harness/community-and-support:
-  en: 20acf6451fdc869b
-  zh: d06246dd019ecef7
-/deepseek-harness/contributing:
-  en: cabc2d3e9f8898bd
-  zh: 83b6d238bae29ce3
-/deepseek-harness/development:
-  en: 803ca2b11b497bed
-  zh: 8b4071eb0e7783ef
-/deepseek-harness/citation:
-  en: 6704e9e5a8d49a91
-  zh: 85c9cdd8d56f8e9d
-/deepseek-harness/license:
-  en: 926995344fc1c72b
-  zh: c92fab5abf85932f
+/:
+  en: a0357114fd437e43
+  zh: 43fb98d30599a818
+/dsh-awesome-desktop-ui:
+  en: 86113748b0dde775
+  zh: 51aab9c22f043fe7
+/dsh-awesome-desktop-ui/video:
+  en: ba4f1fb3b45c8bc9
+  zh: 55a2e279c6e174f0
+/dsh-awesome-desktop-ui/01-from-whale-seal-to-illustrated-desk:
+  en: f7c89dc839a9c7f6
+  zh: 1244aa3e8e819128
+/dsh-awesome-desktop-ui/02-a-conversation-on-paper:
+  en: 5704197fb6e58595
+  zh: 2f1004690ebfc1f7
+/dsh-awesome-desktop-ui/03-an-agent-workflow-people-can-follow:
+  en: d916e2fcca56087d
+  zh: 10ea4a1114a7b4d3
+/dsh-awesome-desktop-ui/04-settings-belongs-to-the-same-design:
+  en: 2f5e4833ad3e1015
+  zh: b3acfbea57ad9d48
+/dsh-awesome-desktop-ui/04-settings-belongs-to-the-same-design/account-and-usage-together:
+  en: 22a2728e21248099
+  zh: 99244487e47b2802
+/dsh-awesome-desktop-ui/04-settings-belongs-to-the-same-design/plugin-market-search-then-choose-a-scope:
+  en: 958b4e21f67625d9
+  zh: 878a6dde6aedf317
+/dsh-awesome-desktop-ui/04-settings-belongs-to-the-same-design/a-model-wallet-that-unfolds-whenever-it-opens:
+  en: 7e6df0edb43b0ca8
+  zh: a00e6a9c9f4196ba
+/dsh-awesome-desktop-ui/05-details-you-meet-every-day:
+  en: 83988514f74775d2
+  zh: 7a1b7901b0ae02d2
+/dsh-awesome-desktop-ui/get-started:
+  en: e897176ef0a869de
+  zh: 08a4ad51cf023d98
+/dsh-awesome-desktop-ui/get-started/windows-desktop:
+  en: 216b56b04ed4242b
+  zh: d6b23dd947be8923
+/dsh-awesome-desktop-ui/get-started/run-from-source:
+  en: d18965b2f08be086
+  zh: 2d311c8added85b3
+/dsh-awesome-desktop-ui/get-started/plugins:
+  en: ef0ab1deccf76be9
+  zh: 903347cfa1d16848
+/dsh-awesome-desktop-ui/design-references-and-credits:
+  en: 3262f8b3cc49829d
+  zh: dcd0cf6a2ddcc44c
+/dsh-awesome-desktop-ui/development-and-feedback:
+  en: 27f8065835a10d19
+  zh: 8348c069a340808d
+/dsh-awesome-desktop-ui/license:
+  en: 17ce635323fb8738
+  zh: b459f119ac27422f

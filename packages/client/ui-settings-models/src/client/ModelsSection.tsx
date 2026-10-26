@@ -422,149 +422,155 @@ function Loaded({ injected, renderSlot }: { injected: ModelsSectionFace; renderS
             {providerCopy(t('savedProvider'), savedIdentity)}
           </p>
         )}
-      <ul className={styles['rows']}>
-        {configured.map((row) => {
-          const target = targetOf(row)
-          const namespace = state.namespaces.get(target.settingsNs)
-          /* v8 ignore next -- the join marks a row configured only when its namespace resolved */
-          if (namespace === undefined) return null
-          const error = row.entry.error === undefined
-            ? null
-            : <p role="alert" className={styles['error']}>{row.entry.error}</p>
-          if (needsSetup(row, anyUsable) && !dismissedSetup.has(row.entry.provider)) {
+      <div className={styles['wallet']} data-model-wallet>
+        <ul className={styles['rows']}>
+          {configured.map((row, index) => {
+            const target = targetOf(row)
+            const namespace = state.namespaces.get(target.settingsNs)
+            /* v8 ignore next -- the join marks a row configured only when its namespace resolved */
+            if (namespace === undefined) return null
+            const error = row.entry.error === undefined
+              ? null
+              : <p role="alert" className={styles['error']}>{row.entry.error}</p>
+            if (needsSetup(row, anyUsable) && !dismissedSetup.has(row.entry.provider)) {
             // First-run posture: the provider exists but has no key — the
             // setup card IS its presence on the page, until the user closes it.
+              return (
+                <li key={row.entry.provider} className={styles['setupCard']}>
+                  {error}
+                  {renderProviderEditor({
+                    target,
+                    row,
+                    namespace,
+                    schema,
+                    operations,
+                    t,
+                    readOnly: !state.writable,
+                    onClose: (changed) => { closeSetup(changed, target) },
+                  })}
+                  {renderSlot(
+                    'settings.models.provider-card',
+                    { provider: row.entry, configured: row.configured, keyConfigured: keyConfiguredOf(row) },
+                    { entryKey: row.entry.settingsNs },
+                  )}
+                </li>
+              )
+            }
+            const open = !addOpen && editing?.provider === row.entry.provider
+            const credentialConfigured = row.credential?.configured === true
+            const credentialMissing = !credentialConfigured
+            && row.apiKeyEnv !== undefined
+            && row.credential?.configured === false
             return (
-              <li key={row.entry.provider} className={styles['setupCard']}>
+              <li key={row.entry.provider} className={styles['rowCard']} data-model-pass style={{ animationDelay: `${Math.min(index, 6) * 90 + 180}ms` }}>
+                <div className={styles['rowHead']}>
+                  <span className={styles['rowIdentity']}>
+                    <span className={styles['rowName']}>{row.entry.displayName}</span>
+                    {/* Only the adapter can tell a hand-declared route from a
+                      shipped one it also has a stored profile for, so the tag
+                      follows its answer and stays off when it gives none. */}
+                    {row.entry.declared === true
+                      ? <span className={styles['rowTag']}>{t('customTag')}</span>
+                      : null}
+                    {/* The store keeps the account row only while the account lists models. */}
+                    {row.entry.provider === 'deepseek-account'
+                      ? (
+                        <span className={styles['accountStatus']}>
+                          <span className={`${styles['credentialDot']} ${styles['credentialDotConfigured']}`} aria-hidden="true" />
+                          {t('accountSignedIn')}
+                        </span>
+                      )
+                      : null}
+                    {credentialConfigured
+                      ? (
+                        <span
+                          className={`${styles['credentialDot']} ${styles['credentialDotConfigured']}`}
+                          role="img"
+                          aria-label={t('credentialConfigured')}
+                          title={t('credentialConfigured')}
+                        />
+                      )
+                      : credentialMissing
+                        ? (
+                          <span
+                            className={`${styles['credentialDot']} ${styles['credentialDotMissing']}`}
+                            role="img"
+                            aria-label={t('credentialMissing')}
+                            title={t('credentialMissing')}
+                          />
+                        )
+                        : null}
+                  </span>
+                  <span className={styles['rowActions']}>
+                    {/* The account catalog comes from the account listing; its model overrides live in cordis.patch.yml. */}
+                    {row.entry.provider === 'deepseek-account'
+                      ? null
+                      : (
+                        <button
+                          type="button"
+                          className={styles['secondaryButton']}
+                          aria-label={providerCopy(t('editProvider'), target)}
+                          disabled={!open && state.status !== 'ready'}
+                          onClick={() => {
+                            if (!open && controller.store.getSnapshot().status !== 'ready') return
+                            setSavedTarget(undefined)
+                            // One card at a time: the add card closes with whatever
+                            // it held, since closing either card would otherwise
+                            // discard the other's draft.
+                            setAddOpen(false)
+                            setEditing(open ? undefined : target)
+                          }}
+                        >
+                          {t('edit')}
+                        </button>
+                      )}
+                    {row.removable
+                      ? (
+                        <button
+                          type="button"
+                          className={styles['dangerButton']}
+                          aria-label={providerCopy(t('removeProvider'), target)}
+                          disabled={!state.writable || state.status !== 'ready'}
+                          onClick={() => {
+                            if (controller.store.getSnapshot().status !== 'ready') return
+                            setSavedTarget(undefined)
+                            setDeleteFailure(undefined)
+                            setDeleteTarget(target)
+                          }}
+                        >
+                          {t('remove')}
+                        </button>
+                      )
+                      : null}
+                  </span>
+                </div>
                 {error}
-                {renderProviderEditor({
-                  target,
-                  row,
-                  namespace,
-                  schema,
-                  operations,
-                  t,
-                  readOnly: !state.writable,
-                  onClose: (changed) => { closeSetup(changed, target) },
-                })}
                 {renderSlot(
                   'settings.models.provider-card',
                   { provider: row.entry, configured: row.configured, keyConfigured: keyConfiguredOf(row) },
                   { entryKey: row.entry.settingsNs },
                 )}
+                {open
+                  ? renderProviderEditor({
+                    target,
+                    row,
+                    namespace,
+                    schema,
+                    operations,
+                    t,
+                    readOnly: !state.writable,
+                    onClose: (changed) => { closeEditor(changed, target) },
+                  })
+                  : null}
               </li>
             )
-          }
-          const open = !addOpen && editing?.provider === row.entry.provider
-          const credentialConfigured = row.credential?.configured === true
-          const credentialMissing = !credentialConfigured
-            && row.apiKeyEnv !== undefined
-            && row.credential?.configured === false
-          return (
-            <li key={row.entry.provider} className={styles['rowCard']}>
-              <div className={styles['rowHead']}>
-                <span className={styles['rowIdentity']}>
-                  <span className={styles['rowName']}>{row.entry.displayName}</span>
-                  {/* Only the adapter can tell a hand-declared route from a
-                      shipped one it also has a stored profile for, so the tag
-                      follows its answer and stays off when it gives none. */}
-                  {row.entry.declared === true
-                    ? <span className={styles['rowTag']}>{t('customTag')}</span>
-                    : null}
-                  {/* The store keeps the account row only while the account lists models. */}
-                  {row.entry.provider === 'deepseek-account'
-                    ? (
-                      <span className={styles['accountStatus']}>
-                        <span className={`${styles['credentialDot']} ${styles['credentialDotConfigured']}`} aria-hidden="true" />
-                        {t('accountSignedIn')}
-                      </span>
-                    )
-                    : null}
-                  {credentialConfigured
-                    ? (
-                      <span
-                        className={`${styles['credentialDot']} ${styles['credentialDotConfigured']}`}
-                        role="img"
-                        aria-label={t('credentialConfigured')}
-                        title={t('credentialConfigured')}
-                      />
-                    )
-                    : credentialMissing
-                      ? (
-                        <span
-                          className={`${styles['credentialDot']} ${styles['credentialDotMissing']}`}
-                          role="img"
-                          aria-label={t('credentialMissing')}
-                          title={t('credentialMissing')}
-                        />
-                      )
-                      : null}
-                </span>
-                <span className={styles['rowActions']}>
-                  {/* The account catalog comes from the account listing; its model overrides live in cordis.patch.yml. */}
-                  {row.entry.provider === 'deepseek-account'
-                    ? null
-                    : (
-                      <button
-                        type="button"
-                        className={styles['secondaryButton']}
-                        aria-label={providerCopy(t('editProvider'), target)}
-                        disabled={!open && state.status !== 'ready'}
-                        onClick={() => {
-                          if (!open && controller.store.getSnapshot().status !== 'ready') return
-                          setSavedTarget(undefined)
-                          // One card at a time: the add card closes with whatever
-                          // it held, since closing either card would otherwise
-                          // discard the other's draft.
-                          setAddOpen(false)
-                          setEditing(open ? undefined : target)
-                        }}
-                      >
-                        {t('edit')}
-                      </button>
-                    )}
-                  {row.removable
-                    ? (
-                      <button
-                        type="button"
-                        className={styles['dangerButton']}
-                        aria-label={providerCopy(t('removeProvider'), target)}
-                        disabled={!state.writable || state.status !== 'ready'}
-                        onClick={() => {
-                          if (controller.store.getSnapshot().status !== 'ready') return
-                          setSavedTarget(undefined)
-                          setDeleteFailure(undefined)
-                          setDeleteTarget(target)
-                        }}
-                      >
-                        {t('remove')}
-                      </button>
-                    )
-                    : null}
-                </span>
-              </div>
-              {error}
-              {renderSlot(
-                'settings.models.provider-card',
-                { provider: row.entry, configured: row.configured, keyConfigured: keyConfiguredOf(row) },
-                { entryKey: row.entry.settingsNs },
-              )}
-              {open
-                ? renderProviderEditor({
-                  target,
-                  row,
-                  namespace,
-                  schema,
-                  operations,
-                  t,
-                  readOnly: !state.writable,
-                  onClose: (changed) => { closeEditor(changed, target) },
-                })
-                : null}
-            </li>
-          )
-        })}
-      </ul>
+          })}
+        </ul>
+        <div className={styles['walletSleeve']} aria-hidden="true">
+          <div className={styles['walletStitch']} />
+          <img className={styles['walletSeal']} src="/assets/studio-whale-seal.png" alt="" />
+        </div>
+      </div>
       <div className={styles['addBlock']}>
         {addOpen
           ? (

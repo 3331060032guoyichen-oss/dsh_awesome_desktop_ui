@@ -19,7 +19,7 @@ export function syncWindowsAppearance(): void {
     const root = document.documentElement
     const menu = installWindowsMenu()
     const probe = document.createElement('span')
-    probe.style.cssText = 'position:fixed;visibility:hidden;pointer-events:none;background-color:var(--dsw-specific-sidebar-fill);color:var(--dsw-alias-label-primary)'
+    probe.style.cssText = 'position:fixed;visibility:hidden;pointer-events:none;background-color:var(--dsh-windows-caption-fill,var(--dsw-specific-sidebar-fill));color:var(--dsh-windows-caption-ink,var(--dsw-alias-label-primary))'
     document.body.append(probe)
     const canvas = document.createElement('canvas')
     canvas.width = canvas.height = 1
@@ -48,9 +48,14 @@ export function syncWindowsAppearance(): void {
     observer.observe(root, { attributes: true, attributeFilter: ['lang'] })
     observer.observe(document.body, { attributes: true, attributeFilter: ['data-ds-dark-theme', 'style'] })
     observer.observe(document.head, { childList: true, subtree: true, characterData: true })
+    // Presentation palettes can depend on mounted content as well as body theme.
+    // Keep style mutations out: the camera writes its transform every frame.
+    const presentation = new MutationObserver(send)
+    presentation.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['data-studio-mode'] })
     document.head.addEventListener('load', send, true)
     window.addEventListener('pagehide', () => {
       observer.disconnect()
+      presentation.disconnect()
       menu.dispose()
       probe.remove()
       document.head.removeEventListener('load', send, true)

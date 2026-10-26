@@ -30,3 +30,11 @@
   /* ConversationRoot publishes the floating composer's live height. */
   --dsh-trajectory-bottom-clearance: calc(var(--dsh-composer-height, 152px) + 16px);
 }
+
+:global([data-studio-trajectory]) .root { --dsh-trajectory-toolbar-height: 52px; font-family: Arial, 'Microsoft YaHei', sans-serif; }
+:global([data-studio-trajectory]) .ledger { --dsh-trajectory-bottom-clearance: 24px; }
+
+.presentation { display: flex; flex-shrink: 0; gap: 24px; padding: 0 clamp(20px, 6vw, 100px); border-bottom: 0.5px solid var(--dsw-alias-border-l3); }
+.presentation button { background: transparent; border: 0; border-bottom: 2px solid transparent; color: var(--dsw-alias-label-secondary); font: inherit; font-size: 13px; min-height: 48px; padding: 0 2px; cursor: pointer; }
+.presentation button[aria-pressed='true'] { color: var(--dsw-alias-label-primary); border-bottom-color: currentColor; }
+.presentation button:focus-visible { outline: 1px solid var(--dsw-focus-ring-color, var(--dsw-alias-state-business-primary)); outline-offset: -4px; }

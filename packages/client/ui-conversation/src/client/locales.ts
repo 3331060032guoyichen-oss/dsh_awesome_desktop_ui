@@ -9,6 +9,18 @@ const PLAN_NEXT_ACTION_EN = 'describe your task to generate plan'
 
 /** Simplified Chinese dictionary (the key-set source of truth). */
 export const zh = {
+  'studio.skipIntro': '跳过开场',
+  'studio.morning': '早安，朋友。',
+  'studio.day': '你好，朋友。',
+  'studio.dusk': '傍晚好，朋友。',
+  'studio.night': '夜猫子来了！',
+  'studio.invitation': '我们一起做些什么呢？',
+  'studio.salutation': '亲爱的朋友，',
+  'studio.back': '← 返回书桌',
+  'studio.time': '时光',
+  'studio.local': '跟随本地时间',
+  'studio.trace': '轨迹',
+  'studio.closeTrace': '关闭轨迹',
   'quote.remove': '移除引用',
   'shortcut.newline': '换行',
   'shortcut.complementary': '使用互补的 Queue／Steer 方式',
@@ -392,6 +404,18 @@ export type ConversationKey = keyof typeof zh
 
 /** English dictionary, checked complete against the zh key set. */
 export const en = {
+  'studio.skipIntro': 'Skip intro',
+  'studio.morning': 'Good morning, friend.',
+  'studio.day': 'Hello, friend.',
+  'studio.dusk': 'Good evening, friend.',
+  'studio.night': 'A night owl arrives!',
+  'studio.invitation': 'What shall we work on together?',
+  'studio.salutation': 'Dear friend,',
+  'studio.back': '← Back to the desk',
+  'studio.time': 'Time of day',
+  'studio.local': 'Local time',
+  'studio.trace': 'Trajectory',
+  'studio.closeTrace': 'Close trajectory',
   'quote.remove': 'Remove quote',
   'shortcut.newline': 'New line',
   'shortcut.complementary': 'Use the complementary Queue / Steer action',
@@ -774,6 +798,18 @@ export const en = {
 
 /** Japanese copy, checked against the English keys. */
 export const ja = {
+  'studio.skipIntro': 'イントロをスキップ',
+  'studio.morning': 'Good morning, friend.',
+  'studio.day': 'Hello, friend.',
+  'studio.dusk': 'Good evening, friend.',
+  'studio.night': 'A night owl arrives!',
+  'studio.invitation': 'What shall we work on together?',
+  'studio.salutation': 'Dear friend,',
+  'studio.back': '← Back to the desk',
+  'studio.time': 'Time of day',
+  'studio.local': 'Local time',
+  'studio.trace': 'Trajectory',
+  'studio.closeTrace': 'Close trajectory',
   'quote.remove': '引用を削除',
   'shortcut.newline': '改行',
   'shortcut.complementary': '補助のキュー / 実行中の指示変更を使用',
@@ -1154,6 +1190,18 @@ export const ja = {
 
 /** Spanish dictionary, checked against the English keys. */
 export const es = {
+  'studio.skipIntro': 'Omitir introducción',
+  'studio.morning': 'Good morning, friend.',
+  'studio.day': 'Hello, friend.',
+  'studio.dusk': 'Good evening, friend.',
+  'studio.night': 'A night owl arrives!',
+  'studio.invitation': 'What shall we work on together?',
+  'studio.salutation': 'Dear friend,',
+  'studio.back': '← Back to the desk',
+  'studio.time': 'Time of day',
+  'studio.local': 'Local time',
+  'studio.trace': 'Trajectory',
+  'studio.closeTrace': 'Close trajectory',
   'quote.remove': 'Eliminar cotización',
   'shortcut.newline': 'Nueva linea',
   'shortcut.complementary': 'Usar la acción alternativa de poner en cola o redirigir',
@@ -1536,6 +1584,18 @@ export const es = {
 
 /** French dictionary, checked against the English keys. */
 export const fr = {
+  'studio.skipIntro': 'Passer l’introduction',
+  'studio.morning': 'Good morning, friend.',
+  'studio.day': 'Hello, friend.',
+  'studio.dusk': 'Good evening, friend.',
+  'studio.night': 'A night owl arrives!',
+  'studio.invitation': 'What shall we work on together?',
+  'studio.salutation': 'Dear friend,',
+  'studio.back': '← Back to the desk',
+  'studio.time': 'Time of day',
+  'studio.local': 'Local time',
+  'studio.trace': 'Trajectory',
+  'studio.closeTrace': 'Close trajectory',
   'quote.remove': 'Supprimer le devis',
   'shortcut.newline': 'Nouvelle ligne',
   'shortcut.complementary': 'Utiliser l’action alternative de mise en attente ou de guidage',
@@ -1918,6 +1978,18 @@ export const fr = {
 
 /** German dictionary, checked against the English keys. */
 export const de = {
+  'studio.skipIntro': 'Intro überspringen',
+  'studio.morning': 'Good morning, friend.',
+  'studio.day': 'Hello, friend.',
+  'studio.dusk': 'Good evening, friend.',
+  'studio.night': 'A night owl arrives!',
+  'studio.invitation': 'What shall we work on together?',
+  'studio.salutation': 'Dear friend,',
+  'studio.back': '← Back to the desk',
+  'studio.time': 'Time of day',
+  'studio.local': 'Local time',
+  'studio.trace': 'Trajectory',
+  'studio.closeTrace': 'Close trajectory',
   'quote.remove': 'Zitat entfernen',
   'shortcut.newline': 'Neue Zeile',
   'shortcut.complementary': 'Die alternative Aktion zum Vormerken oder Lenken verwenden',
@@ -2300,6 +2372,18 @@ export const de = {
 
 /** Russian dictionary, checked against the English keys. */
 export const ru = {
+  'studio.skipIntro': 'Пропустить вступление',
+  'studio.morning': 'Good morning, friend.',
+  'studio.day': 'Hello, friend.',
+  'studio.dusk': 'Good evening, friend.',
+  'studio.night': 'A night owl arrives!',
+  'studio.invitation': 'What shall we work on together?',
+  'studio.salutation': 'Dear friend,',
+  'studio.back': '← Back to the desk',
+  'studio.time': 'Time of day',
+  'studio.local': 'Local time',
+  'studio.trace': 'Trajectory',
+  'studio.closeTrace': 'Close trajectory',
   'quote.remove': 'Удалить цитату',
   'shortcut.newline': 'Новая линия',
   'shortcut.complementary': 'Использовать альтернативное действие: поставить в очередь или направить',
@@ -2682,6 +2766,18 @@ export const ru = {
 
 /** Portuguese dictionary, checked against the English keys. */
 export const pt = {
+  'studio.skipIntro': 'Pular introdução',
+  'studio.morning': 'Good morning, friend.',
+  'studio.day': 'Hello, friend.',
+  'studio.dusk': 'Good evening, friend.',
+  'studio.night': 'A night owl arrives!',
+  'studio.invitation': 'What shall we work on together?',
+  'studio.salutation': 'Dear friend,',
+  'studio.back': '← Back to the desk',
+  'studio.time': 'Time of day',
+  'studio.local': 'Local time',
+  'studio.trace': 'Trajectory',
+  'studio.closeTrace': 'Close trajectory',
   'quote.remove': 'Remover cotação',
   'shortcut.newline': 'Nova linha',
   'shortcut.complementary': 'Usar a ação alternativa de enfileirar ou orientar',

@@ -1,0 +1,5 @@
+- Scene: physical-paper greeting; time preview lives in Settings
+- Letter: time preview hidden; salutation retained while drafting
+- Composer: 112px desktop; 108px narrow
+- Returning to the desk preserves the unsent draft
+- The Session trajectory opens fullscreen and closes with Escape

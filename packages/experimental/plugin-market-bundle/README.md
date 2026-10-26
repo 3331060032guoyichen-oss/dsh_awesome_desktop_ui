@@ -7,6 +7,8 @@ kind: "package-bundle"
 
 English | [中文](README.zh.md)
 
+When enabled, the bundle defaults to the Awesome DSH Plugin npm-distributed index at `https://cdn.jsdelivr.net/npm/dsh-plugin-catalog/index.json`. Saved index-source settings override that default; enabling the index does not install any listed plugin.
+
 ## Summary
 
 This optional bundle mounts custom plugin indexes: the Host [`pluginMarket`](../../boot/plugin-market/README.md) service, which reads the plugin indexes the user adds, and the Web [Discover tab](../../client/ui-plugin-market/README.md) of the Plugins page. Shipped profiles leave it disabled.

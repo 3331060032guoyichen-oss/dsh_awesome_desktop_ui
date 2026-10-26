@@ -28,7 +28,7 @@ it('synchronizes live language and palette changes and stops observing a closed 
   vi.spyOn(process, 'platform', 'get').mockReturnValue('win32')
   vi.spyOn(document, 'readyState', 'get').mockReturnValue('loading')
   vi.spyOn(globalThis, 'getComputedStyle').mockImplementation(() => ({
-    backgroundColor: document.body.hasAttribute('data-ds-dark-theme') ? 'oklch(0.2 0 0)' : 'hsl(0 0% 100%)',
+    backgroundColor: document.body.hasAttribute('data-ds-dark-theme') || document.querySelector('[data-studio-mode="scene"]') !== null ? 'oklch(0.2 0 0)' : 'hsl(0 0% 100%)',
     color: 'black',
   }) as CSSStyleDeclaration)
   const context = {
@@ -47,6 +47,15 @@ it('synchronizes live language and palette changes and stops observing a closed 
   document.documentElement.lang = 'zh-CN'
   document.body.setAttribute('data-ds-dark-theme', '')
   await vi.waitFor(() => { expect(send).toHaveBeenLastCalledWith(DESKTOP_IPC.windowsAppearance, 'zh-CN', 'rgba(27, 27, 28, 1)', 'rgba(0, 0, 0, 1)') })
+  document.body.removeAttribute('data-ds-dark-theme')
+  await vi.waitFor(() => { expect(send).toHaveBeenLastCalledWith(DESKTOP_IPC.windowsAppearance, 'zh-CN', 'rgba(255, 255, 255, 1)', 'rgba(0, 0, 0, 1)') })
+  const desk = document.createElement('div')
+  document.body.append(desk)
+  desk.dataset.studioMode = 'scene'
+  await vi.waitFor(() => { expect(send).toHaveBeenLastCalledWith(DESKTOP_IPC.windowsAppearance, 'zh-CN', 'rgba(27, 27, 28, 1)', 'rgba(0, 0, 0, 1)') })
+  desk.dataset.studioMode = 'letter'
+  await vi.waitFor(() => { expect(send).toHaveBeenLastCalledWith(DESKTOP_IPC.windowsAppearance, 'zh-CN', 'rgba(255, 255, 255, 1)', 'rgba(0, 0, 0, 1)') })
+  desk.remove()
   window.dispatchEvent(new Event('pagehide'))
   send.mockClear()
   document.documentElement.lang = 'en'

@@ -62,6 +62,25 @@
   border-right: 0.5px solid var(--dsw-alias-border-l3);
 }
 
+/* The opening owns the complete window; surrounding controls return at handoff. */
+.frame:has(:global([data-studio-opening])) > .sidebarCol,
+.frame:has(:global([data-studio-opening])) > .rightbarCol,
+.frame:has(:global([data-studio-opening])) > .leadingSeat,
+.frame:has(:global([data-studio-opening])) > .handle,
+.frame:has(:global([data-studio-opening])) > .overlayLayer {
+  visibility: hidden;
+}
+
+:global(html[data-desktop-studio='true']) .frame,
+:global(html[data-desktop-studio='true']) .frame::before,
+:global(html[data-desktop-studio='true']) .sidebarCol {
+  background: var(--dsw-studio-frame-fill);
+}
+
+:global(html[data-desktop-studio='true']) .sidebarCol {
+  border-right: 1px solid var(--dsw-studio-frame-edge);
+}
+
 .centerCol {
   min-width: 0;
   display: flex;
@@ -230,6 +249,7 @@
   cursor: col-resize;
   z-index: 11;
   touch-action: none;
+  user-select: none;
 }
 
 /* Rides the same curve as the tracks so the pill stays on the moving border
@@ -288,3 +308,15 @@
 .overlayLayer > * {
   pointer-events: auto;
 }
+
+/* The illustrated entry occupies the whole client area; native caption controls remain available. */
+:global(html[data-desktop-studio='true']) .frame:has([data-studio-mode='intro']),
+:global(html[data-desktop-studio='true']) .frame:has([data-studio-mode='scene']),
+:global(html[data-desktop-studio='true']) .frame:has([data-studio-mode='entering']) { grid-template-columns: 0 minmax(0, 1fr) 0 !important; }
+.frame:has([data-studio-mode='scene']) .sidebarCol,
+.frame:has([data-studio-mode='entering']) .sidebarCol,
+.frame:has([data-studio-mode='scene']) .leadingSeat,
+.frame:has([data-studio-mode='entering']) .leadingSeat { visibility: hidden; }
+:global([data-windows-titlebar]) .frame:has([data-studio-mode='intro']) .centerCol,
+:global([data-windows-titlebar]) .frame:has([data-studio-mode='scene']) .centerCol,
+:global([data-windows-titlebar]) .frame:has([data-studio-mode='entering']) .centerCol { border-radius: 0; }

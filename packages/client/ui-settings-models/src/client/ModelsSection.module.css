@@ -48,7 +48,29 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+  position: relative;
+  z-index: 2;
 }
+
+.wallet { position: relative; padding: 16px 18px 0; perspective: 1000px; isolation: isolate; }
+.wallet::before { content: ''; position: absolute; inset: 0; border: 1px solid var(--dsw-alias-settings-card-stroke); border-radius: var(--dsw-radius-xl); background: color-mix(in srgb, var(--dsw-alias-studio-ink) 8%, var(--dsw-alias-settings-card-fill)); transform-origin: center bottom; animation: walletUnfold 720ms cubic-bezier(.22, 1, .36, 1) both; }
+.wallet .rowCard { position: relative; background: var(--dsw-alias-settings-card-fill); border-color: color-mix(in srgb, var(--dsw-alias-studio-ink) 28%, var(--dsw-alias-settings-card-stroke)); box-shadow: 0 6px 18px color-mix(in srgb, var(--dsw-alias-studio-ink) 7%, transparent); animation: modelPassReveal 900ms cubic-bezier(.18, .85, .23, 1) both; }
+.wallet .rowHead { min-height: 38px; margin: -12px -14px 0; padding: 12px 14px; border-radius: var(--dsw-radius-xl) var(--dsw-radius-xl) 0 0; background: var(--dsw-alias-studio-blue); color: var(--dsw-alias-studio-paper); }
+.wallet .rowCard:nth-child(2n) .rowHead { background: color-mix(in srgb, var(--dsw-alias-studio-blue) 72%, var(--dsw-alias-studio-ink)); }
+.wallet .rowHead .rowName, .wallet .rowHead .rowTag, .wallet .rowHead .accountStatus { color: inherit; }
+.wallet .rowHead .rowTag, .wallet .rowHead .secondaryButton { border-color: color-mix(in srgb, var(--dsw-alias-studio-paper) 32%, transparent); }
+.wallet .rowHead .secondaryButton, .wallet .rowHead .dangerButton { color: inherit; background: transparent; }
+@media (hover: hover) { .wallet .rowHead button:hover { background: color-mix(in srgb, var(--dsw-alias-studio-paper) 16%, transparent); } }
+.wallet .rowCard::before { content: ''; position: absolute; inset: 0 0 auto; height: 3px; border-radius: inherit; background: var(--dsw-alias-studio-blue); opacity: .65; }
+.wallet .rowCard:nth-child(2n)::before { opacity: .28; }
+.walletSleeve { position: relative; z-index: 3; height: 120px; margin: 8px -18px 0; overflow: hidden; border: 1px solid color-mix(in srgb, var(--dsw-alias-studio-ink) 35%, transparent); border-radius: calc(var(--dsw-radius-xl) + 2px) calc(var(--dsw-radius-xl) + 2px) var(--dsw-radius-xl) var(--dsw-radius-xl); background: radial-gradient(ellipse at 25% 0, color-mix(in srgb, var(--dsw-alias-studio-paper) 14%, transparent), transparent 65%), var(--dsw-alias-studio-ink); box-shadow: 0 -5px 16px color-mix(in srgb, var(--dsw-alias-studio-ink) 12%, transparent); pointer-events: none; transform-origin: center bottom; animation: walletUnfold 720ms cubic-bezier(.22, 1, .36, 1) both; }
+.walletSleeve::before { content: ''; position: absolute; width: 84px; height: 40px; top: -23px; left: calc(50% - 42px); border-radius: 50%; background: var(--dsw-alias-settings-card-fill); box-shadow: 0 1px 2px color-mix(in srgb, var(--dsw-alias-studio-paper) 28%, transparent); }
+.walletSleeve::after { content: ''; position: absolute; inset: 0; opacity: .035; background-image: repeating-radial-gradient(circle at 20% 30%, transparent 0 1px, var(--dsw-alias-studio-paper) 1px 1.25px, transparent 1.25px 3px); background-size: 5px 5px; }
+.walletStitch { position: absolute; inset: 10px; border: 1px dashed color-mix(in srgb, var(--dsw-alias-studio-paper) 35%, transparent); border-radius: calc(var(--dsw-radius-xl) - 8px) calc(var(--dsw-radius-xl) - 8px) calc(var(--dsw-radius-xl) - 10px) calc(var(--dsw-radius-xl) - 10px); }
+.walletSeal { position: absolute; left: 24px; bottom: 20px; width: 64px; height: 64px; border-radius: 50%; object-fit: cover; mix-blend-mode: screen; opacity: .8; }
+@keyframes walletUnfold { from { transform: translateY(18px) rotateX(-20deg); opacity: .6; } to { transform: none; opacity: 1; } }
+@keyframes modelPassReveal { from { transform: translateY(60px) rotateX(-7deg) scale(.97); opacity: 0; } 65% { opacity: 1; } to { transform: none; opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .wallet::before, .wallet .rowCard, .walletSleeve { animation: none; } }
 
 /* Provider cards share the settings material; editors use the inset module fill. */
 .rowCard {
@@ -211,7 +233,12 @@
   border-radius: var(--dsw-radius-sm);
   font-size: 12px;
   line-height: 18px;
+  touch-action: manipulation;
+  transition: transform 160ms cubic-bezier(.2, .8, .2, 1);
 }
+.rowActions button:active:not(:disabled) { transform: translateY(1px); }
+@media (pointer: coarse) { .rowActions .secondaryButton, .rowActions .dangerButton { min-width: 44px; min-height: 44px; } }
+@media (prefers-reduced-motion: reduce) { .rowActions button { transition: none; } .rowActions button:active:not(:disabled) { transform: none; } }
 
 .primaryButton:disabled,
 .secondaryButton:disabled,

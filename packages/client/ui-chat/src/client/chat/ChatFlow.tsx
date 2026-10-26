@@ -8,6 +8,7 @@ import { ChatGroupSeat } from './ChatGroupSeat.tsx'
 import { PendingSteeringBubble, PendingSubmissionBubble } from './MessageItem.tsx'
 import { chatRenderKey } from './render-entry.ts'
 import { RunningStatus } from './RunningStatus.tsx'
+import { DesktopAiStatus } from './DesktopAiStatus.tsx'
 
 /** A local submission echo, or a Host-pending steering item without a local submission. */
 type PendingInput = ChatFlowSlotProps['pendingInputs'][number]
@@ -86,7 +87,9 @@ export const ChatFlow = memo(function ChatFlow({
   // Rows enter before the keyed status and echoes after it, so React never moves its DOM node.
   return [
     ...rows, ...leadingRows, ...openingRows,
-    ...running ? [<RunningStatus key="running" startTime={runningStartTime} paused={disconnected} t={t} />] : [],
+    ...document.documentElement.dataset.desktopStudio === 'true'
+      ? [<DesktopAiStatus key="running" useChat={useChat} useChatNode={useChatNode} running={running} paused={disconnected} t={t} />]
+      : running ? [<RunningStatus key="running" startTime={runningStartTime} paused={disconnected} t={t} />] : [],
     ...pendingRows,
   ]
 })

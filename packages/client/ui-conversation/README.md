@@ -9,6 +9,26 @@ English | [中文](README.zh.md)
 
 Desktop product events use the optional [product analytics service](../product-analytics/README.md); ordinary Web interactions are excluded.
 
+Desktop opens a time-aware illustrated desk before the resident letter composer. Returning to the desk keeps the current draft and attachments mounted. The letter presents Chat above the same Session's Trajectory, with a pointer reveal only while running and a keyboard-accessible fullscreen view; the composer remains outside the pointer reveal region and stays docked to the bottom while long conversations scroll. The browser application retains its existing presentation.
+
+Desktop entry fills the scene without conversation headers. Its camera straightens the complete desk through an overhead projection. The compact composer stays docked while a running trajectory preview handles wheel gestures inside its reveal circle. Preset selection remains in account Settings.
+
+Each fresh Desktop document opens with the selected blue-and-ivory whale seal split into four slightly rotated quarters, each placed in the next clockwise quadrant. After a short scrambled hold, they return to their correct quadrants in sequence, briefly hold as one image, and dissolve into a forward camera approach that ends at the existing homepage framing. The three-second opening waits for its local images, offers Skip, and bypasses motion when reduced motion is requested. Its document-epoch completion marker survives plugin replacement but resets on a real reload; returning to the desk or opening subsequent conversations does not replay it. Drafts remain mounted and inert behind the opening.
+
+The opening, homepage, and paper-entry transition share the full application viewport, including sidebar and menu areas. The illustration advances from cover size to an 8% closer homepage framing inside a stationary viewport; its container never shrinks. During the overhead approach, the camera expands the entire projected image enough to cover all four viewport corners, with a two-pixel bleed, so tilted edges cannot expose the underlying paper. The resident letter resumes its own content dimensions after the transition.
+
+The homepage character breathes subtly; hair and leaves move independently after fresh random 1–10 second rests. Idle motion stops outside the homepage, while hidden, or with reduced motion enabled. After entering the desk once, new conversations open directly in the current Workspace's letter instead of replaying the homepage; a full refresh starts a fresh visit.
+
+Homepage parallax translates the illustration as one rigid plane, keeping the skyline and pen holder registered. Character-motion masks stay inside the head and torso, clear of hard window geometry; atmospheric light and stars retain their separate depth response. Pointer exit still recenters smoothly.
+
+The running trajectory preview stays fixed while only its circular reveal follows the pointer. Wheel gestures inside that circle scroll trajectory content without scrolling Chat.
+
+While the Desktop letter editor has focus and accepts input, its paper surface breathes subtly and a fine blue-violet wave travels along its edge. Losing focus fades the decoration away; reduced motion keeps a static edge. The editor, selection, toolbar, and token footer retain their layout and clipboard behavior.
+
+The conversation slot tree mounts only while its action service is available, including during live plugin replacement, so the composer cannot render before its service is ready.
+
+Windows caption buttons have transparent backgrounds during the opening and scene, exposing the actual wall and its lighting changes. Symbol contrast follows the scene; entering the letter restores the application caption palette.
+
 ## Summary
 
 `ui-conversation` owns target-neutral Conversation assembly and the shared browser shell. It consumes Session Controller `SessionEventLikeEntry` feeds, exposes React-free registries and per-Session bindings through `ctx.uiConversation`, and contributes the `useConversation`, `useInput`, and `inputActions` standard props through `ctx.uiSession`. It also owns the per-session durable image URL cache: `ctx.uiConversation.imageUrl(sessionId, attachment)` resolves one session-authorized browser URL per attachment and revokes it with the Session binding, so every Conversation target shares one `session.attachment` read. Concrete targets such as Chat are separate packages that register their own Definitions, snapshot builders, Views, and renderers.
@@ -201,6 +221,8 @@ None; Conversation assembly and browser input state do not alter provider-side p
 
 <a id="dev-note"></a>
 ### Dev Note
+
+The desktop letter hides the title and view tabs while keeping the right-sidebar corner opener accessible after entering the desk. The opener stays hidden during the scene and camera transition, so workspace files can be reached without restoring the full conversation header. Fullscreen trajectory hides the resident composer and its token footer; closing the trajectory restores the same mounted composer and draft. The trajectory entry remains in the composer's lower-left corner.
 
 <details>
 <summary>Working context for maintainers — click to expand</summary>

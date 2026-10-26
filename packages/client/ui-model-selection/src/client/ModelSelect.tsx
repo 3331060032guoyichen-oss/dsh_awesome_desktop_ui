@@ -43,6 +43,7 @@ import type { PropsLocale, PropsRenderSlots, PropsRuntime } from '@deepseek-ai/d
 import type { ModelLabelOwner, ModelSelectInjected } from './slots.ts'
 import css from './ModelSelect.module.css'
 import { orderModelProviders } from './provider-order.ts'
+import { EffortSlider } from './EffortSlider.tsx'
 
 /** Which pane the dropdown shows: the two-row root or one drilled-in list. */
 type Pane = 'root' | 'model' | 'effort'
@@ -150,6 +151,10 @@ export function ModelSelect(
     ], [reasoning, t])
   const { pending } = state
   const busy = pending !== null
+  const sliderEffort = pending !== null && pending.provider === state.current?.provider && pending.model === state.current.model
+    ? pending.reasoningEffort ?? reasoning?.defaultEffort
+    : effectiveEffort
+  const studioEffort = document.documentElement.dataset.desktopStudio === 'true' && effortChoices.length > 1
 
   const reload = (): void => {
     lastActionRef.current = 'load'
@@ -291,7 +296,10 @@ export function ModelSelect(
 
   const moveFocus = (offset: number): void => {
     const items = itemRefs.current.filter(item => item !== null)
-    if (items.length === 0) return
+    if (items.length === 0) {
+      menuRef.current?.querySelector<HTMLInputElement>('input[type="range"]')?.focus()
+      return
+    }
     const active = items.findIndex(item => item === document.activeElement)
     // Focus outside the rows (the trigger, which keeps it while the menu
     // opens) enters at the end the step comes from: the first row forward,
@@ -358,7 +366,7 @@ export function ModelSelect(
         return
       }
       const checked = menuRef.current?.querySelector<HTMLElement>('[role="menuitemradio"][aria-checked="true"]:not([disabled])')
-      ;(checked ?? rows.find(item => !item.disabled))?.focus()
+      ;(checked ?? rows.find(item => !item.disabled) ?? menuRef.current?.querySelector<HTMLInputElement>('input[type="range"]'))?.focus()
       return
     }
     if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
@@ -375,10 +383,10 @@ export function ModelSelect(
     close()
   }
 
-  const settleSelection = (result: Awaited<ReturnType<ModelSelectInjected['select']>>): void => {
+  const settleSelection = (result: Awaited<ReturnType<ModelSelectInjected['select']>>, closeOnSuccess = true): void => {
     if (result === undefined) return
     if (result.ok) {
-      if (rootRef.current !== null) closeAfterSelection()
+      if (closeOnSuccess && rootRef.current !== null) closeAfterSelection()
       return
     }
     const { error } = result
@@ -396,7 +404,7 @@ export function ModelSelect(
     // Disabled option rows cannot retain focus while a selection is pending.
     setSelectionFocus(true)
     triggerRef.current?.focus()
-    void select(selection).then(settleSelection)
+    void select(selection).then((result) => { settleSelection(result) })
   }
 
   const choose = (selection: ModelSelection): void => {
@@ -473,6 +481,7 @@ export function ModelSelect(
         title={triggerLabel}
         aria-busy={busy}
         data-selection-focus={selectionFocus ? '' : undefined}
+        data-effort-peak={studioEffort && effectiveEffort === effortChoices.at(-1)?.effort ? '' : undefined}
         onBlur={() => { setSelectionFocus(false) }}
         disabled={locked}
         onClick={() => {
@@ -484,6 +493,7 @@ export function ModelSelect(
         }}
       >
         <IconDataOutlineRegular className={css.triggerIcon} size={16} />
+        {studioEffort && <svg className={css.effortGlyph} viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M14 2 5 14h6l-1 8 9-13h-6z" fill="currentColor" /></svg>}
         <span className={css.triggerLabel}>
           {currentChoice === undefined ? modelLabel : renderModelLabel(currentChoice.group.provider, currentChoice.model, 'trigger', true)}
         </span>
@@ -500,7 +510,7 @@ export function ModelSelect(
         <MenuSurface
           ref={menuRef}
           id={`${id}-menu`}
-          className={css.menu}
+          className={clsx(css.menu, studioEffort && pane === 'root' && css.studioMenu)}
           style={menuPos ?? MEASURE_STYLE}
           role={pane === 'model' ? 'group' : 'menu'}
           aria-label={t('menu.aria')}
@@ -508,19 +518,37 @@ export function ModelSelect(
         >
           {pane === 'root' && (
             <>
-              <button ref={itemRef()} type="button" role="menuitem" className={css.cell} onClick={() => { drill('model') }}>
-                <span className={css.cellLabel}>{t('menu.model')}</span>
-                <span className={css.cellValue}>
-                  {currentChoice === undefined ? modelLabel : renderModelLabel(currentChoice.group.provider, currentChoice.model, 'menu', true)}
-                </span>
-                <IconChevronRightOutlineRegular className={css.cellChevron} />
-              </button>
-              {reasoning !== undefined && (
-                <button ref={itemRef()} type="button" role="menuitem" className={css.cell} onClick={() => { drill('effort') }}>
-                  <span className={css.cellLabel}>{t('menu.effort')}</span>
-                  <span className={css.cellValue}>{effortLabel}</span>
+              {!studioEffort && <>
+                <button ref={itemRef()} type="button" role="menuitem" className={css.cell} onClick={() => { drill('model') }}>
+                  <span className={css.cellLabel}>{t('menu.model')}</span>
+                  <span className={css.cellValue}>
+                    {currentChoice === undefined ? modelLabel : renderModelLabel(currentChoice.group.provider, currentChoice.model, 'menu', true)}
+                  </span>
                   <IconChevronRightOutlineRegular className={css.cellChevron} />
                 </button>
+                {reasoning !== undefined && (
+                  <button ref={itemRef()} type="button" role="menuitem" className={css.cell} onClick={() => { drill('effort') }}>
+                    <span className={css.cellLabel}>{t('menu.effort')}</span>
+                    <span className={css.cellValue}>{effortLabel}</span>
+                    <IconChevronRightOutlineRegular className={css.cellChevron} />
+                  </button>
+                )}
+              </>}
+              {studioEffort && (
+                <EffortSlider key={`${state.current?.provider}/${state.current?.model}`}
+                  labels={effortChoices.map(choice => choice.label)}
+                  value={Math.max(0, effortChoices.findIndex(choice => choice.effort === sliderEffort))}
+                  label={t('menu.effort')} disabled={locked}
+                  modelLabel={modelLabel}
+                  onModel={() => { drill('model') }} onEffort={() => { drill('effort') }}
+                  onCommit={(index) => {
+                    const choice = effortChoices[index]
+                    if (choice === undefined || state.current === null) return
+                    lastActionRef.current = 'select'
+                    void select({ provider: state.current.provider, model: state.current.model,
+                      ...choice.effort === undefined ? {} : { reasoningEffort: choice.effort },
+                    }).then((result) => { settleSelection(result, false) })
+                  }} />
               )}
             </>
           )}

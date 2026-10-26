@@ -33,6 +33,7 @@ import { PluginManagerController } from './manager-store.ts'
 import { en, ja, es, fr, de, ru, pt, zh, type PluginManagerLocaleKey } from './locales.ts'
 import { createNavigationStore } from './navigation-store.ts'
 import type {} from './slot-contract.ts'
+import type { PluginTabInstall } from './slot-contract.ts'
 
 declare module '@deepseek-ai/cordis' {
   interface Context {
@@ -56,6 +57,8 @@ declare module '@deepseek-ai/cordis' {
       openBundle(packageName: string): void
       /** Open the Plugins main list without opening a dialog or changing the current Session. */
       openList(): void
+      /** Open the existing installation flow after the market's version confirmation. */
+      installFrom(target: PluginTabInstall): void
     }
   }
 }
@@ -151,6 +154,12 @@ export function apply(ctx: ClientContext): void {
         if (ctx.layout.panelInfo.getSnapshot().activePanelId !== PANEL_ID) instance.actions.setView({ kind: 'list' })
       })
       const disposeNavigation = ctx.reflect.provide('pluginNavigation', {
+        installFrom: (target: PluginTabInstall) => {
+          ctx.layout.selectPanel(PANEL_ID)
+          instance.actions.setTab('installed')
+          instance.actions.setView({ kind: 'list' })
+          face.installFrom(target)
+        },
         openList: () => {
           ctx.layout.selectPanel(PANEL_ID)
           instance.actions.setTab('installed')

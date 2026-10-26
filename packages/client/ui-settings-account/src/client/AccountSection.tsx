@@ -12,6 +12,8 @@ import type { AccountAvatarSnapshot } from './account-avatar.ts'
 import { authorizeUrlWithTheme } from './authorize-url.ts'
 import type { BonusNotice } from './bonus-notices.ts'
 import css from './AccountSection.module.css'
+import { UsageDashboard } from './UsageDashboard.tsx'
+import type { loadUsageReport, loadUsageAccount } from './usage-report.ts'
 
 /** Safe account snapshot shared by the settings page and launcher. */
 export interface AccountSnapshot {
@@ -40,6 +42,9 @@ export interface AccountSnapshot {
 
 /** Host operations injected into the Cordis-free account component. */
 export interface AccountSectionInjected {
+  /** Optional statistics integration, present in the composed settings entry. */
+  loadUsageReport?: typeof loadUsageReport
+  loadUsageAccount?: typeof loadUsageAccount
   /** @param snapshot - picture attempt whose rendered image failed; superseded attempts are ignored. */
   avatarFailed: (snapshot: AccountAvatarSnapshot) => void
   /** Subscribe to live credential-expiry notifications.
@@ -90,7 +95,9 @@ export interface AccountSectionInjected {
 export type AccountSectionProps =
   PropsRuntime<'settings.section'> & PropsLocale<'settings.account'> & InjectFace<AccountSectionInjected>
 /** @param props - localized actions, account subscription, and the shared Platform page channel. @returns account settings UI. */
-export function AccountSection({ t, useAccount, useTheme, start, cancel, openPlatformPage, avatarFailed }: AccountSectionProps) {
+export function AccountSection({
+  t, useAccount, useTheme, start, cancel, openPlatformPage, avatarFailed, loadUsageReport, loadUsageAccount, refreshAccount,
+}: AccountSectionProps) {
   const { view: state, details, avatar, failed: streamFailed } = useAccount(value => value)
   const colorScheme = useTheme(snapshot => snapshot.active.colorScheme)
   // The shared host owns the native view; this page holds only its own request,
@@ -221,6 +228,8 @@ export function AccountSection({ t, useAccount, useTheme, start, cancel, openPla
           </div>
         </div>
       </div>
+      {signedIn && loadUsageReport && loadUsageAccount && <UsageDashboard t={t} load={loadUsageReport}
+        loadAccount={loadUsageAccount} refreshAccount={refreshAccount} />}
     </section>
   )
 }

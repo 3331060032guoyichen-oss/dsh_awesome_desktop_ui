@@ -21,6 +21,8 @@ type AgentPresetRow = AgentPresetGroup['rows'][number]
 
 /** Registration-side Remote face used by the section. */
 export interface PluginInventorySettingsTabInjected {
+  /** The market may present one inventory scope independently. */
+  inventoryScope?: 'preset' | 'global'
   /** Resolve local package text in the current Client locale at render time. */
   resolveText: (text: LocalizedText) => string
   /** Page-local module synchronization, independent from the Host inventory. */
@@ -250,12 +252,13 @@ function StateTag({ kind, label }: { readonly kind: EnablementKind; readonly lab
 
 /** Render the read-only plugin inventory: agent presets first, then the global plane. */
 export function PluginInventorySettingsTab(
-  { list, presetName, resolveText, t, useClientSync, retryClient }: PluginInventorySettingsTabProps,
+  { list, presetName, resolveText, t, useClientSync, retryClient, inventoryScope, query: marketQuery }: PluginInventorySettingsTabProps,
 ): ReactNode {
   const clientSync = useClientSync(snapshot => snapshot)
   const sectionId = useId()
   const [request, setRequest] = useState(0)
-  const [query, setQuery] = useState('')
+  const [localQuery, setQuery] = useState('')
+  const query = marketQuery ?? localQuery
   const [expanded, setExpanded] = useState<string | null>(null)
   const [chosenPreset, setChosenPreset] = useState<string | null>(null)
   const [switcherOpen, setSwitcherOpen] = useState(false)
@@ -314,9 +317,9 @@ export function PluginInventorySettingsTab(
 
   // The preset group starts open and the larger global plane folded; a search opens both for as long as it lasts.
   const presetEffectiveOpen = searching || (presetOpen ?? true)
-  const globalEffectiveOpen = searching || (globalOpen ?? false)
-  const nothingMatches = searching && globalCount === 0 && selectedRows.length === 0
-    && otherPresetMatches.length === 0
+  const globalEffectiveOpen = searching || (globalOpen ?? inventoryScope === 'global')
+  const nothingMatches = searching && (inventoryScope === 'preset' || globalCount === 0)
+    && (inventoryScope === 'global' || (selectedRows.length === 0 && otherPresetMatches.length === 0))
 
   const retry = (): void => {
     setState({ status: 'loading' })
@@ -461,7 +464,7 @@ export function PluginInventorySettingsTab(
       ) : null}
       {snapshot !== undefined ? (
         <div className={css.catalog}>
-          <label className={css.search}>
+          {marketQuery === undefined && <label className={css.search}>
             <IconSearchOutlineRegular aria-hidden="true" />
             <span className={css.visuallyHidden}>{t('search')}</span>
             <input
@@ -471,11 +474,11 @@ export function PluginInventorySettingsTab(
               aria-label={t('search')}
               onChange={(event) => { setQuery(event.currentTarget.value) }}
             />
-          </label>
+          </label>}
           {entries.length === 0 && presets.length === 0 ? <p className={css.status}>{t('empty')}</p> : null}
           {nothingMatches ? <p className={css.status}>{t('emptySearch')}</p> : null}
 
-          {selected !== undefined ? (
+          {selected !== undefined && inventoryScope !== 'global' ? (
             <section className={css.group} data-plugin-scope="preset" data-preset-id={selected.id}>
               <div className={css.groupTitleRow}>
                 <button
@@ -547,7 +550,7 @@ export function PluginInventorySettingsTab(
             </section>
           ) : null}
 
-          {entries.length > 0 ? (
+          {entries.length > 0 && inventoryScope !== 'preset' ? (
             <section className={css.group} data-plugin-scope="global">
               <div className={css.groupTitleRow}>
                 <button

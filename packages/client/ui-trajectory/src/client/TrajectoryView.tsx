@@ -15,6 +15,7 @@ import {
 } from './TrajectoryTable.tsx'
 import { TrajectoryToolbar } from './TrajectoryToolbar.tsx'
 import { TrajectoryTimeline } from './TrajectoryTimeline.tsx'
+import { TrajectoryStory } from './TrajectoryStory.tsx'
 import {
   appendTrajectoryPartialLayout, deriveTrajectoryLayout,
   type TrajectoryTurnModel,
@@ -137,6 +138,9 @@ export function TrajectoryView({
   & InjectFace<TrajectoryViewInjected>
   & PropsLocale<'trajectory'>) {
   const [collapsedTurns, setCollapsedTurns] = useState<ReadonlySet<number>>(EMPTY_TURN_IDS)
+  const [presentation, setPresentation] = useState<'story' | 'records'>(() =>
+    document.documentElement.dataset.desktopStudio === 'true' ? 'story' : 'records')
+  const desktopStory = document.documentElement.dataset.desktopStudio === 'true'
   const [collapsedAssistants, setCollapsedAssistants] =
     useState<ReadonlySet<string>>(EMPTY_RECORD_IDS)
   const [timelineSelection, setTimelineSelection] = useState<TrajectoryTimeRange | null>(null)
@@ -193,9 +197,11 @@ export function TrajectoryView({
   const historyBaseSeq = nodes[0]?.seq ?? 0
   const partial = inspection.partial
   const runningCalls = inspection.runningCalls
+  const runningCallIds = useMemo(() => new Set(runningCalls.map(call => call.callId)), [runningCalls])
   const requests = inspection.requests
   const callSchemas = inspection.callSchemas
   const inspectCallId = viewRequest?.view === 'trajectory' ? viewRequest.focus : null
+  useEffect(() => { if (inspectCallId !== null) setPresentation('records') }, [inspectCallId])
   const inspectNodeIndex = useMemo(() => inspectCallId === null
     ? -1
     : completeInspection.eventNodes.findIndex(node => node.kind === 'assistant'
@@ -511,70 +517,86 @@ export function TrajectoryView({
 
   return (
     <div className={css.root} data-conversation-composer-overlay="">
-      <TrajectoryToolbar
-        actualDuration={actualDuration}
-        onActualDurationChange={(nextActualDuration) => {
-          setActualDuration(nextActualDuration)
-          setTimelineSelection(null)
-        }}
-        actualTime={actualTime}
-        onActualTimeChange={(nextActualTime) => {
-          setActualTime(nextActualTime)
-          setTimelineSelection(null)
-        }}
-        allTurnsCollapsed={allTurnsCollapsed}
-        onToggleAllTurns={toggleAllTurns}
-        allAssistantsCollapsed={allAssistantsCollapsed}
-        onToggleAllAssistants={toggleAllAssistants}
-        searchQuery={searchQuery}
-        onSearchQueryChange={setSearchQuery}
-        t={t}
-      />
-      <TrajectoryTimeline
-        t={t}
+      {desktopStory && <nav className={css.presentation} aria-label={t('story.presentation')}>
+        <button aria-pressed={presentation === 'story'} onClick={() => { setPresentation('story') }}>{t('story.title')}</button>
+        <button aria-pressed={presentation === 'records'} onClick={() => { setPresentation('records') }}>{t('story.records')}</button>
+      </nav>}
+      {presentation === 'story' ? <TrajectoryStory
         turns={timelineTurns}
-        mode={timelineMode}
-        range={timelineRange}
-        hasEarlierRecords={hasOlderHistory}
-        onLoadEarlier={loadEarlierHistory}
-        selectedIndex={selectedTimelineIndex}
-        searchMatchIndexes={searchMatchIndexes}
-        onRangeChange={handleTimelineRangeChange}
-        onRecordSelect={handleTimelineRecordSelect}
-        onRecordFocus={handleTimelineRecordFocus}
-      />
-      <div className={css.ledger}>
-        <TrajectoryTable
-          t={t}
-          stringWrapping={jsonStringWrapping === undefined ? undefined : {
-            ...jsonStringWrapping,
-            label: t('record.wrapLines'),
+        streamingCells={streamingCells}
+        runningCallIds={runningCallIds}
+        active={partial !== null || runningCalls.length > 0 || requests.some(request => request.status === 'running')}
+        loading={historyLoading || olderHistoryLoading}
+        hasOlder={hasOlderHistory}
+        loadOlder={loadEarlierHistory}
+        inspect={(index) => { setTimelineRecordSelection({ index }); setPresentation('records') }}
+        t={t}
+      /> : <>
+        <TrajectoryToolbar
+          actualDuration={actualDuration}
+          onActualDurationChange={(nextActualDuration) => {
+            setActualDuration(nextActualDuration)
+            setTimelineSelection(null)
           }}
-          renderSlot={renderSlot}
-          loadImage={loadImage}
-          requestNumbers={requestNumbers}
-          turns={timelineTurns}
-          streamingCells={streamingCells}
-          timelineFocusIndexes={timelineFocusIndexes}
-          searchMatchIndexes={searchMatchIndexes}
-          onSelectedIndexChange={setSelectedTimelineIndex}
-          onRecordSelect={handleRecordSelect}
-          recordSelection={timelineRecordSelection}
-          recordFocus={timelineRecordFocus}
-          historyLoading={historyLoading}
-          olderHistoryLoading={olderHistoryLoading}
-          historyStartSeq={historyBaseSeq}
-          hasOlderRecords={hasOlderHistory}
-          onLoadOlder={loadEarlierHistory}
-          onClearSelection={() => { setTimelineSelection(null) }}
-          collapsedTurns={collapsedTurns}
-          onToggleTurn={toggleTurn}
-          collapsedAssistants={collapsedAssistants}
-          onToggleAssistant={toggleAssistant}
-          inspectCallId={inspectCallId}
-          onInspectApplied={completeViewRequest}
+          actualTime={actualTime}
+          onActualTimeChange={(nextActualTime) => {
+            setActualTime(nextActualTime)
+            setTimelineSelection(null)
+          }}
+          allTurnsCollapsed={allTurnsCollapsed}
+          onToggleAllTurns={toggleAllTurns}
+          allAssistantsCollapsed={allAssistantsCollapsed}
+          onToggleAllAssistants={toggleAllAssistants}
+          searchQuery={searchQuery}
+          onSearchQueryChange={setSearchQuery}
+          t={t}
         />
-      </div>
+        <TrajectoryTimeline
+          t={t}
+          turns={timelineTurns}
+          mode={timelineMode}
+          range={timelineRange}
+          hasEarlierRecords={hasOlderHistory}
+          onLoadEarlier={loadEarlierHistory}
+          selectedIndex={selectedTimelineIndex}
+          searchMatchIndexes={searchMatchIndexes}
+          onRangeChange={handleTimelineRangeChange}
+          onRecordSelect={handleTimelineRecordSelect}
+          onRecordFocus={handleTimelineRecordFocus}
+        />
+        <div className={css.ledger}>
+          <TrajectoryTable
+            t={t}
+            stringWrapping={jsonStringWrapping === undefined ? undefined : {
+              ...jsonStringWrapping,
+              label: t('record.wrapLines'),
+            }}
+            renderSlot={renderSlot}
+            loadImage={loadImage}
+            requestNumbers={requestNumbers}
+            turns={timelineTurns}
+            streamingCells={streamingCells}
+            timelineFocusIndexes={timelineFocusIndexes}
+            searchMatchIndexes={searchMatchIndexes}
+            onSelectedIndexChange={setSelectedTimelineIndex}
+            onRecordSelect={handleRecordSelect}
+            recordSelection={timelineRecordSelection}
+            recordFocus={timelineRecordFocus}
+            historyLoading={historyLoading}
+            olderHistoryLoading={olderHistoryLoading}
+            historyStartSeq={historyBaseSeq}
+            hasOlderRecords={hasOlderHistory}
+            onLoadOlder={loadEarlierHistory}
+            onClearSelection={() => { setTimelineSelection(null) }}
+            collapsedTurns={collapsedTurns}
+            onToggleTurn={toggleTurn}
+            collapsedAssistants={collapsedAssistants}
+            onToggleAssistant={toggleAssistant}
+            inspectCallId={inspectCallId}
+            onInspectApplied={completeViewRequest}
+          />
+        </div>
+      </>}
     </div>
   )
 }

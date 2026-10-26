@@ -7,6 +7,8 @@ kind: "package-reference"
 
 [English](README.md) | 中文
 
+`pluginNavigation.installFrom` 将设置市场中已确认的版本转入管理页面现有的安装流程。两个入口的检查、进度、取消与错误均由管理页面统一持有。
+
 桌面端产品事件使用可选的[产品埋点服务](../product-analytics/README.zh.md)，不包含普通 Web 交互。
 
 ## 概述

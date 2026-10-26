@@ -2,6 +2,9 @@
   position: relative;
   min-width: 0;
 }
+.menu.studioMenu { padding: 0; min-width: min(300px, calc(100vw - 32px)); overflow: visible; border-radius: 12px; background: var(--dsw-alias-effort-surface); }
+.effortGlyph { color: var(--dsw-alias-studio-blue); font-size: 16px; font-weight: 700; }
+.trigger[data-effort-peak] .effortGlyph,.trigger[data-effort-peak] .triggerEffort { color: var(--dsw-alias-effort-violet-label); }
 
 /* Figma 313:14108 ToggleButton: 13/20 regular secondary label, 4px gap,
    12px caption chevron; 28px chip height matches the sibling Plan /

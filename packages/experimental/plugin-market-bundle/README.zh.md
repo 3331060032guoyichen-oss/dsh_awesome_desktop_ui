@@ -7,6 +7,8 @@ kind: "package-bundle"
 
 [English](README.md) | 中文
 
+启用时，组合包默认使用 Awesome DSH Plugin 通过 npm 分发的索引 `https://cdn.jsdelivr.net/npm/dsh-plugin-catalog/index.json`。已保存的索引源设置优先于默认值；启用索引不会安装其中的任何插件。
+
 ## 概述
 
 此可选组合包（bundle）挂载自定义插件索引：Host 的 [`pluginMarket`](../../boot/plugin-market/README.zh.md) 服务读取用户添加的插件索引，Web 端提供插件页的[发现标签页](../../client/ui-plugin-market/README.zh.md)。随包配置默认禁用。

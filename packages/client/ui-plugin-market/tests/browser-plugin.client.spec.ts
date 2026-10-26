@@ -22,11 +22,15 @@ it('contributes Discover to the Plugins page, follows Host changes, and withdraw
   }
   const remote = new TestRemote(ctx, { pluginMarket: market, pluginRegistryProbe: { fastest: vi.fn() } })
   const slots = ctx.get('slots') as SlotRegistry
-  slots.register({ name: 'root', children: { 'plugins.tab': { kind: 'list', scope: 'root' } } } as never, () => null)
+  slots.register({ name: 'root', children: { 'plugins.tab': { kind: 'list', scope: 'root' }, 'settings.plugins.tab': { kind: 'list', scope: 'root' } } } as never, () => null)
+  const installFrom = vi.fn(), openBundle = vi.fn()
+  ctx.provide('pluginNavigation', { openList: vi.fn(), openBundle, installFrom })
   const fiber = await ctx.plugin({ inject: [...inject], apply }).await()
   const [entry] = slots.entries('plugins.tab')
   expect(entry?.options.id).toBe('discover')
   expect(resolveSlotLabel(entry?.options.label)).toBe('Discover')
+  await vi.waitFor(() => { expect(slots.entries('settings.plugins.tab')[0]?.options.id).toBe('community') })
+  expect(resolveSlotLabel(slots.entries('settings.plugins.tab')[0]!.options.label)).toBe('Third-party plugins')
   remote.emit('plugin-market/changed', [])
   remote.emit('plugin-manager/changed', [{ reason: 'install' }])
   ctx.emit('connection/reset')
@@ -43,4 +47,5 @@ it('contributes Discover to the Plugins page, follows Host changes, and withdraw
   await vi.waitFor(() => { expect(market.listIndexes).toHaveBeenCalledTimes(3) })
   await fiber.dispose()
   expect(slots.entries('plugins.tab')).toEqual([])
+  expect(slots.entries('settings.plugins.tab')).toEqual([])
 })

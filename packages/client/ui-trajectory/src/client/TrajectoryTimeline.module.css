@@ -4,7 +4,6 @@
   isolation: isolate;
   flex: none;
   border-bottom: 0.5px solid var(--dsw-alias-border-l2);
-  user-select: none;
 }
 
 .root :global([role='tooltip']) {
@@ -12,6 +11,7 @@
 }
 
 .plot {
+  user-select: none;
   display: grid;
   grid-template-columns: 44px minmax(0, 1fr);
   height: 50px;

@@ -69,12 +69,12 @@ describe('FilesBody', () => {
 
   it('marks the root path clipped while its text is wider than its box, re-reading on resize', async () => {
     class FakeResizeObserver implements ResizeObserver {
-      static latest: FakeResizeObserver | undefined
+      static instances: FakeResizeObserver[] = []
       readonly observe = vi.fn()
       readonly unobserve = vi.fn()
       readonly disconnect = vi.fn()
       constructor(private readonly callback: ResizeObserverCallback) {
-        FakeResizeObserver.latest = this
+        FakeResizeObserver.instances.push(this)
       }
 
       fire(): void {
@@ -94,7 +94,7 @@ describe('FilesBody', () => {
       const path = view.container.querySelector<HTMLElement>('[data-files-path]')
       const text = path?.firstElementChild
       expect(path?.hasAttribute('data-path-clipped')).toBe(false)
-      const observer = FakeResizeObserver.latest
+      const observer = FakeResizeObserver.instances.find(instance => instance.observe.mock.calls.some(call => call[0] === path))
       if (observer === undefined) throw new Error('expected the path to observe its size')
       expect(observer.observe).toHaveBeenCalledWith(path)
       expect(observer.observe).toHaveBeenCalledWith(text)
@@ -146,16 +146,20 @@ describe('FilesBody', () => {
   })
 
   it('a file click opens its session-scoped file: address through the owner; an other entry offers no button', async () => {
-    const { view, script, tabActions } = mountBody()
+    const { view, script, tabActions, instance, remount } = mountBody()
     await act(() => script.watches.ready(ROOT))
     await act(() => script.settle({ ok: true, value: ROOT_LEVEL }))
     fireEvent.click(view.container.querySelector(`[data-files-path="${ROOT}/README.md"] > button`)!)
     // Every row sits under the tree's root, so the address is the path relative to it.
     expect(tabActions.openResource).toHaveBeenCalledWith(fileAddressFor(SESSION, ROOT, `${ROOT}/README.md`))
     expect(tabActions.openResource).toHaveBeenCalledWith('dsh-resource://file/session/s-test/README.md')
+    expect(instance.getSnapshot().byTab[TAB]?.selectedPath).toBe(`${ROOT}/README.md`)
+    expect(view.getByRole('button', { name: 'README.md' }).getAttribute('aria-current')).toBe('true')
     const other = view.container.querySelector(`[data-files-path="${ROOT}/pipe"]`)!
     expect(other.querySelector('button')).toBeNull()
     expect(other.querySelector('[aria-disabled="true"]')?.getAttribute('title')).toBe(zh['entry.other'])
+    view.unmount()
+    expect(remount().getByRole('button', { name: 'README.md' }).getAttribute('aria-current')).toBe('true')
   })
 
   it('marks a cut listing and an empty one', async () => {

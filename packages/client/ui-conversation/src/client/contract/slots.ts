@@ -224,7 +224,7 @@ declare module '@deepseek-ai/dsh-client-ui-slots' {
     'conversation.session': {
       kind: 'single'
       scope: 'session'
-      owner: { view?: string }
+      owner: { view?: string; studioTrace?: StudioTracePresentation }
     }
     /** Resident navigation container, including when no Session is selected. */
     'conversation.header': { kind: 'single'; scope: 'session-maybe' }
@@ -336,7 +336,7 @@ declare module '@deepseek-ai/dsh-client-ui-slots' {
       inject: ConversationInjected
       locale: 'conversation'
       slots: {
-        views: { scope: 'session' }
+        views: { scope: 'session'; props: { studioTrace?: StudioTracePresentation } }
         widthControls: { scope: 'root'; props: ConversationWidthControlsInputProps }
       }
     }
@@ -423,6 +423,12 @@ export type ConvViewProps = PropsRuntime<'conversation.view'>
 
 /** Business callbacks injected into the resident Conversation shell. */
 export interface ConversationInjected {
+  /** Root-owned Desktop visit state; new Sessions skip an already entered scene. */
+  studioVisit?: {
+    hasEntered: () => boolean
+    enter: () => void
+    opening?: { start: () => number; hasFinished: () => boolean; finish: () => void }
+  } | undefined
   /** Connect and open a blank Session in the selected Workspace. */
   selectWorkspace: (workspaceId: WorkspaceId) => Promise<void>
   /** Session-addressed composer block source, or the stable absent source. */
@@ -497,6 +503,8 @@ export interface ConversationSessionHeaderInjected {
 
 /** Owner share of the resident composer bar. */
 export interface ComposerBarOwnerProps {
+  /** Parent-owned desktop trajectory presentation. */
+  studioTrace?: { readonly fullscreen: boolean; readonly label: string; readonly toggle: () => void }
   /** Hero uses centered placement; composer uses the active bottom placement. */
   variant: 'hero' | 'composer'
   /** A feature-owned reason that makes message input inert while leaving model selection live. */
@@ -510,6 +518,14 @@ export interface ComposerBarOwnerProps {
   placeholder?: string
   /** Optional content rendered above the composer surface. */
   accessory?: ReactNode
+}
+
+/** Transient desktop trajectory controls owned by one resident content occurrence. */
+export interface StudioTracePresentation {
+  readonly fullscreen: boolean
+  readonly title: string
+  readonly closeLabel: string
+  readonly close: () => void
 }
 
 /** Package-private operations injected into the resident composer bar. */

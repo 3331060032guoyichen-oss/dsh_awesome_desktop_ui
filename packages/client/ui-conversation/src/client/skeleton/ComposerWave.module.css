@@ -1,0 +1,24 @@
+.root { display: none; position: absolute; inset: -2px; border-radius: inherit; pointer-events: none; z-index: -1; opacity: 0; transition: opacity .8s ease; }
+:global([data-desktop-letter]) [data-composer-card] { isolation: isolate; }
+:global([data-desktop-letter]) .root { display: block; }
+:global([data-composer-card]):has([data-composer-input][contenteditable='true']:focus) .root { opacity: 1; }
+.surface { position: absolute; inset: 2px; border-radius: inherit; background: linear-gradient(115deg, var(--dsw-alias-bg-layer-1) 10%, color-mix(in srgb, var(--dsw-alias-effort-violet-label) 6%, var(--dsw-alias-bg-layer-1)) 52%, var(--dsw-alias-bg-layer-1) 90%); background-size: 230% 100%; opacity: .7; box-shadow: 0 6px 24px color-mix(in srgb, var(--dsw-alias-studio-blue) 4%, transparent); }
+.edge { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.edge path { fill: none; vector-effect: non-scaling-stroke; stroke-linecap: round; stroke-width: 1; d: path('M24 4C180 4 280 2 400 4S620 6 760 4S900 2 976 4Q996 4 996 24V176Q996 196 976 196C820 196 720 198 600 196S380 194 240 196S100 198 24 196Q4 196 4 176V24Q4 4 24 4Z'); }
+.line { stroke: var(--dsw-alias-effort-blue-label); opacity: .4; }
+.light { stroke-width: 1.9 !important; stroke-dasharray: 115 885; }
+.start { stop-color: color-mix(in srgb, var(--dsw-alias-studio-blue) 50%, var(--dsw-alias-studio-paper)); stop-opacity: .25; }
+.middle { stop-color: var(--dsw-alias-effort-blue-label); }
+.end { stop-color: var(--dsw-alias-effort-violet-label); stop-opacity: .45; }
+@media (prefers-reduced-motion: no-preference) {
+  :global([data-composer-card]):has([data-composer-input][contenteditable='true']:focus) .surface { animation: paperBreath 7s ease-in-out infinite; }
+  :global([data-composer-card]):has([data-composer-input][contenteditable='true']:focus) .line { animation: wave 7s ease-in-out infinite; }
+  :global([data-composer-card]):has([data-composer-input][contenteditable='true']:focus) .light { animation: wave 7s ease-in-out infinite, travel 8s linear infinite; }
+}
+@keyframes paperBreath { 0%,100% { background-position: 0% 50%; transform: scale(1); opacity: .45; } 50% { background-position: 100% 50%; transform: scale(1.0015,1.004); opacity: .8; } }
+@keyframes travel { to { stroke-dashoffset: -1000; } }
+@keyframes wave {
+  0%,100% { d: path('M24 4C180 4 280 2 400 4S620 6 760 4S900 2 976 4Q996 4 996 24V176Q996 196 976 196C820 196 720 198 600 196S380 194 240 196S100 198 24 196Q4 196 4 176V24Q4 4 24 4Z'); }
+  50% { d: path('M24 4C180 4 280 6 400 4S620 2 760 4S900 6 976 4Q996 4 996 24V176Q996 196 976 196C820 196 720 194 600 196S380 198 240 196S100 194 24 196Q4 196 4 176V24Q4 4 24 4Z'); }
+}
+@media (prefers-reduced-motion: reduce) { .root { transition: none; } .light { stroke-dasharray: none; opacity: .25; } }

@@ -31,6 +31,10 @@ Saving credentials or a custom provider preserves the selected model. The user c
 
 DeepSeek Account appears first and DeepSeek second in the provider list; third-party providers retain their directory order.
 
+Opening Models unfolds a blue wallet sleeve carrying the startup whale seal and reveals the actual provider cards in sequence. Editors and credential actions remain on their cards. Each page visit replays the short entrance; reduced motion presents the final arrangement immediately.
+
+The sleeve settles before its cards, whose restrained travel keeps their final positions unchanged. Inset stitching follows the sleeve's curvature; provider-row touch controls offer at least 44px targets and desktop presses respond without changing layout.
+
 Open the Models page from the Settings navigation to see every configured provider as a row. A whole-section provider whose key is not configured anywhere renders as its open setup card instead, but only in the first-run posture and only until the user closes that card. Each card kind owns its own open state, so closing one never discards a draft in another.
 
 A provider with a stored catalog error remains visible with its diagnostic and edit/delete actions. Add actions are offered only for registered settings namespaces, so an unavailable namespace cannot leave a button that opens no editor. A rejected save leaves the editor open and displays the Host diagnostic.

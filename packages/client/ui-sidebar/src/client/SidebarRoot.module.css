@@ -35,6 +35,15 @@
   padding: 18px 10px 6px;
 }
 
+:global(html[data-desktop-studio='true']) .root {
+  background: var(--dsw-studio-frame-fill);
+}
+
+:global(html[data-desktop-studio='true']) .root .iconButton,
+:global(html[data-desktop-studio='true']) .root .newSession {
+  transition: color 180ms ease, background-color 180ms ease;
+}
+
 /* The brand stays in the sidebar; fixed caption controls survive zero-width collapse. */
 :global([data-windows-titlebar]) .root .logoRow {
   height: 40px;
@@ -668,3 +677,13 @@
     animation: none;
   }
 }
+
+:global(html[data-desktop-studio='true']) .panelRow { transition: transform 200ms ease, background-color 200ms ease, box-shadow 200ms ease; }
+:global(html[data-desktop-studio='true']) .panelRow:active { transform: translateY(-1px) scale(.98); }
+:global(html[data-desktop-studio='true']) .panelActive { background: var(--dsw-alias-bg-layer-1); box-shadow: var(--dsw-elevation-soft); }
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  :global(html[data-desktop-studio='true']) .panelRow:hover { transform: translateY(-2px); background: var(--dsw-alias-bg-layer-1); box-shadow: var(--dsw-elevation-soft); }
+  .panelRow[data-panel-id='more']:hover .panelGlyph { animation: moreTilt 1400ms ease-in-out infinite; }
+}
+@keyframes moreTilt { 50% { transform: rotate(12deg) scale(1.08); } }
+@media (prefers-reduced-motion: reduce) { .panelRow,.panelGlyph,.panelGlyph svg path { transition: none !important; animation: none !important; } }

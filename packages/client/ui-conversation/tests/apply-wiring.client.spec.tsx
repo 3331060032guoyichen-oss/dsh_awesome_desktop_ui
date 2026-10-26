@@ -44,6 +44,23 @@ function entry(
 }
 
 describe('target-neutral Conversation apply wiring', () => {
+  it('publishes the composer only after its conversation service is ready on remount', async () => {
+    const b = await bench()
+    try {
+      await b.feature.dispose()
+      const missing: string[] = []
+      const unsubscribe = b.runtime.slots.subscribe('conversation.composer.bar', () => {
+        if (b.runtime.slots.entries('conversation.composer.bar').length > 0 && b.runtime.ctx.get('conversation') === undefined) {
+          missing.push('composer published without its conversation service')
+        }
+      })
+      try {
+        await b.runtime.mount({ inject: [...inject], apply })
+        expect(b.runtime.slots.entries('conversation.composer.bar')).toHaveLength(1)
+        expect(missing).toEqual([])
+      } finally { unsubscribe() }
+    } finally { await b.runtime.dispose() }
+  })
   it('hands every Session header the same in-memory View pins without restoring saved choices', async () => {
     localStorage.setItem('dsh.slot.manual-order.conversation.view.v1', JSON.stringify({ unpinned: ['trajectory'] }))
     try {
@@ -130,7 +147,7 @@ describe('target-neutral Conversation apply wiring', () => {
     expect(b.runtime.slots.spec('conversation.composer'))
       .toEqual({ kind: 'chain', scope: 'session' })
     expect(b.runtime.slots.entries('settings.general.item').map(row => row.options.id))
-      .toEqual(['composer-enter'])
+      .toEqual(['composer-enter', 'desktop-studio-time'])
     await b.runtime.dispose()
   })
 

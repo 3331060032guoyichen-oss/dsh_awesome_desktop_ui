@@ -76,6 +76,16 @@
   --dsh-scrollbar-thumb-hover: var(--dsw-alias-scrollbar-hover-l2);
 }
 
+:global([data-desktop-letter]) .card { height: 112px; flex: none; gap: 8px; border-radius: var(--dsw-radius-lg); }
+:global([data-desktop-letter]) .scroll { flex: 1; min-height: 0; }
+:global([data-desktop-letter]) .row { flex: none; flex-wrap: nowrap; gap: 8px; }
+:global([data-desktop-letter]) .root { width: 100%; box-sizing: border-box; min-width: 0; }
+:global([data-desktop-letter]) .dock { flex: none; flex-wrap: wrap; min-height: 24px; gap: 4px 12px; }
+:global([data-desktop-letter]) .row[data-model-compact] { --dsh-composer-model-text-display: block; --dsh-composer-model-icon-display: none; }
+.studioTraceButton { border: 0; background: transparent; color: var(--dsw-alias-label-primary); cursor: pointer; padding: 6px; font-size: 12px; line-height: 20px; }
+.studioTraceButton[aria-pressed='true'] { background: var(--dsw-alias-interactive-bg-hover); }
+@media (max-width: 700px) { :global([data-desktop-letter]) .card { height: 108px; } :global([data-desktop-letter]) .tools { gap: 4px; } :global([data-desktop-letter]) .modes { gap: 4px; } }
+
 @media (pointer: coarse) {
   .card {
     font-size: max(16px, var(--dsh-content-font-size, 14px));

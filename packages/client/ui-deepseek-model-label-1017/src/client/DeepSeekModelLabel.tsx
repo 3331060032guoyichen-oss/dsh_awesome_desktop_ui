@@ -11,11 +11,14 @@ const MODEL_NAME = 'DeepSeek-V4.1-Flash'
  * @param props - Provider and model identity plus the badge dictionary.
  * @returns The base name with a badge, or the untouched catalog name.
  */
-export function DeepSeekModelLabel({ provider, model, t }:
+export function DeepSeekModelLabel({ provider, model, t, placement }:
   PropsRuntime<'conversation.input.model.label'> & PropsLocale<'deepseek-model-label-1017'>,
 ) {
   const official = provider.id === 'deepseek-account' || provider.id === 'deepseek-official'
   if (!official || model.id !== 'deepseek-flash' || model.name !== MODEL_NAME) return model.name
+  if (placement === 'trigger' && document.documentElement.dataset.desktopStudio === 'true') {
+    return model.name.replace('DeepSeek-', '').replaceAll('-', ' ')
+  }
   return <span className={css.label}>
     <span>{model.name}</span>{' '}<Tag tone="info">{t('badge.label')}</Tag>
   </span>

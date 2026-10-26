@@ -7,6 +7,14 @@ kind: "package-reference"
 
 English | [中文](README.zh.md)
 
+The Desktop studio palette coordinates warm paper controls with Klein blue. Trajectory surfaces use blue with a faint square grid and warm paper text.
+
+Desktop respects Light, Dark, and System preferences through the existing resolved-theme state. Light uses warm paper and Klein blue; Dark uses deep indigo surfaces and warm ivory text, including Settings cards, the composer, usage heatmaps, and effort controls. System responds to operating-system changes while explicit choices remain fixed. The illustrated scene and blue trajectory retain their own palettes.
+
+Desktop uses a native Klein blue paper-arrow cursor with a warm paper outline. Editable text retains its text caret.
+
+Desktop body selections use Klein blue with warm paper text, inverted on blue trajectory surfaces (9.3:1 contrast). Body text remains selectable and supports native keyboard copying; buttons and drag handles suppress accidental selection.
+
 ## Summary
 
 `dsh-client-ui-theme` lets Web GUI users choose `light`, `dark`, or `system`, and set the font and font size of text, code, and the terminal separately in Settings. Every authenticated browser stores these values in the `ui-theme` settings namespace, which the local provider persists in `$DSH_HOME/cordis.patch.yml` by default. The plugin resolves `system` through `prefers-color-scheme` and publishes immutable `ThemeSnapshot`s; ui-layout applies each snapshot to the document. The package also ships the `--dsw-*` token stylesheets and injects a synchronous bootstrap so the selected palette, font size, and fonts apply before the shell loads. Third-party themes can register alias-token overrides through `ctx.theme`.
