@@ -57,7 +57,7 @@
     "@deepseek-ai/cordis": "workspace:~"
   },
   "devDependencies": {
-    "chrome-devtools-frontend": "1.0.1638082",
+    "chrome-devtools-frontend": "1.0.1704172",
     "@types/serve-static": "^2.2.0",
     "@deepseek-ai/dsh-client-test-runtime": "workspace:*",
     "@testing-library/react": "^16.3.3",
