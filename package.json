@@ -277,7 +277,7 @@
     "mermaid": "11.17.2",
     "micromark-extension-gfm": "^3.0.0",
     "oxlint": "1.81.0",
-    "oxlint-tsgolint": "7.0.2001",
+    "oxlint-tsgolint": "7.0.2003",
     "papaparse": "5.5.3",
     "pnpm": "11.28.5",
     "publint": "^0.3.24",
