@@ -271,6 +271,8 @@ Use `node apps/desktop/scripts/test-windows-installer.mjs --uninstall-only --com
 
 ## Updates
 
+Community Lite excludes the native LibreOffice conversion engine and its operation skills while retaining Python authoring dependencies.
+
 The explicit [community Windows distribution](packaging/README.md#community-windows-installer) uses manual GitHub downloads. Its Check for updates action opens the project release page; it does not poll, download, or enforce desktop updates. The deployment update behavior below applies to other packaging modes.
 
 On Windows, the downloaded-update confirmation explains that the application closes during installation, reopens automatically, and should not be launched again while updating. An installer restart carrying `--updated` raises and focuses the main window once when startup opens the workspace directly, without enabling always-on-top. Startup into the welcome page discards that request so a later login keeps its normal activation behavior. Ordinary launches and other platforms do not use this foregrounding step.

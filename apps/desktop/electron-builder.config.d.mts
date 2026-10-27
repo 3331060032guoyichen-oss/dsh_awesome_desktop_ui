@@ -19,6 +19,7 @@ export interface DesktopElectronBuilderConfig {
   readonly extraMetadata: {
     readonly dshDesktopAppId: string
     readonly dshCommunityDistribution?: 'github-manual'
+    readonly dshDesktopFeatures?: { readonly officeConversion: false }
     readonly dshMandatoryUpdatePolicy?: DesktopPolicyEnvironment
   }
   readonly asarUnpack: readonly string[]

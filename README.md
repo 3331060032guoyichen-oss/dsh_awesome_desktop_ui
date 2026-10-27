@@ -118,7 +118,7 @@ pnpm run build
 pnpm run start:desktop
 ```
 
-On Windows x64, [build a standalone community installer](apps/desktop/packaging/README.md#community-windows-installer) with `pnpm run package:desktop:community:win:x64`. This unsigned package bundles its runtimes and uses manual GitHub downloads for updates; **Application → Check for updates** opens Releases.
+On Windows x64, [build a standalone community installer](apps/desktop/packaging/README.md#community-windows-installer) with `pnpm run package:desktop:community:win:x64`. Community Lite omits Office-to-PDF conversion and LibreOffice operation skills. This unsigned package bundles its runtimes and uses manual GitHub downloads for updates; **Application → Check for updates** opens Releases.
 
 ### Plugins
 

@@ -121,7 +121,7 @@ pnpm run build
 pnpm run start:desktop
 ```
 
-在 Windows x64 上，可运行 `pnpm run package:desktop:community:win:x64` [构建独立社区安装包](apps/desktop/packaging/README.zh.md#community-windows-installer)。未签名包自带运行环境，通过 GitHub 手动下载安装更新；**应用 → 检查更新**打开 Releases。
+在 Windows x64 上，可运行 `pnpm run package:desktop:community:win:x64` [构建独立社区安装包](apps/desktop/packaging/README.zh.md#community-windows-installer)。社区 Lite 不包含 Office 转 PDF 与 LibreOffice 操作技能。未签名包自带运行环境，通过 GitHub 手动下载安装更新；**应用 → 检查更新**打开 Releases。
 
 ### 插件说明
 

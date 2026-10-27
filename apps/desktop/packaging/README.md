@@ -46,7 +46,9 @@ pnpm run package:desktop:community:win:x64 --check
 pnpm run package:desktop:community:win:x64
 ```
 
-This mode builds an unsigned NSIS installer named `dsh-awesome-desktop-ui-<runtime-version>-win-x64-setup.exe` under `apps/desktop/.desktop-build/targets/win-x64/unsigned-artifacts/`. It uses the product name **DSH Awesome Desktop UI** and application ID `com.dshawesome.desktopui`. It bundles the matching Harness runtime, Node.js, Python, and workspace libraries; end users do not need developer tools. The installer version follows the pinned Harness runtime; the repository's UI release tag is separate.
+This mode builds an unsigned NSIS installer named `dsh-awesome-desktop-ui-<runtime-version>-win-x64-community-lite-setup.exe` under `apps/desktop/.desktop-build/targets/win-x64/unsigned-artifacts/`. It uses the product name **DSH Awesome Desktop UI** and application ID `com.dshawesome.desktopui`. It bundles the matching Harness runtime, Node.js, Python, and workspace libraries; end users do not need developer tools. The installer version follows the pinned Harness runtime; the repository's UI release tag is separate.
+
+Community Lite omits the native LibreOffice engine, Office-to-PDF provider, and LibreOffice operation skills. Chat, trajectory, model settings, regular document previews, and bundled Python authoring libraries remain available. Office files cannot be converted to PDF or rendered through LibreOffice in this distribution; this capability is disabled in the installed composition and checked during packaged Host startup.
 
 Community packaging does not read deployment dotenv files or machine presets, and strips inherited release and signing settings. It embeds neither a mandatory-update policy nor an automatic-update feed. **Application → Check for updates** opens this project's GitHub Releases page. Users quit the running application and install a downloaded newer package manually. The unsigned installer may trigger Windows publisher or reputation warnings; this mode does not disable operating-system protections. Existing signed and upstream deployment commands retain their configuration and update requirements.
 

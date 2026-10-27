@@ -18,6 +18,8 @@ export interface Config {
   readonly root: string
   /** Prepared or ASAR-contained application dependency directory. */
   readonly runtimeDir: string
+  /** Keep authoring libraries while omitting LibreOffice operations in community Lite. */
+  readonly authoringOnly?: boolean
 }
 
 /**
@@ -27,6 +29,7 @@ export interface Config {
  */
 export async function apply(ctx: Context, config: Config): Promise<void> {
   await ctx.plugin(workspaceDependencies, config)
+  if (config.authoringOnly) return
   const archive = runtimeArchivePath(config.runtimeDir) === undefined ? undefined : dirname(realpathSync(config.runtimeDir))
   const manifest = fileURLToPath(import.meta.resolve('@deepseek-ai/libreoffice-kit/package.json'))
   const packageRoot = dirname(archive === undefined ? manifest : join(`${archive}.unpacked`, relative(archive, manifest)))

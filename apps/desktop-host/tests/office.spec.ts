@@ -13,7 +13,7 @@ import ToolRuntime from '@deepseek-ai/dsh-tools'
 import { expect, it, vi } from 'vitest'
 import * as desktopOffice from '../src/office.ts'
 
-it('loads Desktop Office CLI paths and removes them on disposal', async () => {
+it.each([false, true])('owns Desktop Office capabilities and disposal with authoringOnly=%s', async (authoringOnly) => {
   const root = await mkdtemp(join(tmpdir(), 'desktop-office-'))
   vi.stubEnv('DSH_HOME', root)
   const ctx = new Context()
@@ -43,17 +43,20 @@ it('loads Desktop Office CLI paths and removes them on disposal', async () => {
     const config = join(root, 'cordis.yml')
     await writeFile(config, [
       '- name: agents', '- name: systemPrompt', '- name: tools', '- name: skills', '- name: office',
-      '  config:', `    source: ${JSON.stringify(join(root, 'runtime', 'primary-runtime'))}`,
+      '  config:', `    authoringOnly: ${authoringOnly}`, `    source: ${JSON.stringify(join(root, 'runtime', 'primary-runtime'))}`,
       `    root: ${JSON.stringify(join(root, 'installed'))}`,
       `    runtimeDir: ${JSON.stringify(join(root, 'dsh'))}`, '',
     ].join('\n'))
     await ctx.loader.create({ name: 'cordis:include', config: { path: pathToFileURL(config).href } })
     await ctx.loader.await()
     for (const entry of ctx.loader.entries()) await entry.fiber?.await()
-    expect((await ctx.skills.list()).map(skill => skill.name)).toEqual(['office', 'office-docx', 'office-export-pdf', 'office-pptx', 'office-recalculate', 'office-render', 'office-xlsx'])
-    expect((await ctx.skills.get('office-pptx'))?.resourceBase).toEqual({ kind: 'directory', path: join(assets, 'office-pptx').split(sep).join('/') })
-    expect((await ctx.skills.get('office-pptx'))?.content).toContain('office-render')
-    expect((await ctx.skills.get('office-pptx'))?.content).not.toContain(nodeDirectory)
+    expect((await ctx.skills.list()).map(skill => skill.name)).toEqual(authoringOnly ? [] : ['office', 'office-docx', 'office-export-pdf', 'office-pptx', 'office-recalculate', 'office-render', 'office-xlsx'])
+    if (authoringOnly) expect(await ctx.skills.get('office-pptx')).toBeUndefined()
+    else {
+      expect((await ctx.skills.get('office-pptx'))?.resourceBase).toEqual({ kind: 'directory', path: join(assets, 'office-pptx').split(sep).join('/') })
+      expect((await ctx.skills.get('office-pptx'))?.content).toContain('office-render')
+      expect((await ctx.skills.get('office-pptx'))?.content).not.toContain(nodeDirectory)
+    }
     expect(ctx.tools.schemas().map(tool => tool.name)).toEqual(['load_workspace_dependencies'])
     const entry = [...ctx.loader.entries()].find(entry => entry.options.name === 'office')
     expect(entry).toBeDefined()

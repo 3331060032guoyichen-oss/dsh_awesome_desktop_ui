@@ -113,7 +113,7 @@ export function createElectronBuilderConfig(
       dshDesktopAppId: appId,
       dshDesktopUpdateChannel: update?.channel ?? 'nightly',
       ...(policy === undefined ? {} : { dshMandatoryUpdatePolicy: policy }),
-      ...(community ? { dshCommunityDistribution: 'github-manual' } : {}),
+      ...(community ? { dshCommunityDistribution: 'github-manual', dshDesktopFeatures: { officeConversion: false } } : {}),
       ...buildVersion === productVersion ? {} : { version: buildVersion },
       ...packaged === undefined ? {} : { dshBuildCommit: packaged.commit, dshBuildDirty: packaged.dirty },
     },
@@ -122,7 +122,7 @@ export function createElectronBuilderConfig(
     copyright: `Copyright © ${new Date().getFullYear()} \${productName}`,
     // Unsigned builds carry their own suffix so a shared file can never pass for a release artifact.
     artifactName: community
-      ? 'dsh-awesome-desktop-ui-\${version}-\${os}-\${arch}-setup.\${ext}'
+      ? 'dsh-awesome-desktop-ui-\${version}-\${os}-\${arch}-community-lite-setup.\${ext}'
       : `deepseek-harness-\${version}-\${os}-\${arch}${output.suffix}.\${ext}`,
     directories: { output: output.directory },
     asar: true,
@@ -190,7 +190,7 @@ export function createElectronBuilderConfig(
       writeUpdateInfo: false,
     },
     beforePack: async context => {
-      const office = await officePackageDirectories(buildPaths.dsh, { platform: resolvedPlatform, arch: resolvedArch })
+      const office = community ? [] : await officePackageDirectories(buildPaths.dsh, { platform: resolvedPlatform, arch: resolvedArch })
       const patterns = office.map(directory => `**/${relative(buildPaths.dsh, directory).split(sep).join('/')}/**/*`)
       const existing = context.packager.config.asarUnpack ?? []
       context.packager.config.asarUnpack = [...(typeof existing === 'string' ? [existing] : existing), ...patterns]

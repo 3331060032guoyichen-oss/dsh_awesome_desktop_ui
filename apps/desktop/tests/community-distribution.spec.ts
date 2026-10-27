@@ -3,6 +3,8 @@ import { communityPackageEnvironment, validateDesktopPackageEnvironment } from '
 import { parseDesktopPackageInvocation } from '../scripts/package-target.ts'
 import { createElectronBuilderConfig } from '../scripts/electron-builder-config.mjs'
 import { communityReleasePage } from '../src/community-release.ts'
+import { desktopOfficeConversionEnabled } from '../../desktop-host/src/distribution.ts'
+import { desktopRuntimeFileExclusion } from '../scripts/runtime-file-policy.ts'
 
 describe('community Windows distribution', () => {
   it('builds without deployment files, policy services, update feeds, or signing credentials', () => {
@@ -26,6 +28,12 @@ describe('community Windows distribution', () => {
     expect(config.extraMetadata.dshCommunityDistribution).toBe('github-manual')
     expect(config.extraMetadata.dshMandatoryUpdatePolicy).toBeUndefined()
     expect(config.publish).toBeNull()
+    expect(config.extraMetadata.dshDesktopFeatures).toEqual({ officeConversion: false })
+    expect(desktopOfficeConversionEnabled(config.extraMetadata)).toBe(false)
+    expect(desktopOfficeConversionEnabled({})).toBe(true)
+    expect(() => desktopOfficeConversionEnabled({ dshDesktopFeatures: { officeConversion: 'false' } })).toThrow(/metadata/u)
+    expect(desktopRuntimeFileExclusion('node_modules/@deepseek-ai/libreoffice-kit-win32-x64/bin/libreoffice-kit.exe',
+      { platform: 'win32', arch: 'x64' }, 'none')).toBeDefined()
     expect(communityReleasePage(config.extraMetadata)).toBe(
       'https://github.com/3331060032guoyichen-oss/dsh_awesome_desktop_ui/releases',
     )
