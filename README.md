@@ -6,7 +6,7 @@ English | [中文](README.zh.md)
 
 <p align="center"><strong>An Agent workspace with the warmth of a real desk.</strong></p>
 <p align="center">Klein blue · Ivory · Quiet motion · A workflow people can follow</p>
-<p align="center"><a href="https://github.com/3331060032guoyichen-oss/dsh_awesome_desktop_ui/releases">Downloads</a> · <a href="#video">Video</a> · <a href="#design-references-and-credits">Design references</a> · <a href="LICENSE">MIT</a></p>
+<p align="center"><a href="https://github.com/3331060032guoyichen-oss/dsh_awesome_desktop_ui/releases/latest">Download the latest version</a> · <a href="#video">Video</a> · <a href="#design-references-and-credits">Design references</a> · <a href="LICENSE">MIT</a></p>
 
 ![The illustrated desk homepage](assets/readme/home.png)
 
@@ -101,7 +101,7 @@ Light mode pairs ivory with Klein blue; Dark pairs deep indigo with warm ivory. 
 
 ### Windows desktop
 
-Check [Releases](https://github.com/3331060032guoyichen-oss/dsh_awesome_desktop_ui/releases) for available artifacts. If a release includes a Windows x64 `.exe`, download and install it. Source-only releases use the commands below.
+Download the [Windows x64 Full installer v1.0.3](https://github.com/3331060032guoyichen-oss/dsh_awesome_desktop_ui/releases/download/v1.0.3/DSH-Awesome-Desktop-UI-v1.0.3-Windows-x64-Full-Setup.exe), or visit the [latest release](https://github.com/3331060032guoyichen-oss/dsh_awesome_desktop_ui/releases/latest). The third-party plugin market and usage service are included. To upgrade, quit the current app and run the new installer; sessions and workspaces are retained.
 
 Sign in with your own DeepSeek account or configure an available provider in Settings. Accounts, keys, balances, and conversation histories are not distributed as application data.
 
@@ -118,7 +118,7 @@ pnpm run build
 pnpm run start:desktop
 ```
 
-On Windows x64, [build a standalone community installer](apps/desktop/packaging/README.md#community-windows-installer) with `pnpm run package:desktop:community:win:x64`. Community Lite omits Office-to-PDF conversion and LibreOffice operation skills. This unsigned package bundles its runtimes and uses manual GitHub downloads for updates; **Application → Check for updates** opens Releases.
+On Windows x64, [build a standalone community Full installer](apps/desktop/packaging/README.md#community-windows-installer) with `pnpm run package:desktop:community:win:x64:full`. The optional Lite command, `pnpm run package:desktop:community:win:x64`, omits Office-to-PDF conversion and LibreOffice operation skills. These unsigned packages bundle their runtimes and use manual GitHub downloads for updates; **Application → Check for updates** opens Releases.
 
 ### Plugins
 
@@ -126,7 +126,7 @@ The project retains Harness's plugin system for conversations, workspaces, files
 
 - Discovery uses the public [Awesome DSH Plugin](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin) index. Desktop enables the third-party tab by default with `https://cdn.jsdelivr.net/npm/dsh-plugin-catalog/index.json`. Browsing the catalog needs a network connection; listed plugins are installed only when requested.
 - Account statistics integrate with the bundled backend of [dsh-usage-stats](https://github.com/Ychris12138/dsh-usage-stats). Settings is the only usage entry point. Local Token totals work without another installation; provider balance and quota still require the user's own account or API credentials and provider support.
-- The **UI release is v1.0.0** and the underlying **Harness runtime is 0.2.1-rc.3**. These describe the design release and upstream runtime separately.
+- The **desktop release is v1.0.3** and the underlying **Harness runtime is 0.2.1-rc.3**. These describe the desktop release and upstream runtime separately.
 
 ## Design references and credits
 

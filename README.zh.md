@@ -5,7 +5,7 @@
 [English](README.md) | 中文
 <p align="center"><strong>让 Agent 的能力，住进一张有温度的桌面。</strong></p>
 <p align="center">克莱因蓝 · 米白 · 安静的动效 · 看得懂的工作流</p>
-<p align="center"><a href="https://github.com/3331060032guoyichen-oss/dsh_awesome_desktop_ui/releases">下载与版本</a> · <a href="#视频演示">视频演示</a> · <a href="#设计参考与致谢">设计参考</a> · <a href="LICENSE">MIT</a></p>
+<p align="center"><a href="https://github.com/3331060032guoyichen-oss/dsh_awesome_desktop_ui/releases/latest">下载最新版本</a> · <a href="#视频演示">视频演示</a> · <a href="#设计参考与致谢">设计参考</a> · <a href="LICENSE">MIT</a></p>
 
 
 
@@ -102,7 +102,7 @@
 
 ### Windows 桌面端
 
-前往 [Releases](https://github.com/3331060032guoyichen-oss/dsh_awesome_desktop_ui/releases) 查看当前发布内容。若版本提供 Windows x64 `.exe` 安装包，可以直接下载安装；若仅提供源码，请使用下方方式运行。
+直接下载 [Windows x64 完整版 v1.0.3 安装包](https://github.com/3331060032guoyichen-oss/dsh_awesome_desktop_ui/releases/download/v1.0.3/DSH-Awesome-Desktop-UI-v1.0.3-Windows-x64-Full-Setup.exe)，或前往[最新版本](https://github.com/3331060032guoyichen-oss/dsh_awesome_desktop_ui/releases/latest)。第三方插件市场和用量服务已内置。升级时先退出当前程序，再运行新安装包；会话与工作区会保留。
 
 首次使用需要登录自己的 DeepSeek 账号，或在设置中配置可用的模型提供方。账号、密钥、余额和历史记录不会随此仓库分发。
 
@@ -121,7 +121,7 @@ pnpm run build
 pnpm run start:desktop
 ```
 
-在 Windows x64 上，可运行 `pnpm run package:desktop:community:win:x64` [构建独立社区安装包](apps/desktop/packaging/README.zh.md#community-windows-installer)。社区 Lite 不包含 Office 转 PDF 与 LibreOffice 操作技能。未签名包自带运行环境，通过 GitHub 手动下载安装更新；**应用 → 检查更新**打开 Releases。
+在 Windows x64 上，可运行 `pnpm run package:desktop:community:win:x64:full` [构建独立社区完整版安装包](apps/desktop/packaging/README.zh.md#community-windows-installer)。可选的 Lite 构建命令为 `pnpm run package:desktop:community:win:x64`，不包含 Office 转 PDF 与 LibreOffice 操作技能。这些未签名包自带运行环境，通过 GitHub 手动下载安装更新；**应用 → 检查更新**打开 Releases。
 
 ### 插件说明
 
@@ -129,7 +129,7 @@ pnpm run start:desktop
 
 - 插件市场使用 [Awesome DSH Plugin](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin) 的公开索引。桌面端默认启用第三方插件分类，索引地址为 `https://cdn.jsdelivr.net/npm/dsh-plugin-catalog/index.json`。浏览目录需要联网，只有用户选择安装时才会下载具体插件。
 - 账号统计界面已内置 [dsh-usage-stats](https://github.com/Ychris12138/dsh-usage-stats) 的后端服务，设置是用量的唯一入口。本机 Token 汇总无需另行安装；供应商余额及额度仍需要用户自己的账号或 API 凭据，并取决于供应商支持。
-- 这是 **UI 版本 v1.0.0**，当前底层 Harness 版本为 **0.2.1-rc.3**。两者的版本号分别描述本项目设计版本与上游运行时。
+- 当前**桌面版本为 v1.0.3**，底层 Harness 版本为 **0.2.1-rc.3**。两者的版本号分别描述本项目桌面版本与上游运行时。
 
 ## 设计参考与致谢
 
