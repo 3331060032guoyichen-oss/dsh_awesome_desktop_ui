@@ -11,6 +11,8 @@ import { readPrimaryRuntime, workspaceDependencyPaths } from '../../../packages/
 import { DesktopHostProcess } from '../src/host-process.ts'
 import { createPluginProfile } from '../src/project-manager.ts'
 import { desktopOfficeConversionEnabled } from '../../desktop-host/src/distribution.ts'
+import { runtimeArchivePath } from '../../desktop-host/src/office-engine.ts'
+import { readAsar } from 'app-builder-lib/out/asar/asar.js'
 import type { DesktopRuntimeDescriptor } from '../src/runtime-tree.ts'
 
 /**
@@ -25,7 +27,10 @@ import type { DesktopRuntimeDescriptor } from '../src/runtime-tree.ts'
 export async function smokeDesktopRuntime(
   root: string, node: string, runtime: DesktopRuntimeDescriptor, environment: NodeJS.ProcessEnv, resourcesRuntime: string,
 ): Promise<void> {
-  const officeConversion = desktopOfficeConversionEnabled(JSON.parse(readFileSync(join(root, 'package.json'), 'utf8')))
+  const archive = runtimeArchivePath(root)
+  const manifest = archive === undefined ? readFileSync(join(root, 'package.json'))
+    : await (await readAsar(archive)).readFile('dsh/package.json')
+  const officeConversion = desktopOfficeConversionEnabled(JSON.parse(manifest.toString('utf8')))
   const home = mkdtempSync(join(tmpdir(), 'dsh-desktop-smoke-'))
   const profile = join(home, 'profiles', 'desktop')
   const hostEnvironment = {
