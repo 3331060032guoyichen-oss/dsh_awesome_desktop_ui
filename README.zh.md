@@ -5,7 +5,7 @@
 [English](README.md) | 中文
 <p align="center"><strong>让 Agent 的能力，住进一张有温度的桌面。</strong></p>
 <p align="center">克莱因蓝 · 米白 · 安静的动效 · 看得懂的工作流</p>
-<p align="center"><a href="https://github.com/3331060032guoyichen-oss/dsh_awesome_desktop_ui/releases">下载与版本</a> · <a href="#视频演示">视频演示</a> · <a href="#设计参考与致谢">设计参考</a> · <a href="README.md">English</a> · <a href="LICENSE">MIT</a></p>
+<p align="center"><a href="https://github.com/3331060032guoyichen-oss/dsh_awesome_desktop_ui/releases">下载与版本</a> · <a href="#视频演示">视频演示</a> · <a href="#设计参考与致谢">设计参考</a> · <a href="LICENSE">MIT</a></p>
 
 
 
@@ -87,11 +87,16 @@
 <summary>查看 Hook、推理强度、像素侧栏与状态细节截图</summary>
 
 ![工作区文件的 Hook 层级连线](assets/readme/hook.png)
+
 ![推理强度渐变轨道与粒子细节](assets/readme/effort.png)
+
 ![整块侧边栏的像素聚拢与展开过程](assets/readme/sidebar.png)
+
 ![对话中的 Agent 状态反馈](assets/readme/status.png)
 
 </details>
+
+<a id="run"></a>
 
 ## 开始使用
 
@@ -100,6 +105,8 @@
 前往 [Releases](https://github.com/3331060032guoyichen-oss/dsh_awesome_desktop_ui/releases) 查看当前发布内容。若版本提供 Windows x64 `.exe` 安装包，可以直接下载安装；若仅提供源码，请使用下方方式运行。
 
 首次使用需要登录自己的 DeepSeek 账号，或在设置中配置可用的模型提供方。账号、密钥、余额和历史记录不会随此仓库分发。
+
+<a id="run-from-source"></a>
 
 ### 从源码运行
 

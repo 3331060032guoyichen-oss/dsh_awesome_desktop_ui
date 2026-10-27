@@ -86,11 +86,16 @@ Light mode pairs ivory with Klein blue; Dark pairs deep indigo with warm ivory. 
 <summary>See Hook, effort, sidebar pixels, and status details</summary>
 
 ![Workspace Hook hierarchy](assets/readme/hook.png)
+
 ![Reasoning effort gradient and particles](assets/readme/effort.png)
+
 ![The sidebar gathering and unfolding as pixels](assets/readme/sidebar.png)
+
 ![Agent activity status](assets/readme/status.png)
 
 </details>
+
+<a id="run"></a>
 
 ## Get started
 
