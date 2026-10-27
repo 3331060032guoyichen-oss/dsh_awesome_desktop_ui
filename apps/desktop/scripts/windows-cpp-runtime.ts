@@ -39,8 +39,9 @@ function verifyMicrosoftRuntime(files: readonly string[]): void {
       throw 'desktop CRT: a redistributable has no valid Microsoft signature'
     }
   }`
+  // Windows PowerShell must discover its own modules, rather than PowerShell Core assemblies.
   execFileSync('powershell.exe', ['-NoLogo', '-NoProfile', '-NonInteractive', '-Command', script], {
-    env: { ...process.env, DSH_CRT_FILES: JSON.stringify(files) }, windowsHide: true, timeout: 60_000, stdio: 'pipe',
+    env: { ...process.env, PSModulePath: undefined, DSH_CRT_FILES: JSON.stringify(files) }, windowsHide: true, timeout: 60_000, stdio: 'pipe',
   })
 }
 
