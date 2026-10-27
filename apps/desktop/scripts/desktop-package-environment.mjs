@@ -22,6 +22,38 @@ const AMBIENT_RELEASE_SETTING = /^(?:DSH_DESKTOP_(?:APP_ID|AUTO_UPDATE_ENV|MANDA
 const FILE_SETTINGS = ['DSH_DESKTOP_WINDOWS_CER_FILE', 'DSH_DESKTOP_WINDOWS_SIGNTOOL', 'APPLE_API_KEY', 'APPLE_KEYCHAIN', 'CSC_LINK']
 
 /**
+ * Select the Windows community distribution without deployment or signing settings.
+ * @param {NodeJS.ProcessEnv} environment Parent tooling and network environment.
+ * @returns {NodeJS.ProcessEnv} Unsigned, manually updated community build settings.
+ */
+export function communityPackageEnvironment(environment = process.env) {
+  return {
+    ...Object.fromEntries(Object.entries(environment).filter(([name]) => !AMBIENT_RELEASE_SETTING.test(name)
+      && !/^(?:WIN_)?CSC_/iu.test(name) && !/^DSH_PACKAGING_/u.test(name))),
+    DSH_DESKTOP_APP_ID: 'com.dshawesome.desktopui',
+    DSH_DESKTOP_UNSIGNED: '1',
+    DSH_DESKTOP_COMMUNITY_BUILD: '1',
+  }
+}
+
+/**
+ * Admit the explicit community mode only for its unsigned Windows application.
+ * @param {NodeJS.ProcessEnv} environment Build settings.
+ * @param {string} platform Target platform.
+ * @param {boolean} unsigned Whether signing is disabled.
+ * @returns {boolean} Whether to emit a manually updated community application.
+ */
+export function isCommunityPackageEnvironment(environment, platform, unsigned) {
+  const mode = environment.DSH_DESKTOP_COMMUNITY_BUILD
+  if (mode === undefined || mode === '0') return false
+  if (mode !== '1' || platform !== 'win32' || !unsigned
+    || environment.DSH_DESKTOP_APP_ID !== 'com.dshawesome.desktopui') {
+    throw new Error('desktop package: community mode requires the unsigned Windows community application')
+  }
+  return true
+}
+
+/**
  * Select local macOS test defaults without reading dotenv files or inheriting release settings.
  * @param {NodeJS.ProcessEnv} environment Parent environment, retained for build tools and networking.
  * @returns {NodeJS.ProcessEnv} Unsigned build environment with the standard application identifier and no update policy.
@@ -156,7 +188,8 @@ export function validateDesktopPackageEnvironment(environment, target, options =
   resolveDesktopTargetBuildPaths(environment, target.platform, target.arch)
   resolveDesktopAppId(environment)
   resolveNpmRegistry(environment)
-  if (target.platform !== 'darwin' || !options.unsigned) resolveDesktopPolicyEnvironment(environment)
+  const community = isCommunityPackageEnvironment(environment, target.platform, options.unsigned === true)
+  if (!community && (target.platform !== 'darwin' || !options.unsigned)) resolveDesktopPolicyEnvironment(environment)
   if (target.platform === 'darwin') resolveMacOSPackageSettings(environment)
   else resolveWindowsPackageSettings(environment)
   if (options.unsigned) return

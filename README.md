@@ -78,7 +78,6 @@ Light mode pairs ivory with Klein blue; Dark pairs deep indigo with warm ivory. 
 | --- | --- |
 | Workspace Hook | Lines connect the specific workspace folder to its conversations, with no intrusion into trajectory pages. |
 | Reasoning effort | A Klein blue to violet track, particle density, and speed follow the selected effort. DeepSeek keeps its actual Low / High / Max levels; other providers follow their capabilities. |
-| Composer | Gentle breathing, a fine moving wave, and traveling light on focus, without shaking the editor. |
 | Sidebar | The whole panel gathers and unfolds as pixels, varying between three established accent combinations. |
 | Small icons | The plugin windmill accelerates on hover and slows after leaving; the automation clock responds in its own way. |
 | Controls | Focus contours match the corners, presses have a tiny displacement, and primary coarse-pointer targets keep 44px sizing. |
@@ -114,6 +113,8 @@ pnpm run build
 pnpm run start:desktop
 ```
 
+On Windows x64, [build a standalone community installer](apps/desktop/packaging/README.md#community-windows-installer) with `pnpm run package:desktop:community:win:x64`. This unsigned package bundles its runtimes and uses manual GitHub downloads for updates; **Application → Check for updates** opens Releases.
+
 ### Plugins
 
 The project retains Harness's plugin system for conversations, workspaces, files, tools, permissions, and provider settings. **Available tools depend on the enabled deployment plugins.**
@@ -146,7 +147,7 @@ The whale assembly, homepage, natural idle state, constrained parallax, manuscri
 
 Report display sizes, theme, animation, and interaction problems through [Issues](https://github.com/3331060032guoyichen-oss/dsh_awesome_desktop_ui/issues). Include the system, window size, and a screenshot when possible.
 
-Component checks, key page flows, and build checks have run. Windows installation and live providers still require validation with the actual package and environment. Original documentation is preserved in [README.upstream.md](README.upstream.md) and the [Chinese upstream guide](README.upstream.zh.md).
+Component checks, key page flows, and build checks have run. Windows installation and live providers still require validation with the actual package and environment. See the [upstream documentation](https://github.com/deepseek-ai/deepseek-harness#readme) for the underlying Harness.
 
 ## License
 

@@ -13,6 +13,7 @@ description: "在本地或 Windows／macOS Actions 中生成 Desktop 安装包�
 ## 目录
 
 - [选择打包方式](#choose-a-build)
+- [社区 Windows 安装包](#community-windows-installer)
 - [发布版本](#release-versions)
 - [配置与本地构建](#configuration-and-local-builds)
 - [Windows Actions 打包](#windows-actions)
@@ -33,6 +34,21 @@ description: "在本地或 Windows／macOS Actions 中生成 Desktop 安装包�
 安装锁定依赖后，从仓库根目录运行本地命令。本地构建使用平台命令，已注册的自托管 runner 使用对应平台的 Actions。test/production 部署与 signed/unsigned 模式分别选择。任何 Windows 签名构建或共享 runner 使用前，先阅读 [Windows 签名与 runner 运维](../windows-signing/README.zh.md#trust-and-isolation)。安装与打包分开进行；[发布](../publishing/README.zh.md)还需要单独的显式操作。
 
 将 `DSH_DESKTOP_PACKAGE_CACHE_DIR` 设为绝对构建缓存目录以跨 checkout 复用；详见[缓存配置与生命周期](#desktop-runtime-preparation)。
+
+<a id="community-windows-installer"></a>
+
+## 社区 Windows 安装包
+
+在 Windows x64 上安装锁定依赖和 Visual Studio C++ 构建工具后，从仓库根目录运行显式社区命令：
+
+```sh
+pnpm run package:desktop:community:win:x64 --check
+pnpm run package:desktop:community:win:x64
+```
+
+此模式生成未签名 NSIS 安装包 `dsh-awesome-desktop-ui-<runtime-version>-win-x64-setup.exe`，位于 `apps/desktop/.desktop-build/targets/win-x64/unsigned-artifacts/`。产品名称为 **DSH Awesome Desktop UI**，应用 ID 为 `com.dshawesome.desktopui`。安装包包含匹配的 Harness 运行时、Node.js、Python 和工作区依赖，最终用户无需开发工具。安装包版本跟随锁定的 Harness 运行时，仓库的 UI 发布标签单独管理。
+
+社区打包不读取部署 dotenv 文件或机器预设，并剔除继承的发布和签名配置。包内不包含强制更新策略或自动更新源。**应用 → 检查更新**打开本项目 GitHub Releases 页面；用户退出正在运行的应用，手动安装下载的新版本。未签名安装包可能触发 Windows 发布者或信誉提示，此模式不会关闭操作系统保护。现有签名和上游部署命令保留原有配置与更新要求。
 
 <a id="release-versions"></a>
 

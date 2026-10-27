@@ -5,7 +5,7 @@
 [English](README.md) | 中文
 <p align="center"><strong>让 Agent 的能力，住进一张有温度的桌面。</strong></p>
 <p align="center">克莱因蓝 · 米白 · 安静的动效 · 看得懂的工作流</p>
-<p align="center"><a href="https://github.com/3331060032guoyichen-oss/dsh_awesome_desktop_ui/releases">下载与版本</a> · <a href="#视频演示">视频演示</a> · <a href="#设计参考与致谢">设计参考</a> · <a href="README.md">项目首页</a> · <a href="README.en.md">English</a> · <a href="LICENSE">MIT</a></p>
+<p align="center"><a href="https://github.com/3331060032guoyichen-oss/dsh_awesome_desktop_ui/releases">下载与版本</a> · <a href="#视频演示">视频演示</a> · <a href="#设计参考与致谢">设计参考</a> · <a href="README.md">English</a> · <a href="LICENSE">MIT</a></p>
 
 
 
@@ -79,7 +79,6 @@
 | --- | --- |
 | 工作区 Hook | 连线从具体工作区文件夹连接到内部会话；文件层级清晰，轨迹页面不受影响。 |
 | 推理强度 | 克莱因蓝到紫色的渐变、粒子密度与运动速度随档位变化。DeepSeek 保留真实的 Low / High / Max 三档，其他模型按能力呈现。 |
-| 输入框 | 聚焦时轻微呼吸、细线波动与移动光波，避免整体晃动干扰输入。 |
 | 侧边栏 | 整块面板以像素快速聚拢或展开，在既定的三组点缀色中变化。 |
 | 小图标 | 插件风车悬停后逐渐加速，移开后缓缓停止；自动化时钟提供对应反馈。 |
 | 控件触感 | 圆角焦点框贴合控件，轻按有微小位移，触屏主要操作保留 44px 目标。 |
@@ -115,6 +114,8 @@ pnpm run build
 pnpm run start:desktop
 ```
 
+在 Windows x64 上，可运行 `pnpm run package:desktop:community:win:x64` [构建独立社区安装包](apps/desktop/packaging/README.zh.md#community-windows-installer)。未签名包自带运行环境，通过 GitHub 手动下载安装更新；**应用 → 检查更新**打开 Releases。
+
 ### 插件说明
 
 项目沿用 Harness 的基础插件体系，包括会话、工作区、文件、工具、权限和模型配置。**可用工具以当前部署启用的插件为准。**
@@ -147,7 +148,7 @@ pnpm run start:desktop
 
 欢迎通过 [Issues](https://github.com/3331060032guoyichen-oss/dsh_awesome_desktop_ui/issues) 提交显示尺寸、主题、动效或交互问题。附上系统、窗口大小和截图会更容易复现。
 
-本次设计已进行组件检查、关键页面流程检查与构建检查；Windows 安装与模型联网能力需要结合实际发布包和使用环境验证。原始项目说明保留在 [README.upstream.md](README.upstream.md) 与 [中文上游说明](README.upstream.zh.md)。
+本次设计已进行组件检查、关键页面流程检查与构建检查；Windows 安装与模型联网能力需要结合实际发布包和使用环境验证。底层 Harness 的使用与开发说明请查看[上游文档](https://github.com/deepseek-ai/deepseek-harness#readme)。
 
 ## License
 

@@ -13,6 +13,7 @@ Build Desktop installers locally or through Windows or macOS Actions, choose dep
 ## Table of Contents
 
 - [Choose a build path](#choose-a-build)
+- [Community Windows installer](#community-windows-installer)
 - [Release versions](#release-versions)
 - [Configuration and local builds](#configuration-and-local-builds)
 - [Windows Actions packaging](#windows-actions)
@@ -33,6 +34,21 @@ Build Desktop installers locally or through Windows or macOS Actions, choose dep
 Run local commands from the repository root after installing locked dependencies. Use platform-specific commands for a local build, or platform Actions for the registered self-hosted runner. Choose test or production deployment independently from signed or unsigned mode. Read [Windows signing and runner operations](../windows-signing/README.md#trust-and-isolation) before any Windows signed build or shared-runner use. Installation is separate from packaging; [publication](../publishing/README.md) is a further explicit operation.
 
 Set `DSH_DESKTOP_PACKAGE_CACHE_DIR` to an absolute build-cache directory for reuse across checkouts; see [cache configuration and lifecycle](#desktop-runtime-preparation).
+
+<a id="community-windows-installer"></a>
+
+## Community Windows installer
+
+On Windows x64 with locked dependencies and Visual Studio C++ build tools installed, run the explicit community command from the repository root:
+
+```sh
+pnpm run package:desktop:community:win:x64 --check
+pnpm run package:desktop:community:win:x64
+```
+
+This mode builds an unsigned NSIS installer named `dsh-awesome-desktop-ui-<runtime-version>-win-x64-setup.exe` under `apps/desktop/.desktop-build/targets/win-x64/unsigned-artifacts/`. It uses the product name **DSH Awesome Desktop UI** and application ID `com.dshawesome.desktopui`. It bundles the matching Harness runtime, Node.js, Python, and workspace libraries; end users do not need developer tools. The installer version follows the pinned Harness runtime; the repository's UI release tag is separate.
+
+Community packaging does not read deployment dotenv files or machine presets, and strips inherited release and signing settings. It embeds neither a mandatory-update policy nor an automatic-update feed. **Application → Check for updates** opens this project's GitHub Releases page. Users quit the running application and install a downloaded newer package manually. The unsigned installer may trigger Windows publisher or reputation warnings; this mode does not disable operating-system protections. Existing signed and upstream deployment commands retain their configuration and update requirements.
 
 <a id="release-versions"></a>
 
