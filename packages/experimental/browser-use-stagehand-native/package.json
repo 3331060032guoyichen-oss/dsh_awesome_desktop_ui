@@ -48,7 +48,7 @@
     "@deepseek-ai/schemastery": "workspace:~",
     "zod": "4.4.3",
     "@deepseek-ai/dsh-subprocess": "workspace:*",
-    "@puppeteer/browsers": "3.2.2"
+    "@puppeteer/browsers": "3.2.6"
   },
   "devDependencies": {
     "@deepseek-ai/cordis": "workspace:~",
@@ -67,6 +67,6 @@
     "@deepseek-ai/dsh-tool-executor-native": "workspace:*",
     "@deepseek-ai/dsh-tool-testkit": "workspace:*",
     "@deepseek-ai/dsh-tools": "workspace:*",
-    "tsx": "^4.23.13"
+    "tsx": "^4.23.15"
   }
 }
