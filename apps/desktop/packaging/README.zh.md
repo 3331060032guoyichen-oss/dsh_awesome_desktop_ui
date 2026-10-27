@@ -39,7 +39,7 @@ description: "在本地或 Windows／macOS Actions 中生成 Desktop 安装包�
 
 ## 社区 Windows 安装包
 
-在 Windows x64 上安装锁定依赖和 Visual Studio C++ 构建工具后，从仓库根目录运行显式社区命令：
+在 Windows x64 上安装锁定依赖和 Visual Studio C++ 构建工具后，从仓库根目录运行显式社区命令。请使用 `C:\src\dsh-ui` 等较短的源码路径：构建目录嵌套过深、达到 Windows 路径长度限制时，原生 Python 模块可能无法加载。
 
 ```sh
 pnpm run package:desktop:community:win:x64 --check

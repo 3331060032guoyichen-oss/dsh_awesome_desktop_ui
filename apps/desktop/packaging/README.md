@@ -39,7 +39,7 @@ Set `DSH_DESKTOP_PACKAGE_CACHE_DIR` to an absolute build-cache directory for reu
 
 ## Community Windows installer
 
-On Windows x64 with locked dependencies and Visual Studio C++ build tools installed, run the explicit community command from the repository root:
+On Windows x64 with locked dependencies and Visual Studio C++ build tools installed, run the explicit community command from the repository root. Use a short checkout path such as `C:\src\dsh-ui`: native Python modules can fail to load when a deeply nested build path reaches the Windows path-length limit.
 
 ```sh
 pnpm run package:desktop:community:win:x64 --check
