@@ -39,6 +39,20 @@ describe('community Windows distribution', () => {
     )
   })
 
+  it('retains Office conversion and operation skills in the explicit full edition', () => {
+    const environment = communityPackageEnvironment({}, 'full')
+    const config = createElectronBuilderConfig(environment, 'win32', 'x64')
+    expect(config.extraMetadata.dshDesktopFeatures).toEqual({ officeConversion: true })
+    expect(config.artifactName).toContain('community-full')
+    expect(config.publish).toBeNull()
+    expect(parseDesktopPackageInvocation(['win-x64', '--community-full'], 'win32', 'x64'))
+      .toMatchObject({ community: true, communityFull: true, unsigned: true })
+    expect(() => parseDesktopPackageInvocation(['win-x64', '--community', '--community-full'], 'win32', 'x64'))
+      .toThrow(/one community edition/u)
+    expect(() => createElectronBuilderConfig({ ...environment, DSH_DESKTOP_COMMUNITY_EDITION: 'other' }, 'win32', 'x64'))
+      .toThrow(/community/u)
+  })
+
   it('requires the explicit Windows community invocation and rejects signing or invalid metadata', () => {
     expect(parseDesktopPackageInvocation(['win-x64', '--community'], 'win32', 'x64'))
       .toMatchObject({ community: true, unsigned: true, prepareOnly: false })

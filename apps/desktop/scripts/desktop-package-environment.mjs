@@ -24,15 +24,17 @@ const FILE_SETTINGS = ['DSH_DESKTOP_WINDOWS_CER_FILE', 'DSH_DESKTOP_WINDOWS_SIGN
 /**
  * Select the Windows community distribution without deployment or signing settings.
  * @param {NodeJS.ProcessEnv} environment Parent tooling and network environment.
+ * @param {"lite" | "full"} edition Community capability set.
  * @returns {NodeJS.ProcessEnv} Unsigned, manually updated community build settings.
  */
-export function communityPackageEnvironment(environment = process.env) {
+export function communityPackageEnvironment(environment = process.env, edition = 'lite') {
   return {
     ...Object.fromEntries(Object.entries(environment).filter(([name]) => !AMBIENT_RELEASE_SETTING.test(name)
       && !/^(?:WIN_)?CSC_/iu.test(name) && !/^DSH_PACKAGING_/u.test(name))),
     DSH_DESKTOP_APP_ID: 'com.dshawesome.desktopui',
     DSH_DESKTOP_UNSIGNED: '1',
     DSH_DESKTOP_COMMUNITY_BUILD: '1',
+    DSH_DESKTOP_COMMUNITY_EDITION: edition,
   }
 }
 
@@ -46,7 +48,8 @@ export function communityPackageEnvironment(environment = process.env) {
 export function isCommunityPackageEnvironment(environment, platform, unsigned) {
   const mode = environment.DSH_DESKTOP_COMMUNITY_BUILD
   if (mode === undefined || mode === '0') return false
-  if (mode !== '1' || platform !== 'win32' || !unsigned
+  if (mode !== '1' || !['lite', 'full'].includes(environment.DSH_DESKTOP_COMMUNITY_EDITION ?? 'lite')
+    || platform !== 'win32' || !unsigned
     || environment.DSH_DESKTOP_APP_ID !== 'com.dshawesome.desktopui') {
     throw new Error('desktop package: community mode requires the unsigned Windows community application')
   }

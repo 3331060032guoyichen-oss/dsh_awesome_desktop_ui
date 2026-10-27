@@ -271,6 +271,8 @@ Use `node apps/desktop/scripts/test-windows-installer.mjs --uninstall-only --com
 
 ## Updates
 
+The explicit full community packaging command retains Office capabilities and supplies verified app-local Microsoft C++ libraries. See [community packaging](packaging/README.md#community-windows-installer).
+
 Community Lite excludes the native LibreOffice conversion engine and its operation skills while retaining Python authoring dependencies.
 
 The explicit [community Windows distribution](packaging/README.md#community-windows-installer) uses manual GitHub downloads. Its Check for updates action opens the project release page; it does not poll, download, or enforce desktop updates. The deployment update behavior below applies to other packaging modes.

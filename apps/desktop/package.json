@@ -38,6 +38,7 @@
     "package:win:x64": "tsx scripts/package-target.ts win-x64",
     "package:win:x64:unsigned": "tsx scripts/package-target.ts win-x64 --unsigned",
     "package:community:win:x64": "tsx scripts/package-target.ts win-x64 --community",
+    "package:community:win:x64:full": "tsx scripts/package-target.ts win-x64 --community-full",
     "package:win:x64:dir": "tsx scripts/package-target.ts win-x64 --dir",
     "upload:mac:arm64": "tsx scripts/upload-target.ts mac-arm64",
     "upload:mac:x64": "tsx scripts/upload-target.ts mac-x64",

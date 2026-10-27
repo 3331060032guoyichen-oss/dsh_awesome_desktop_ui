@@ -48,6 +48,8 @@ pnpm run package:desktop:community:win:x64
 
 此模式生成未签名 NSIS 安装包 `dsh-awesome-desktop-ui-<runtime-version>-win-x64-community-lite-setup.exe`，位于 `apps/desktop/.desktop-build/targets/win-x64/unsigned-artifacts/`。产品名称为 **DSH Awesome Desktop UI**，应用 ID 为 `com.dshawesome.desktopui`。安装包包含匹配的 Harness 运行时、Node.js、Python 和工作区依赖，最终用户无需开发工具。安装包版本跟随锁定的 Harness 运行时，仓库的 UI 发布标签单独管理。
 
+社区完整版使用 `pnpm run package:desktop:community:win:x64:full`，保留 Office 转换、渲染、重算及操作技能。构建器从已许可的 Visual Studio Redist 目录中提取签名有效的微软 x64 C++ 运行库，放在 Office 引擎旁；可用 `DSH_DESKTOP_CRT_DIR` 指定绝对路径的运行库目录。它不修改系统文件或权限，安装包保留文件哈希清单与微软声明；这些库适用微软条款，后续随应用版本维护。详见[微软部署说明](https://learn.microsoft.com/en-us/cpp/windows/redistributing-visual-cpp-files)。完整版与 Lite 使用相同应用标识，切换安装前先退出正在运行的版本。
+
 社区 Lite 不包含原生 LibreOffice 引擎、Office 转 PDF 服务和 LibreOffice 操作技能。聊天、轨迹、模型设置、常规文档预览及内置 Python 创作依赖仍可使用；此版本不支持经 LibreOffice 转换或渲染 Office 文件。安装后的应用配置明确停用该功能，并在打包 Host 启动检查中验证。
 
 社区打包不读取部署 dotenv 文件或机器预设，并剔除继承的发布和签名配置。包内不包含强制更新策略或自动更新源。**应用 → 检查更新**打开本项目 GitHub Releases 页面；用户退出正在运行的应用，手动安装下载的新版本。未签名安装包可能触发 Windows 发布者或信誉提示，此模式不会关闭操作系统保护。现有签名和上游部署命令保留原有配置与更新要求。

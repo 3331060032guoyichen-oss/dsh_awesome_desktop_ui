@@ -34,6 +34,7 @@ import {
 } from './macos-runtime.ts'
 import { desktopTargetPlatform, resolveDesktopBuildTarget, resolveDesktopTargetBuildPaths } from './desktop-build-paths.mjs'
 import { desktopRuntimeFileExclusion } from './runtime-file-policy.ts'
+import { stageWindowsCppRuntime, windowsCppRuntimeDirectory } from './windows-cpp-runtime.ts'
 import { isCommunityPackageEnvironment } from './desktop-package-environment.mjs'
 import { selectOfficeEngine } from '../../../scripts/libreoffice-packages.mjs'
 
@@ -145,7 +146,8 @@ async function main(): Promise<void> {
     const modules = join(BUILD_ROOT, 'node_modules')
     const officeManifest = JSON.parse(readFileSync(join(modules, '@deepseek-ai/libreoffice-kit/package.json'), 'utf8'))
     const community = isCommunityPackageEnvironment(process.env, target.platform, process.env.DSH_DESKTOP_UNSIGNED === '1')
-    const officeEngine = community ? 'none' : selectOfficeEngine(officeManifest, target)
+    const communityLite = community && process.env.DSH_DESKTOP_COMMUNITY_EDITION !== 'full'
+    const officeEngine = communityLite ? 'none' : selectOfficeEngine(officeManifest, target)
     mkdirSync(DSH_OUTPUT_ROOT, { recursive: true })
     await packagingStep(process.env.DSH_DESKTOP_PACKAGING_RUN_DIR, 'runtime:materialize-modules', async () => {
       cpSync(modules, join(DSH_OUTPUT_ROOT, 'node_modules'), {
@@ -155,17 +157,21 @@ async function main(): Promise<void> {
     })
     writeFileSync(join(DSH_OUTPUT_ROOT, 'package.json'), `${JSON.stringify({
       name: '@deepseek-ai/dsh-desktop-runtime', private: true, version: release.version, type: 'module',
-      ...(community ? { dshDesktopFeatures: { officeConversion: false } } : {}),
+      ...(community ? { dshDesktopFeatures: { officeConversion: !communityLite } } : {}),
       dependencies: Object.fromEntries(packageSet.packages.map(entry => [entry.name, entry.version])),
     }, undefined, 2)}\n`)
-    if (community) writeFileSync(join(DSH_OUTPUT_ROOT, 'community-lite.patch.yml'), '- id: office-to-pdf\n  disabled: true\n')
+    if (communityLite) writeFileSync(join(DSH_OUTPUT_ROOT, 'community-lite.patch.yml'), '- id: office-to-pdf\n  disabled: true\n')
     for (const file of DESKTOP_HOST_RUNTIME_FILES) {
       if (!existsSync(join(DSH_OUTPUT_ROOT, 'node_modules', DESKTOP_HOST_PACKAGE, file))) {
         throw new Error(`desktop runtime: missing private Host file ${file}`)
       }
     }
-    if (!community && !existsSync(join(DSH_OUTPUT_ROOT, 'node_modules', '@deepseek-ai', `libreoffice-kit-${officeEngine}`, 'prebuilds.json'))) {
+    if (!communityLite && !existsSync(join(DSH_OUTPUT_ROOT, 'node_modules', '@deepseek-ai', `libreoffice-kit-${officeEngine}`, 'prebuilds.json'))) {
       throw new Error(`desktop runtime: missing required LibreOffice engine ${officeEngine}`)
+    }
+    if (community && !communityLite) {
+      stageWindowsCppRuntime(join(DSH_OUTPUT_ROOT, 'node_modules', '@deepseek-ai', `libreoffice-kit-${officeEngine}`),
+        windowsCppRuntimeDirectory())
     }
     if (process.platform === 'darwin' && process.env.DSH_DESKTOP_UNSIGNED !== '1') {
       const cacheDirectory = resolveMacOSSignatureCacheDirectory(process.env, BUILD_PATHS.root)

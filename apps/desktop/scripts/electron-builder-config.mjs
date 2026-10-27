@@ -61,6 +61,7 @@ export function createElectronBuilderConfig(
   }
   const unsigned = env.DSH_DESKTOP_UNSIGNED === '1'
   const community = isCommunityPackageEnvironment(env, resolvedPlatform, unsigned)
+  const communityLite = community && env.DSH_DESKTOP_COMMUNITY_EDITION !== 'full'
   const skipNotarization = env.DSH_DESKTOP_MACOS_SKIP_NOTARIZATION === '1'
   if (env.DSH_DESKTOP_MACOS_SKIP_NOTARIZATION !== undefined && !['0', '1'].includes(env.DSH_DESKTOP_MACOS_SKIP_NOTARIZATION)) {
     throw new Error('desktop package: DSH_DESKTOP_MACOS_SKIP_NOTARIZATION must be 0 or 1')
@@ -113,7 +114,7 @@ export function createElectronBuilderConfig(
       dshDesktopAppId: appId,
       dshDesktopUpdateChannel: update?.channel ?? 'nightly',
       ...(policy === undefined ? {} : { dshMandatoryUpdatePolicy: policy }),
-      ...(community ? { dshCommunityDistribution: 'github-manual', dshDesktopFeatures: { officeConversion: false } } : {}),
+      ...(community ? { dshCommunityDistribution: 'github-manual', dshDesktopFeatures: { officeConversion: !communityLite } } : {}),
       ...buildVersion === productVersion ? {} : { version: buildVersion },
       ...packaged === undefined ? {} : { dshBuildCommit: packaged.commit, dshBuildDirty: packaged.dirty },
     },
@@ -122,7 +123,7 @@ export function createElectronBuilderConfig(
     copyright: `Copyright © ${new Date().getFullYear()} \${productName}`,
     // Unsigned builds carry their own suffix so a shared file can never pass for a release artifact.
     artifactName: community
-      ? 'dsh-awesome-desktop-ui-\${version}-\${os}-\${arch}-community-lite-setup.\${ext}'
+      ? `dsh-awesome-desktop-ui-\${version}-\${os}-\${arch}-community-${communityLite ? 'lite' : 'full'}-setup.\${ext}`
       : `deepseek-harness-\${version}-\${os}-\${arch}${output.suffix}.\${ext}`,
     directories: { output: output.directory },
     asar: true,
@@ -190,7 +191,7 @@ export function createElectronBuilderConfig(
       writeUpdateInfo: false,
     },
     beforePack: async context => {
-      const office = community ? [] : await officePackageDirectories(buildPaths.dsh, { platform: resolvedPlatform, arch: resolvedArch })
+      const office = communityLite ? [] : await officePackageDirectories(buildPaths.dsh, { platform: resolvedPlatform, arch: resolvedArch })
       const patterns = office.map(directory => `**/${relative(buildPaths.dsh, directory).split(sep).join('/')}/**/*`)
       const existing = context.packager.config.asarUnpack ?? []
       context.packager.config.asarUnpack = [...(typeof existing === 'string' ? [existing] : existing), ...patterns]

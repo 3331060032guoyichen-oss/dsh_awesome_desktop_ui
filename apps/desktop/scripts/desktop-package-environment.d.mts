@@ -5,7 +5,7 @@
  * @param environment Parent tooling and network environment.
  * @returns Isolated community build settings.
  */
-export function communityPackageEnvironment(environment?: NodeJS.ProcessEnv): NodeJS.ProcessEnv
+export function communityPackageEnvironment(environment?: NodeJS.ProcessEnv, edition?: 'lite' | 'full'): NodeJS.ProcessEnv
 
 /**
  * Validate explicit community mode against platform, signing mode, and application identity.

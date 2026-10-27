@@ -201,6 +201,7 @@ interface DesktopPackageInvocation {
   readonly prepareOnly: boolean
   readonly unsigned: boolean
   readonly community: boolean
+  readonly communityFull?: boolean
   readonly skipNotarization: boolean
   readonly check: boolean
   /** Build identifier to publish under, when this build does not publish the product version. */
@@ -235,6 +236,7 @@ export function parseDesktopPackageInvocation(
       'prepare-only': { type: 'boolean', default: false },
       unsigned: { type: 'boolean', default: false },
       community: { type: 'boolean', default: false },
+      'community-full': { type: 'boolean', default: false },
       'skip-notarization': { type: 'boolean', default: false },
       check: { type: 'boolean', default: false },
       'build-version': { type: 'string' },
@@ -242,7 +244,9 @@ export function parseDesktopPackageInvocation(
   })
   if (positionals.length > 1) throw new Error('desktop package: expected at most one target')
   const name = positionals[0] ?? hostTargetName(hostPlatform, hostArch)
-  if (values.community && (name !== 'win-x64' || values['prepare-only'] || values['skip-notarization'])) {
+  const community = values.community || values['community-full']
+  if (values.community && values['community-full']) throw new Error('desktop package: choose one community edition')
+  if (community && (name !== 'win-x64' || values['prepare-only'] || values['skip-notarization'])) {
     throw new Error('desktop package: --community requires a Windows x64 installer or directory build')
   }
   if (values.unsigned && values['prepare-only']) throw new Error('desktop package: --unsigned cannot use --prepare-only')
@@ -257,8 +261,9 @@ export function parseDesktopPackageInvocation(
     target: resolveDesktopPackageTarget(name, hostPlatform, hostArch),
     directory: values.dir,
     prepareOnly: values['prepare-only'],
-    unsigned: values.unsigned || values.community,
-    community: values.community,
+    unsigned: values.unsigned || community,
+    community,
+    ...(values['community-full'] ? { communityFull: true } : {}),
     skipNotarization: values['skip-notarization'],
     check: values.check,
     requestedBuildVersion,
@@ -352,7 +357,7 @@ async function main(): Promise<void> {
   if (invocation.skipNotarization) {
     process.stdout.write('desktop package: skipping notarization and stapling; internal debugging only, not qualified for distribution or update publishing\n')
   }
-  const environment = invocation.community ? communityPackageEnvironment()
+  const environment = invocation.community ? communityPackageEnvironment(process.env, invocation.communityFull ? 'full' : 'lite')
     : target.platform === 'darwin' && invocation.unsigned
       ? localMacOSPackageEnvironment()
       : loadDesktopPackageEnvironment(target.platform, process.env, APP_ROOT, {

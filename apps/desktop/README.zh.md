@@ -271,6 +271,8 @@ Windows 卸载程序会随应用一起删除 Electron 用户数据目录（`%APP
 
 ## 更新
 
+显式社区完整版打包命令保留 Office 功能，并提供经验证的应用本地微软 C++ 运行库。见[社区打包](packaging/README.zh.md#community-windows-installer)。
+
 社区 Lite 不包含原生 LibreOffice 转换引擎及其操作技能，保留 Python 创作依赖。
 
 显式[社区 Windows 分发](packaging/README.zh.md#community-windows-installer)采用 GitHub 手动下载更新。“检查更新”打开项目发布页，不轮询、下载或强制安装桌面更新。下文部署更新机制适用于其他打包模式。
