@@ -2,44 +2,42 @@ version: 2
 
 updates:
   - package-ecosystem: "npm"
-    # Community releases update dependencies deliberately rather than opening bot PRs.
-    open-pull-requests-limit: 0
     directory: "/"
+    open-pull-requests-limit: 1
     exclude-paths:
-      # Vendored Cordis sources follow vendor/README.md instead of registry updates.
       - "vendor/**"
     schedule:
-      interval: "cron"
-      cronjob: "0 4 * * *"
-      timezone: "Asia/Shanghai"
-    cooldown:
-      default-days: 30
-    labels:
-      - "kind/dependency"
-      - "area/infra"
+      interval: "monthly"
+    groups:
+      patch-maintenance:
+        patterns: ["*"]
+        update-types: ["patch"]
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major", "version-update:semver-minor"]
 
   - package-ecosystem: "uv"
-    open-pull-requests-limit: 0
     directory: "/python/sdk"
+    open-pull-requests-limit: 1
     schedule:
-      interval: "cron"
-      cronjob: "0 4 * * *"
-      timezone: "Asia/Shanghai"
-    cooldown:
-      default-days: 30
-    labels:
-      - "kind/dependency"
-      - "area/infra"
+      interval: "monthly"
+    groups:
+      patch-maintenance:
+        patterns: ["*"]
+        update-types: ["patch"]
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major", "version-update:semver-minor"]
 
   - package-ecosystem: "github-actions"
-    open-pull-requests-limit: 0
     directory: "/"
+    open-pull-requests-limit: 1
     schedule:
-      interval: "cron"
-      cronjob: "0 4 * * *"
-      timezone: "Asia/Shanghai"
-    cooldown:
-      default-days: 30
-    labels:
-      - "kind/dependency"
-      - "area/infra"
+      interval: "monthly"
+    groups:
+      patch-maintenance:
+        patterns: ["*"]
+        update-types: ["patch"]
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major", "version-update:semver-minor"]
