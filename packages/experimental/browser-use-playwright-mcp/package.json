@@ -30,7 +30,7 @@
   "license": "MIT",
   "dependencies": {
     "@deepseek-ai/dsh-experimental-browser-use-runtime": "workspace:*",
-    "@playwright/mcp": "0.0.80"
+    "@playwright/mcp": "0.0.83"
   },
   "peerDependencies": {
     "@deepseek-ai/cordis": "workspace:~",
