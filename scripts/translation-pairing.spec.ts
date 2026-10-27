@@ -521,6 +521,17 @@ describe('translation structural signature', () => {
 })
 
 describe('pair CLI arguments', () => {
+  it('keeps root README metadata in the GitHub maintenance directory', () => {
+    expect(translationPairPaths('README.md')).toEqual({
+      source: 'README.md', zh: 'README.zh.md', meta: '.github/i18n/README.i18n.yaml',
+    })
+    expect(pairAnchorOfArgument('.github/i18n/README.i18n.yaml')).toBe('README.md')
+    expect(isTranslationScopeFile('.github/i18n/README.i18n.yaml')).toBe(true)
+    expect(parseTranslationPairingCliArgs(['README.zh.md', '.github/i18n/README.i18n.yaml'])).toMatchObject({
+      anchors: ['README.md'],
+    })
+  })
+
   it('normalizes any pair file or bare stem to the English anchor', () => {
     expect(pairAnchorOfArgument('docs/foo.md')).toBe('docs/foo.md')
     expect(pairAnchorOfArgument('docs/foo.zh.md')).toBe('docs/foo.md')

@@ -47,7 +47,7 @@
 
 ## 范围与排除
 
-**范围**：根目录 `CONTRIBUTING.md`、`BRAND_GUIDELINES.md` 与 `SAFETY.md` 文档、除 vendor 源码外的全部 README，以及 `.agents/notes/**`、`docs/**` 与 `python/**` 下的全部活跃文档。匹配 README 时只看文件名且不区分大小写，因此今后新增的目录无需再修改 manifest。依赖目录、被忽略的构建产物目录以及冻结的 `.agents/notes/archived/` 目录树只在发现阶段排除，不属于持续演进的翻译源文档。
+**范围**：`docs/project/` 下的项目规范、除 vendor 源码外的全部 README，以及 `.agents/notes/**`、`docs/**` 与 `python/**` 下的全部活跃文档。匹配 README 时只看文件名且不区分大小写，因此今后新增的目录无需再修改 manifest。依赖目录、被忽略的构建产物目录以及冻结的 `.agents/notes/archived/` 目录树只在发现阶段排除，不属于持续演进的翻译源文档。
 
 **范围外**：组合包 `packages/<group>/<package>/docs/` 下由 locale `meta.detail` 指定给插件页的详情文档。插件页只显示当前界面语言对应的文件，因此这些文档不带文档内的语言切换行，也没有一致性记录；[`verify-md-links`](../../scripts/verify-md-links.ts) 与 [`verify-md-wrap`](../../scripts/verify-md-wrap.ts) 仍会检查两种语言，两侧是否同步由评审把关。
 
@@ -67,6 +67,8 @@
 - `.agents/notes/archived/`：冻结的历史三文件配对。[`verify-archived-agent-notes`](../../scripts/verify-archived-agent-notes.ts) 校验其完整性和内容封存记录；翻译维护绝不能重写这些文件。
 
 **统一要求**：当前及今后纳入范围的每篇文档，合并时都必须构成完整的双语配对。[scripts/translation-pairing.manifest.json](../../scripts/translation-pairing.manifest.json) 只包含显式排除项；不存在逐文件推进清单、日期分界或 README 专用政策类别。
+
+根目录 README 配对的校验记录存放在 `.github/i18n/README.i18n.yaml`，以简化仓库首页；命令行将此路径识别为 `README.md` 配对。其他文档配对继续使用相邻的校验记录。
 
 ## 分工
 

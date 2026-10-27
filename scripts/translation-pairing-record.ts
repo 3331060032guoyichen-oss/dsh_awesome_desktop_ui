@@ -54,7 +54,7 @@ export function translationPairPaths(source: string): TranslationPairPaths {
   return {
     source,
     zh: source.replace(/\.md$/, '.zh.md'),
-    meta: source.replace(/\.md$/, '.i18n.yaml'),
+    meta: source === 'README.md' ? '.github/i18n/README.i18n.yaml' : source.replace(/\.md$/, '.i18n.yaml'),
   }
 }
 

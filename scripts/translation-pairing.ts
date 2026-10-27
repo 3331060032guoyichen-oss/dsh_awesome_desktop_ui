@@ -220,6 +220,7 @@ export function translationPairSourcePredicate(
  */
 export function pairAnchorOfArgument(argument: string): string {
   const normalized = argument.split('\\').join('/').replace(/^\.\//, '')
+  if (normalized === '.github/i18n/README.i18n.yaml') return 'README.md'
   if (normalized.endsWith('.zh.md')) return `${normalized.slice(0, -'.zh.md'.length)}.md`
   if (normalized.endsWith('.i18n.yaml')) return `${normalized.slice(0, -'.i18n.yaml'.length)}.md`
   if (normalized.endsWith('.md')) return normalized

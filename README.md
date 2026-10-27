@@ -154,6 +154,8 @@ Report display sizes, theme, animation, and interaction problems through [Issues
 
 Component checks, key page flows, and build checks have run. Windows installation and live providers still require validation with the actual package and environment. See the [upstream documentation](https://github.com/deepseek-ai/deepseek-harness#readme) for the underlying Harness.
 
+Project guidelines and supporting documentation: [documentation index](docs/project/README.md).
+
 ## License
 
 [MIT](LICENSE), retaining upstream and dependency notices. Design references describe inspiration and sources; they do not imply participation or endorsement.

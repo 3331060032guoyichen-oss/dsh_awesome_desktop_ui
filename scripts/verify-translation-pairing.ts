@@ -22,6 +22,7 @@ import {
 } from './translation-pairing-record.ts'
 import {
   languageSwitcherTargets,
+  pairAnchorOfArgument,
   parseTranslationMarkdown,
   parseTranslationPairingCliArgs,
   parseTranslationPairingManifest,
@@ -76,6 +77,7 @@ function repositoryFileExists(file: string): boolean {
 const SCOPE_PATTERNS = [
   '**/*.md',
   '**/*.i18n.yaml',
+  '.github/i18n/README.i18n.yaml',
   '.agents/notes/**/*.md',
   '.agents/notes/**/*.i18n.yaml',
 ]
@@ -200,7 +202,7 @@ for (const source of sources) {
 // caught from either remnant.
 const pairAnchors = new Set<string>()
 for (const zh of translations) pairAnchors.add(zh.replace(/\.zh\.md$/, '.md'))
-for (const meta of metas) pairAnchors.add(meta.replace(/\.i18n\.yaml$/, '.md'))
+for (const meta of metas) pairAnchors.add(pairAnchorOfArgument(meta))
 
 for (const source of [...pairAnchors].sort()) {
   const paths = translationPairPaths(source)

@@ -45,7 +45,7 @@ The gate's limit, stated plainly: **a green gate means the pair was confirmed co
 
 ## Scope and exclusions
 
-**Scope**: the root `CONTRIBUTING.md`, `BRAND_GUIDELINES.md`, and `SAFETY.md` documents, every non-vendor README, and every active document under `.agents/notes/**`, `docs/**`, and `python/**`. README matching is case-insensitive on the basename and covers future directories without another manifest edit. Dependency and ignored build-output trees and the frozen `.agents/notes/archived/` tree are discovery exclusions, not evolving translation source.
+**Scope**: project guidelines under `docs/project/`, every non-vendor README, and every active document under `.agents/notes/**`, `docs/**`, and `python/**`. README matching is case-insensitive on the basename and covers future directories without another manifest edit. Dependency and ignored build-output trees and the frozen `.agents/notes/archived/` tree are discovery exclusions, not evolving translation source.
 
 **Outside scope**: a bundle's detail documents under `packages/<group>/<package>/docs/`, which locale `meta.detail` names for the plugin page. The page shows the file for the active UI language, so these documents carry no in-document language switcher and no consistency record; [`verify-md-links`](../../scripts/verify-md-links.ts) and [`verify-md-wrap`](../../scripts/verify-md-wrap.ts) still check both languages, and review keeps them in step.
 
@@ -65,6 +65,8 @@ Generated English sources omit the language switcher that ordinary authored sour
 - `.agents/notes/archived/` — frozen historical triplets. [`verify-archived-agent-notes`](../../scripts/verify-archived-agent-notes.ts) validates their completeness and content seals; translation maintenance must never rewrite them.
 
 **Universal requirement**: every current or future document in scope must merge as a complete bilingual pair. [scripts/translation-pairing.manifest.json](../../scripts/translation-pairing.manifest.json) contains only explicit exclusions; there is no per-file rollout list, date cutoff, or README-specific policy class.
+
+The root README pair stores its consistency record in `.github/i18n/README.i18n.yaml` to keep the repository homepage concise; CLI arguments accept that path as `README.md`. Other document pairs keep adjacent records.
 
 ## Division of labor
 

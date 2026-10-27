@@ -157,6 +157,8 @@ pnpm run start:desktop
 
 本次设计已进行组件检查、关键页面流程检查与构建检查；Windows 安装与模型联网能力需要结合实际发布包和使用环境验证。底层 Harness 的使用与开发说明请查看[上游文档](https://github.com/deepseek-ai/deepseek-harness#readme)。
 
+项目规范与辅助说明统一收录在[文档目录](docs/project/README.zh.md)。
+
 ## License
 
 [MIT](LICENSE)。保留 DeepSeek 上游及各第三方依赖的许可与版权信息。设计参考链接用于说明灵感与来源，不代表原作者参与或背书本项目。
