@@ -399,4 +399,6 @@ The account provider’s `embeddedPageDist` configuration adds a `dist` query pa
 
 ## Dev Note
 
+Desktop's private Host bundle supplies the third-party plugin market and the backend-only `dsh-usage-stats` service by default. Profile initialization upgrades existing Desktop profiles, retaining installed packages, lockfiles, and user patches while replacing the former optional market and usage bundle entries. The public plugin catalog requires a network connection; no catalog plugin is installed automatically. Usage remains in Settings, and provider amounts require the user's own credentials and provider support. The packaged Host smoke checks the market boot module and both usage endpoints.
+
 Pre-launch CDN and capacity decisions are tracked in the [Desktop update proposal](../../.agents/notes/proposed/feature/2026-09-08-desktop-update-policy-and-installation.md#cdn-and-capacity-qualification).

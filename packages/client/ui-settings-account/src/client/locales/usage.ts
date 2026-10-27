@@ -7,7 +7,7 @@ export const usageEn = {
   usageToday: 'Today', usageMonth: 'Selected month', usageAll: 'All time', usageCache: 'Today’s prompt cache hit rate',
   usageDaily: 'Daily token usage', usagePrevious: 'Previous month', usageNext: 'Next month', usageLess: 'Less', usageMore: 'More',
   usageSelectDay: 'Select a day to see its token usage.', usageUpdated: 'Updated', usageStale: 'Previous data; refresh failed',
-  usageFailed: 'Usage could not be loaded. Check that dsh-usage-stats is enabled, then refresh.',
+  usageFailed: 'Usage could not be loaded. Refresh to try again; restart the app if the problem persists.',
 } as const
 /** Chinese account usage labels. */
 export const usageZh: Record<keyof typeof usageEn, string> = {
@@ -18,5 +18,5 @@ export const usageZh: Record<keyof typeof usageEn, string> = {
   usageToday: '今日', usageMonth: '所选月份', usageAll: '累计', usageCache: '今日输入缓存命中率',
   usageDaily: '每日 Token 用量', usagePrevious: '上个月', usageNext: '下个月', usageLess: '少', usageMore: '多',
   usageSelectDay: '点击日期，查看当天的 Token 用量。', usageUpdated: '更新于', usageStale: '显示上次数据，刷新失败',
-  usageFailed: '暂时无法读取用量，请确认 dsh-usage-stats 已启用后刷新。',
+  usageFailed: '暂时无法读取用量，请刷新重试；如果仍未恢复，请重启应用。',
 }

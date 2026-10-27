@@ -16,6 +16,7 @@ patchedDependencies:
   '@fortune-sheet/core@1.0.4': 8791a230763dbf853fd65d627c68c31de37209992851377855e16cf08ea70532
   '@fortune-sheet/react@1.0.4': 2932e52e79afcd4ced08cfa123b5eded786c85043da32f622f3e80af6fc96c37
   '@yao-pkg/pkg@6.21.0': 4d4861969595629311f7d90a0b34b15481c96d5682d828a151a104c69d4616d3
+  '@ychris12138/dsh-usage-stats@0.3.6': 1b09e8f66afb6f3095dc8c4f5d5120807568f60ed0d4ea6e2ad8e2bc3006f71c
   app-builder-lib@26.17.0: b70dc2a2a78ffabb80a4f14fafc7c103237f2b0a207e1f296fa1c1387ea29348
   exceljs@4.4.0: c1bf8ac8f319dab382f08e3a669b715e691d46c703ac5a4163eb383fbedd1d48
   lexical@0.49.0: 54c4413db208cf234cb68c6a837f2523d3b319aa17911f1da385af08362e1356
@@ -831,6 +832,9 @@ importers:
       '@deepseek-ai/dsh-client-connection':
         specifier: workspace:*
         version: link:../../packages/client/connection
+      '@deepseek-ai/dsh-client-ui-plugin-market':
+        specifier: workspace:*
+        version: link:../../packages/client/ui-plugin-market
       '@deepseek-ai/dsh-deepseek-account':
         specifier: workspace:*
         version: link:../../packages/credentials/deepseek-account
@@ -843,6 +847,9 @@ importers:
       '@deepseek-ai/dsh-jobs':
         specifier: workspace:*
         version: link:../../packages/jobs/jobs
+      '@deepseek-ai/dsh-plugin-market':
+        specifier: workspace:*
+        version: link:../../packages/boot/plugin-market
       '@deepseek-ai/dsh-schedule':
         specifier: workspace:*
         version: link:../../packages/schedule/schedule
@@ -858,6 +865,9 @@ importers:
       '@deepseek-ai/libreoffice-kit':
         specifier: ^0.1.5
         version: 0.1.5
+      '@ychris12138/dsh-usage-stats':
+        specifier: 0.3.6
+        version: 0.3.6(patch_hash=1b09e8f66afb6f3095dc8c4f5d5120807568f60ed0d4ea6e2ad8e2bc3006f71c)
       koffi:
         specifier: 3.1.6
         version: 3.1.6
@@ -9775,8 +9785,8 @@ importers:
         specifier: ^8.18.1
         version: 8.18.1
       chrome-devtools-frontend:
-        specifier: 1.0.1724140
-        version: 1.0.1724140
+        specifier: 1.0.1638082
+        version: 1.0.1638082
       playwright:
         specifier: ^1.49.0
         version: 1.61.1
@@ -21011,6 +21021,10 @@ packages:
     resolution: {integrity: sha512-WoxUM/Be4hfsX06FxsvpGgfYqwgivMV7/Ol7aFuSfSmY6rRaiju4QxOEe9RUS0iYcSHWl5i9AhB1cMoE0p+XiA==}
     engines: {node: '>=18.12.0'}
 
+  '@ychris12138/dsh-usage-stats@0.3.6':
+    resolution: {integrity: sha512-nGhYe5YTLlt8gFpc5bA19h2zBvYXfHua+0G/6p3U9V3mDfTY1SjZFR2UlbUlD6Xp+OkBG8vI37SK/jwmlNYUrw==}
+    hasBin: true
+
   '@yuku-codegen/binding-android-arm64@0.8.7':
     resolution: {integrity: sha512-C/0zV5IhgVdYhGJTwrY0v8dknxlhiKwtVJkMUaexu9/QvRmzlV4vfU3hZlUSgqc2BxQHntL1mCVbDq8j0FRFDw==}
     cpu: [arm64]
@@ -21577,8 +21591,8 @@ packages:
     resolution: {integrity: sha512-+IxzY9BZOQd/XuYPRmrvEVjF/nqj5kgT4kEq7VofrDoM1MxoRjEWkrCC3EtLi59TVawxTAn+orJwFQcrqEN1+g==}
     engines: {node: '>=18'}
 
-  chrome-devtools-frontend@1.0.1724140:
-    resolution: {integrity: sha512-ZH2aq5eOMGB5sD4nz8fijUI0L/R8YYHtrJANcXD+wbemb736mmswGQtXZx9kzoujJeG0GKXeK9bfAi3hUjE5jw==}
+  chrome-devtools-frontend@1.0.1638082:
+    resolution: {integrity: sha512-KfbM5kZrgseWciU9Y6ic6hDtYWKY7SY6L8jkeq23KF5CgZ1cU7P+janhysDLN+XZr6U4Ro5V+2W7YOHjKW4PAw==}
 
   chrome-devtools-mcp@1.9.0:
     resolution: {integrity: sha512-RnzXoJiUQ44hpOihWk90uOhLD/CnwDkDy0ldHMZONJ2nYQ+dWN1fq1luHHqyd+7FuYnyIlCY6uTThbN5ut9kSQ==}
@@ -28590,6 +28604,8 @@ snapshots:
       js-yaml: 4.3.2
       tslib: 2.8.1
 
+  '@ychris12138/dsh-usage-stats@0.3.6(patch_hash=1b09e8f66afb6f3095dc8c4f5d5120807568f60ed0d4ea6e2ad8e2bc3006f71c)': {}
+
   '@yuku-codegen/binding-android-arm64@0.8.7':
     optional: true
 
@@ -29123,7 +29139,7 @@ snapshots:
 
   chownr@3.0.0: {}
 
-  chrome-devtools-frontend@1.0.1724140: {}
+  chrome-devtools-frontend@1.0.1638082: {}
 
   chrome-devtools-mcp@1.9.0: {}
 

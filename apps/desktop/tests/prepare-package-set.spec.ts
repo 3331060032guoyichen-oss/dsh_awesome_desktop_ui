@@ -88,6 +88,7 @@ describe('desktop package-set selection', () => {
     const files = [
       'package/lib/index.js',
       'package/lib/cli.js',
+      'package/features.patch.yml',
     ]
     expect(() => {
       assertDesktopHostPackageFiles(files)

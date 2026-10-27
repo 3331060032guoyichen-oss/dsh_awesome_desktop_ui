@@ -14,6 +14,7 @@ import { desktopOfficeConversionEnabled } from '../../desktop-host/src/distribut
 import { runtimeArchivePath } from '../../desktop-host/src/office-engine.ts'
 import { readAsar } from 'app-builder-lib/out/asar/asar.js'
 import type { DesktopRuntimeDescriptor } from '../src/runtime-tree.ts'
+import { smokeCommunityFeatures } from './smoke-community-features.ts'
 
 /**
  * Check CLI package operations, Host startup, its frontend, external plugins and real Office-to-PDF conversion.
@@ -163,6 +164,7 @@ export function apply(ctx) {
     if (response.status !== 200 || !(await response.text()).includes('<html')) {
       throw new Error('desktop runtime: packaged frontend smoke failed')
     }
+    await smokeCommunityFeatures(ready.url, cookie, ready.injections ?? [])
     const pluginResponse = await fetch(new URL('/desktop-smoke', ready.url), { headers: { cookie } })
     if (await pluginResponse.text() !== 'plugin route ready') throw new Error('desktop runtime: plugin HTTP route failed')
     const installation = await fetch(new URL('/desktop-smoke-install', ready.url), {

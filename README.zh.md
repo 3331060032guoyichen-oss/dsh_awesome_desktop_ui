@@ -57,7 +57,7 @@
 
 ![账号与余额、Token 用量及每日用量热图](assets/readme/account.png)
 
-账号、可用余额、今日／本月／累计 Token、缓存命中率与每日用量热图集中在设置里，不再额外占用侧边栏。统计服务不可用时显示实际状态，不用虚构数字填满界面。扩展统计依赖 `dsh-usage-stats` 服务，见下方插件说明。
+账号、可用余额、今日／本月／累计 Token、缓存命中率与每日用量热图集中在设置里，不再额外占用侧边栏。桌面安装包已包含统计服务，无需另外安装插件。统计服务不可用时显示实际状态，不用虚构数字填满界面。
 
 ### 插件市场：搜索，然后按用途找
 
@@ -127,8 +127,8 @@ pnpm run start:desktop
 
 项目沿用 Harness 的基础插件体系，包括会话、工作区、文件、工具、权限和模型配置。**可用工具以当前部署启用的插件为准。**
 
-- 插件市场使用 [Awesome DSH Plugin](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin) 的公开索引。需要在插件管理中启用“自定义插件索引”；默认索引地址为 `https://cdn.jsdelivr.net/npm/dsh-plugin-catalog/index.json`。启用索引不会自动安装目录里的插件。
-- 账号统计界面参考并对接 [dsh-usage-stats](https://github.com/Ychris12138/dsh-usage-stats)。本地演示使用它的后端适配版本；未启用统计服务时仍可查看账号和基础余额，扩展统计会提示服务状态。
+- 插件市场使用 [Awesome DSH Plugin](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin) 的公开索引。桌面端默认启用第三方插件分类，索引地址为 `https://cdn.jsdelivr.net/npm/dsh-plugin-catalog/index.json`。浏览目录需要联网，只有用户选择安装时才会下载具体插件。
+- 账号统计界面已内置 [dsh-usage-stats](https://github.com/Ychris12138/dsh-usage-stats) 的后端服务，设置是用量的唯一入口。本机 Token 汇总无需另行安装；供应商余额及额度仍需要用户自己的账号或 API 凭据，并取决于供应商支持。
 - 这是 **UI 版本 v1.0.0**，当前底层 Harness 版本为 **0.2.1-rc.3**。两者的版本号分别描述本项目设计版本与上游运行时。
 
 ## 设计参考与致谢

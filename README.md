@@ -56,7 +56,7 @@ The **pointer reveal** keeps conversation and execution in one space. Its wheel 
 
 ![Account balance, Token totals, and a daily usage heatmap](assets/readme/account.png)
 
-Account details, available balance, daily / monthly / lifetime Tokens, cache hit rate, and the usage calendar live in Settings. Unavailable services display their actual state instead of invented numbers. Extended statistics require the `dsh-usage-stats` service described below.
+Account details, available balance, daily / monthly / lifetime Tokens, cache hit rate, and the usage calendar live in Settings. The desktop installer includes the statistics service; no separate plugin installation is needed. Unavailable services display their actual state instead of invented numbers.
 
 ### Plugin market: search, then choose a scope
 
@@ -124,8 +124,8 @@ On Windows x64, [build a standalone community installer](apps/desktop/packaging/
 
 The project retains Harness's plugin system for conversations, workspaces, files, tools, permissions, and provider settings. **Available tools depend on the enabled deployment plugins.**
 
-- Discovery uses the public [Awesome DSH Plugin](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin) index. Enable the custom plugin index in plugin management; its default URL is `https://cdn.jsdelivr.net/npm/dsh-plugin-catalog/index.json`. Enabling discovery does not install listed plugins automatically.
-- Account statistics integrate with [dsh-usage-stats](https://github.com/Ychris12138/dsh-usage-stats). The local demonstration uses its backend adaptation; without the statistics service, account and basic balance remain available while extended usage reports show service status.
+- Discovery uses the public [Awesome DSH Plugin](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin) index. Desktop enables the third-party tab by default with `https://cdn.jsdelivr.net/npm/dsh-plugin-catalog/index.json`. Browsing the catalog needs a network connection; listed plugins are installed only when requested.
+- Account statistics integrate with the bundled backend of [dsh-usage-stats](https://github.com/Ychris12138/dsh-usage-stats). Settings is the only usage entry point. Local Token totals work without another installation; provider balance and quota still require the user's own account or API credentials and provider support.
 - The **UI release is v1.0.0** and the underlying **Harness runtime is 0.2.1-rc.3**. These describe the design release and upstream runtime separately.
 
 ## Design references and credits

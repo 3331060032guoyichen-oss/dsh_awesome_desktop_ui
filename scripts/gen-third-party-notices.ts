@@ -807,6 +807,8 @@ External packages installed for runtime use or embedded in distributed Host or b
 
 ${renderNpmTable(runtimeDeps)}
 
+The desktop application includes [\`@ychris12138/dsh-usage-stats\`](https://github.com/Ychris12138/dsh-usage-stats) 0.3.6 (MIT; copyright 2026 dsh-usage-stats contributors). Its license is retained in the installed dependency. A manifest patch disables its separate browser UI so account statistics appear only in this project's Settings page.
+
 pnpm applies local patches to the following packages at install time, so shipped artifacts carry modified copies; each patch file is the complete record of the modification:
 
 ${patchedLines.join('\n')}

@@ -399,4 +399,6 @@ node apps/desktop/node_modules/pnpm/bin/pnpm.mjs --dir apps/desktop run test:upd
 
 ## 开发备注
 
+桌面端的私有 Host bundle 默认提供第三方插件市场和仅含后端的 `dsh-usage-stats` 服务。初始化会升级已有桌面 profile，保留已安装包、锁文件和用户 patch，并替换原先可选的市场与用量 bundle 条目。公开插件目录需要联网，不会自动安装目录中的插件。用量仅在设置中展示，供应商金额需要用户自己的凭据及供应商支持。打包后的 Host 冒烟检查验证市场启动模块及两个用量接口。
+
 上线前 CDN 与容量决策见[桌面更新提案](../../.agents/notes/proposed/feature/2026-09-08-desktop-update-policy-and-installation.zh.md#cdn-and-capacity-qualification)。

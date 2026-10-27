@@ -1,0 +1,17 @@
+diff --git a/package.json b/package.json
+--- a/package.json
++++ b/package.json
+@@ -49,13 +49,6 @@
+   "dsh": {
+     "bundle": {
+       "patch": "./cordis.patch.yml"
+-    },
+-    "client": {
+-      "platform": "web",
+-      "inject": [
+-        "@deepseek-ai/dsh-client-locale",
+-        "@deepseek-ai/dsh-client-ui-primitives"
+-      ]
+     }
+   },
+   "scripts": {

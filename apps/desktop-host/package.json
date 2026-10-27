@@ -8,9 +8,18 @@
   "main": "lib/index.js",
   "files": [
     "lib/index.js",
-    "lib/cli.js"
+    "lib/cli.js",
+    "features.patch.yml"
   ],
+  "dsh": {
+    "bundle": {
+      "patch": "./features.patch.yml"
+    }
+  },
   "dependencies": {
+    "@deepseek-ai/dsh-plugin-market": "workspace:*",
+    "@deepseek-ai/dsh-client-ui-plugin-market": "workspace:*",
+    "@ychris12138/dsh-usage-stats": "0.3.6",
     "koffi": "3.1.6",
     "@deepseek-ai/libreoffice-kit": "^0.1.5",
     "@deepseek-ai/cordis": "workspace:~",
