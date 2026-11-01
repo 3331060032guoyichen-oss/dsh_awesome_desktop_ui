@@ -67,7 +67,7 @@
     "@deepseek-ai/dsh-client-ui-session": "workspace:*",
     "@deepseek-ai/dsh-llm": "workspace:*",
     "@deepseek-ai/dsh-attachment": "workspace:*",
-    "@tanstack/react-virtual": "3.14.22",
+    "@tanstack/react-virtual": "3.14.23",
     "diff": "^9.0.0"
   },
   "files": [
